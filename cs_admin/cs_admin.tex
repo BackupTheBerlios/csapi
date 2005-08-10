@@ -23,10 +23,10 @@
         linkcolor=rltred,               % \ref{...} and \pageref{...}
         menucolor=webdarkblue,
         citecolor=webbrightgreen,
-        pdftitle={A Document With An Image},
-        pdfauthor={Udo K. Schuermann, Ringlord Technologies},
-        pdfsubject={A Demonstration with Extra Cheese},
-        pdfkeywords={latex pdf gimp batch thumbnails hyperlinks},
+        pdftitle={A Short Introduction to Synergy/Change Administration},
+        pdfauthor={Boris Baldassari},
+        pdfsubject={A Short Introduction to Synergy/Change Administration},
+        pdfkeywords={telelogic synergy change configuration management change},
  %       pdfadjustspacing=1,
         pagebackref,
         pdfpagemode=None,
@@ -63,12 +63,13 @@
 \definecolor{webblue}{rgb}{0,0,0.75}
 \definecolor{webgreen}{rgb}{0,0.5,0}
 
-\title{Change Synergy 4.3 for Administrators}
+\title{A Short Introduction to \cs{} 4.3 Administration}
 \author{Boris Baldassari}
 \date{}
 
-\newcommand{\cs}{Change Synergy}
+\newcommand{\cs}{Synergy/Change}
 \newcommand{\ccm}{{\sc ccm}}
+\newcommand{\cm}{Synergy/CM}
 \newcommand{\cshome}{{\sc \$\{cs\_home\}}}
 \newcommand{\ccmhome}{{\sc \$\{ccm\_home\}}}
 \newcommand{\vdehome}{{\sc \$\{vde\_home\}}}
@@ -103,7 +104,7 @@ This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 no
 
 Several specific topics are not addressed by Telelogic, and the documentation for administrators is not always up to date. This document capitalizes some of the knowledge acquired while administering \cs{}, in an attempt to share it. 
 
-Another implicit goal is that experimented people in the field correct, and complete it thanks to a free license allowing modifications of the document.
+Another implicit goal is that experimented people in the field correct, and complete it thanks to a free license (See Annex \ref{sec:license} on page \pageref{sec:license}) allowing modifications of the document.
  
 
 
@@ -113,11 +114,13 @@ Some paths and particularities differ from a server to another. In this paper, w
 \begin{itemize}
 \item \ccmhome{} is the installation directory used by the \ccm{} engine; it is usually named \texttt{ccm63}, with a symbolic link from \ccm{} to \texttt{ccm63}. 
 \item \cshome{} is the installation directory used by the \cs{} engine; it is usually named \texttt{cs43}.
-\item \webinf{} is a crucial location for \cs{} customization, and is often used. The full path to \webinf{} should be read as \cshome{}/cs\_app/webapps/synergy/\webinf{}.
-\item \sdshome{} is the installation directory used by the LDAP embedded server. The \verb!vde! directory inside contains the vde.sh script, used to launch the ldap server.
+\item \vdehome{} is the path to the \verb!vde.sh! executable.
+\item \sdshome{} is the installation directory used by the LDAP embedded server.
 \end{itemize}
 
-All operations in this guide have been made on a GNU/Debian system. Instructions found in this document should apply to *NIX systems as well.
+Often, when addressing specific topics, we will simply say \webinf{}/wsconfig since there is only one \webinf{} directory in the \cs{} arborescence. The full path to \webinf{} should be read as \cshome{}/cs\_app/webapps/synergy/\webinf{}.
+
+All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
 
 \chapter{About \cs{}}
 
@@ -146,7 +149,9 @@ All operations in this guide have been made on a GNU/Debian system. Instructions
 \section{Architecture}
 \label{sec:server_architecture}
 
-\cs{} is written in Java. It uses the open-source Jetty JSP/Servlets server\footnote{See \url{http://jetty.mortbay.org/jetty/}.}. The overall architecture of \cs{} is represented below.
+\cs{} is written in Java, and seats on top of \cm{}. It uses the open-source Jetty JSP/Servlets server\footnote{See \url{http://jetty.mortbay.org/jetty/}.}. 
+
+It is composed of several Servlets classes from the Continuus engine (packages com.continuus.*), the \cs{} engine (packages comp.telelogic.*), and some other external classes (e.g. JavaChart). All classfiles are located in \texttt{\cshome{}/cs\_app/webapps/synergy/\webinf{}/classes}. The overall architecture of \cs{} is represented below.
 
 \begin{figure}[h]
 \centering \epsfig{file=cs_diag.eps, width=10cm}
@@ -154,47 +159,9 @@ All operations in this guide have been made on a GNU/Debian system. Instructions
 \label{fig:cs_diag}
 \end{figure}
 
-\cs{} make intensive use of \wslet{}; which are Java code snipplets called from templates and dynamicaly replaced at run-time. The core of software is composed of several classes\footnote{Class files are located in \texttt{\webinf{}/classes}} from 
-\begin{itemize}
-\item the CCM engine, formerly Continuus: packages com.continuus.*, 
-\item the \cs{} engine: packages comp.telelogic.*,
-\item and some other external classes (e.g. JavaChart for graphs).
-\end{itemize}
+The LDAP server can either be the server furnished by Telelogic or an external source to plug into enterprise resources.
 
-All installed templates are located in {\texttt \webinf{}/wsconfig/templates/}. They are html files with \wslet{} code, inserted as HTML comments:
-\begin{verbatim}
-<!-- WSLET CODE=PTLoadData -->
-<!-- PARAM NAME=CCM_SECURITY_DATA -->
-<!-- PARAM NAME=CCM_TOKEN -->
-<!-- PARAM NAME=CCM_ROLE -->
-<!-- PARAM NAME=CCM_TIMESTAMP -->
-<!-- PARAM NAME=CCM_USER -->
-<!-- PARAM NAME=CCM_VERSION VALUE='4.3' -->
-<!-- PARAM NAME=CCM_LIFECYCLE -->
-<!-- /WSLET -->
-\end{verbatim}
-
-A bunch of javascripts are located in \webinf{}/wsconfig/templates/pt/include. They are functions (e.g. a non-blocking popup window, or alerts), or text to be customized (e.g. the message of the day displayed on the login page: motd.js).
-
-\section{The Perl API}
-
-A Perl API is provided with the software. Almost all operations can be scripted, from administration to reports or submitting. The extended list of features of the Perl API can be found below:
-
-\begin{itemize}
-\item Users:
-\begin{itemize}
-\item Create, edit and delete users.
-\item Add, edit or retrieve users preferences.
-\end{itemize}
-\item Administration
-\begin{itemize}
-\item Reload one or all of the configuration files.
-\item Set debuging mode to true or false.
-\item Get or delete the current log file.
-\end{itemize}
-
-\end{itemize}
-
+Oracle and Informix databases are supported by \cm{} -- but the former is limited to Solaris, HP-UX (and AIX for \cm{} 6.3).
 
 \section{Important files}
 
@@ -223,32 +190,8 @@ Some files are worth retaining their location.
 \item[\webinf{}/wsconfig/templates/pt/include/motd.js] contains the text to be displayed below the login screen. 
 \end{description}
 
-\section{Triggers}
 
-Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle.
-
-On transitions, triggers can be of pre-condition or post-condition. 
-
-\begin{description}
-\item[pre-condition triggers] are executed {\em before} the transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
-\item[post-condition triggers] are executed {\em after} the transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
-\item[attribute modification triggers] are fired when a specified attribute is modified, either while in a state or on transition. Modification attributes are set in the lifecycle editing facilities, Edit CRProcess, Attributes.
-\end{description}
-
-On attribute modification, only post-condition triggers can be defined. This is a bad move, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at last, it allows operations on the new value.
-
-Once they are fired, triggers can freely use the Perl API to request other attributes and do complex checks, set attributes according to the new evolution, or accomplish external operations: send emails, update another database, warn users or administrators.
-
-If a check on an attribute value is mandatory, e.g. for conformance to a given format, it may still be accomplished through a modification trigger which set back the value to the old one if it should not have been changed. Although it is somewhat complex, the following method can be used:
-
-\begin{itemize}
-\item read and parse the transition log, 
-\item extract the last (old) value that you want to reset,
-\item set the attribute to the extracted value through the Perl API.
-\end{itemize}
-
-Beware of loops: if you change the value of the attribute, the modification trigger will be re-fired, and re-executed. In this case, a reboot is mandatory to recover the server control.
-
+\section{Setup}
 
 \subsection{Requirements}
 
@@ -259,99 +202,7 @@ Administration tasks are nevertheless still mandatory, and a full-time administr
 On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary, a simple web browser do it all.
 
 
-\question{I cannot see Process packages, what happens?} 
-
-Backends sessions are probably not activated, check in the Admin panel, section Server. See \S \ref{sec:backend_sessions} on page \pageref{sec:backend_sessions}.
-\newline
-
-
-
-\chapter{Maintenance}
-
-\section{Starting and Stopping the server}
-\label{section:start_stop_server}
-
-Since \cs{} is built upon several layers, they all have to be started sequentially, with correct user privileges. When su-ing to \ccmroot{} or Informix users, the dash option (\verb!su - ccm_root!) should always be used to set correct environment variables.
-
-You could get into troubles if the user starting the daemons is not correct. Right problems happen, and can e.g. forbid the engine to start the sessions. There should be no file with a root owner in the \cshome{} directory (and recursively); you can check it with a quick find:
-
-\begin{verbatim}
-$ find ${CS_HOME} -user root
-$
-\end{verbatim}
-
-A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning\ldots}.
-
-As user Informix, start the database (if there is only one database, you can omit the -s flag):
-\begin{verbatim}
-$ ccmsrv online -y -s /path/to/db
-\end{verbatim}
-
-As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, e.g. if the Telelogic local LDAP server is used) and the \cs{} daemons: %todo
-\begin{verbatim}
-$ ccm_start_daemons
-$ vde.sh start
-$ csctl.sh start
-\end{verbatim}
-
-Order does matter. Starting the \cs{} daemons when there is no active LDAP connection may cause a mess in the connections opened by the engine\footnote{And several CLOSE\_WAIT may appear in the output of \texttt{netstat -na}. When there are too many of these (thousands) the server may become unresponsive. The only issue found so far is to reset all CLOSE\_WAIT'd sockets through a script and restart all daemons --- or reboot the server.}. When stopping the server, the reverse steps have to be followed. As user \ccmroot{} type:
-\begin{verbatim}
-$ csctl.sh stop
-$ vde.sh stop
-$ ccm_stop_daemons
-\end{verbatim}
-
-And as user Informix, type (-s flag is optional if there is only one db):
-\begin{verbatim}
-$ ccmsrv offline -y -s /path/to/db
-\end{verbatim}%$
-
-The following script does all of these safely:
-
-XXX
-
-\section{Backups}
-\label{sec:maint_backup}
-
-\cs{} is probably a vital part of your company's information system, and as such it should be backed up often. \cs{} {\em can} introduce inconsistencies in the database, fire could spread across your datacenter or a black hat could erase half of the records. Ok, \cs{} {\em needs} backups.
-
-This part addresses only the pure \cs{} method of backup and restoration using the ccmdb command set. Other backup methods (such as full system backups) can also be used -- but be warned that the database needs specific backup, just as would any other database.
-
-\subsection{Backup}
-
-Backups need a stop of the \cs{} engine and the database. To ensure that users won't use the database, the LDAP server can also be stopped. As user \ccmroot{}, the following commands stop the application, do the backup and restarts all daemons. The backup is a compressed .cpk file.
-
-\begin{verbatim}
-$ csctl.sh stop
-$ vde.sh stop
-$ ccmdb shutdown /path/to/db
-$ ccmdb backup /path/to/db -t /path/to/backup
-$ ccmdb unprotect /path/to/db
-$ vde.sh stop
-$ csctl.sh stop
-\end{verbatim}
-
-Carefully look at the output generated by the ccmdb commands: the ccmdb\_backup command looks for inconsistencies before backup by running a ccmdb check. Note that the later can be executed as a stand-alone run, and (Telelogic say it) should be executed daily.
-
-\subsection{Restore}
-
-To restore a database, get the \verb!.cpk! file. Check that the path to your database is the same that the one used in the originating .cpk file (if you have more than one host running \cs{}), or every User-Defined query, queryformat or report will be lost.
-
-Basically, the procedure is the same that the one used for backup: shutdown all daemons, unpack and restart all daemons. The ccmsrv has to be online too. As user \ccmroot{}, issue the following commands:
-
-\begin{verbatim}
-$ csctl.sh stop
-$ vde.sh stop
-$ ccm_stop_daemons
-$ ccmdb unpack backup.cpk -t /path/to/my_new_db
-$ ccm_start_daemons
-$ vde.sh start
-$ csctl.sh start
-\end{verbatim}
-
-After the unpack of the database, you should add it in the admin web interface. Go in 'Admin/Server' tab, Databases section (on left), click on 'Add', enter the full name of the new database (\verb!/path/to/my_new_db! in our example) and fulfill description and label.
-
-\section{Patches}
+\subsection{Patches}
 
 Patches are provided by Telelogic and are freely available on their website\footnote{If you have a valid account..}. All instructions are provided in the README file of each patch and \emph{must be read}. Applying a patch is usually harmless; but the principle of precaution suggests that your database should be backed up. Refer to section \ref{sec:maint_backup} for this. 
 
@@ -397,6 +248,124 @@ $ cp cs4.3-030/ \webinf{}/packages/
 \end{enumerate}
 
 
+\section{The Perl API}
+
+A Perl API is provided with the software. Almost all operations can be scripted, from administration to reports or submitting. The extended list of features of the Perl API can be found below:
+
+\begin{itemize}
+\item Users:
+\begin{itemize}
+\item Create, edit and delete users.
+\item Add, edit or retrieve users preferences.
+\end{itemize}
+\item Administration
+\begin{itemize}
+\item Reload one or all of the configuration files.
+\item Set debuging mode to true or false.
+\item Get or delete the current log file.
+\end{itemize}
+
+\end{itemize}
+
+
+\section{Scripts}
+
+The Perl API deserves several goals, from server administration to records reporting. The scripts provided in this chapter have proven to be useful to integrate the \cs{} setup smoothly in company environments.
+
+Such are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, etc.
+
+\subsection{Get a report}
+
+This script retrieves attributes for either a query or a set of problem\_number's. The list of attributes to be retrieved must be passed on command line, and formatting of the ouput can be obtained by specifying the -f switch (using the classic C syntax, cf. man fprintf).
+
+\subsection{Modify records}
+
+This scripts allow someone to modify a record on the \cs{} server, according to the rights of the user provided for login.
+
+
+\chapter{Maintenance}
+
+\section{Starting and Stopping the server}
+\label{section:start_stop_server}
+
+Since \cs{} is built upon several layers, they all have to be started sequentially, with correct user privileges. When su-ing to \ccmroot{} or Informix users, the dash option (\verb!su - ccm_root!) should always be used to set correct environment variables.
+
+You could get into troubles if the user starting the daemons is not correct. Right problems happen, and can e.g. forbid the engine to start the sessions. There should be no file with a root owner in the \cshome{} directory (and recursively); you can check it with a quick find:
+
+\begin{verbatim}
+$ find ${CS_HOME} -user root
+$
+\end{verbatim}
+
+A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning\ldots}.
+
+As user Informix, start the database (if there is only one database, you can omit the -s flag):
+\begin{verbatim}
+$ ccmsrv online -y -s /path/to/db
+\end{verbatim}
+
+As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, e.g. if the Telelogic local LDAP server is used) and the \cs{} daemons: %todo
+\begin{verbatim}
+$ ccm_start_daemons
+$ vde.sh start
+$ csctl.sh start
+\end{verbatim}
+
+Order does matter. Starting the \cs{} daemons when there is no active LDAP connection may cause a mess in the connections opened by the engine\footnote{And several CLOSE\_WAIT may appear in the output of \texttt{netstat -na}. When there are too many of these (thousands) the server may become unresponsive. The only issue found so far is to reset all CLOSE\_WAIT'd sockets through a script and restart all daemons --- or reboot the server.}. When stopping the server, the reverse steps have to be followed. As user \ccmroot{} type:
+\begin{verbatim}
+$ csctl.sh stop
+$ vde.sh stop
+$ ccm_stop_daemons
+\end{verbatim}
+
+And as user Informix, type (-s flag is optional if there is only one db):
+\begin{verbatim}
+$ ccmsrv offline -y -s /path/to/db
+\end{verbatim}%$
+
+
+\section{Backups}
+\label{sec:maint_backup}
+
+\cs{} is probably a vital part of your company's information system, and as such it should be backed up often. \cs{} {\em can} introduce inconsistencies in the database, fire could spread across your datacenter or a black hat could erase half of the records. Ok, \cs{} {\em needs} backups.
+
+This part addresses only the pure \cs{} method of backup and restoration using the ccmdb command set. Other backup methods (such as full system backups) can also be used -- but be warned that the database needs specific backup, just as would any other database.
+
+\subsection{Backup}
+
+Backups need a stop of the \cs{} engine and the database. To ensure that users won't use the database, the LDAP server can also be stopped. As user \ccmroot{}, the following commands stop the application, do the backup and restarts all daemons. The backup is a compressed .cpk file.
+
+\begin{verbatim}
+$ csctl.sh stop
+$ vde.sh stop
+$ ccmdb shutdown /path/to/db
+$ ccmdb backup /path/to/db -t /path/to/backup
+$ ccmdb unprotect /path/to/db
+$ vde.sh stop
+$ csctl.sh stop
+\end{verbatim}
+
+Carefully look at the output generated by the ccmdb commands: the ccmdb\_backup command looks for inconsistencies before backup by running a ccmdb check. Note that the later can be executed as a stand-alone run, and (Telelogic say it) should be executed daily.
+
+\subsection{Restore}
+
+To restore a database, get the \verb!.cpk! file. Check that the path to your database is the same that the one used in the originating .cpk file (if you have more than one host running \cs{}), or every User-Defined query, queryformat or report will be lost.
+
+Basically, the procedure is the same that the one used for backup: shutdown all daemons, unpack and restart all daemons. The ccmsrv has to be online too. As user \ccmroot{}, issue the following commands:
+
+\begin{verbatim}
+$ csctl.sh stop
+$ vde.sh stop
+$ ccm_stop_daemons
+$ ccmdb unpack backup.cpk -t /path/to/my_new_db
+$ ccm_start_daemons
+$ vde.sh start
+$ csctl.sh start
+\end{verbatim}
+
+After the unpack of the database, you should add it in the admin web interface. Go in 'Admin/Server' tab, Databases section (on left), click on 'Add', enter the full name of the new database (\verb!/path/to/my_new_db! in our example) and fulfill description and label.
+
+
 \section{Reporting}
 
 A few statistics can be gathered from \cs{}, for a pen-test measure or through a cron job. In the later case, storing values and graphing them in a convenient manner (e.g. with gnuplot) is straightforward.
@@ -406,12 +375,15 @@ A few statistics can be gathered from \cs{}, for a pen-test measure or through a
 \item[ccm\_monitor:] \label{sec:backend_sessions} gives the number of sessions and the path to their database. This should be approximately the ratio of the number of users connected on the number of users per session as defined in the Server tab of the Admin web interface.
 
 \item[ccm\_lmgr\_status:] \label{plain:ccm_lmgr_status} gives licenses usage (who is connected, and what tool is used -- CM Synergy or Change Synergy). It also gives the total number of available licenses. It can be easily parsed with a little bit of awk or Perl magic.
+
+\item[ccmsrv status:] provides information relative to databases.
+
 \end{description}
 
 XXX
 
 process.sh
-ccmsrv status
+
 
 \section{Defragment the DB}
 
@@ -493,7 +465,12 @@ chunk files:
 To do the expansion, you have to add a chunk file to the selected dbspace. To add a new chunk file of size \verb!new_size! in the ccm dbspace, use the following command: 
 \begin{verbatim}
 $ ccmsrv expand -size new_size -path /path/to/chunkfiles/ -y -dbspace ccm
-\end{verbatim}
+\end{verbatim}%$
+
+%\question{I cannot see Process packages, what happens?} 
+
+%Backends sessions are probably not activated, check in the Admin panel, section Server. See \S \ref{sec:backend_sessions} on page \pageref{sec:backend_sessions}.
+%\newline
 
 
 \chapter{Customizing \cs{}}
@@ -503,13 +480,36 @@ $ ccmsrv expand -size new_size -path /path/to/chunkfiles/ -y -dbspace ccm
 First, the workflow for record management used in the company can be reproduced, with all states, transitions, attributes and rights. When implementation becomes tricky using the default features, triggers can provide a way to external resources or execute some complex operation to grant rights.
 
 
+\section{Triggers}
+
+Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle.
+
+On transitions, triggers can be of pre-condition or post-condition. 
+
+\begin{description}
+\item[pre-condition triggers] are executed {\em before} the transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
+\item[post-condition triggers] are executed {\em after} the transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
+\item[attribute modification triggers] are fired when a specified attribute is modified, either while in a state or on transition. Modification attributes are set in the lifecycle editing facilities, Edit CRProcess, Attributes.
+\end{description}
+
+On attribute modification, only post-condition triggers can be defined. This is a bad move, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at last, it allows operations on the new value.
+
+If a check on an attribute value is mandatory, e.g. for conformance to a given format, it may still be accomplished through a modification trigger. Although it is somewhat complex, the following method can be used:
+
+\begin{enumerate}
+\item read the transition log;
+\item parse and extract the last value of the attribute checked before modification occured;
+\item modify the attribute and set the original value.
+\end{enumerate}
+
+Beware of loops: if you change the value of the attribute, the modification trigger will be re-fired, and re-executed. Thus a flag must be set and checked before any action.
+
+
 \section{Templates}
 
 As stated in section \ref{sec:server_architecture}, the \jetty{} engine uses templates to build the HTML pages. These templates are located in the \webinf{}/wsconfig/templates/pt directory, and can be customized. The main difficulty is the understanding of the template itself: \cs{} defines \wslet{}, which are on-the-fly replacements by e.g. database data. 
 
-It is quite straightforward to remove an item, but difficult enough to add a newly created one. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. 
-
-User interface customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} has two steps:
+It would be quite straightforward to remove an item, but difficult enough to add a newly created one. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. Customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} has two steps:
 
 \begin{description}
 \item[Create the link to the new template] through a configuration file indicating the path of the template to be used. Report definitions use it to format the report display (see \S \ref{sec:ccm_problem}), but it can also be used to completely redefine the main UI with the \verb!CCM_TEMPLATE! declaration.
@@ -939,36 +939,42 @@ component_developer concluder dcm_mgr group_mgr pt_admin
 tester type_develoepr verifier writer;
 user dupond = developer reportbuilder;
 user dupont = developer;
-\end{verbatim}
+\end{verbatim}%$
 
 Stop the \ccm{} session (\verb!ccm stop!), login as Administrator to the web interface, go in the Lifecycle editor and add for the reportbuilder \ccmrole{} a new \csrole{} --- e.g. ReportBuilder. This will allow users without any other \csrole{} to connect only with ReportBuilder. Install the new process package and the ReportBuilder \csrole{} appears in the login page.
 
 
 \appendix
 
-\chapter{getCR}
+\chapter{getreport.pl}
+\label{sec:getreport.pl}
 
 \begin{verbatim}
-#! /usr/bin/perl -w -I/usr/local/cs43/cs_app/webapps/synergy/WEB-INF/bin/lib
+#! /usr/bin/perl -w -I/path/to/lib
+# replace with your lib path
 
 use strict;
 use Getopt::Long;
 use ChangeSynergy::csapi;
+use Time::gmtime;
 
-#################################################################
-#                                                               #
-# Autor:          Boris Baldassari                              #
-# Creation date:  01.06.2005                                    #
-# Usage:          get_report.pl [-f format] query attributes    #
-#                                                               #
-#################################################################
+# Usage: get_report.pl [-f format] query attributes
+# This script is gpl'ed. See www.fsf.org.
 
 my $usage = <<EOU;
-usage: $0 [-f format ] query [attributes]
+usage: $0 [-h] [-f format ] [-q query] attributes
 
-$0 displays a text report for the provided query. If a pipe-separated list of attributes is specified, they are displayed separated with spaces. Otherwise only the problem_number attribute is shown. If a format string is provided (classic printf C format) attributes will follow String format.
+$0 displays a text report with specified attributes;
 
-$0 -f "[%s] %s|%s|%s" "problem_number|problem_synopsis|software_platform|software_version" "(software match 'good*')"
+The records to retrieve are either specified on stdin
+or directly specified with a query string. 
+
+If a format string is provided (classic printf C 
+format) attributes will follow String format.
+
+$0 -f "[%s] %s|%s|%s" -q "(software match 'good*')" 
+"problem_number|problem_synopsis|software_platfo
+rm|software_version" 
 [12990] search fails|embedded|2.3
 [14851] generated html does not validate|server|2.1
 [14928] dead links|server|2.1
@@ -978,178 +984,208 @@ die $usage if ($#ARGV == -1);
 
 Getopt::Long::Configure("bundling");
 
-# Variables declaration
-my $querystring;
-my ($user,
-    $results,
-    $working_project,
-    $queryproject,
-    $crstatus,
-    $querystatus);
+# Set accordingly to your installation
+my $SERV_IP = "172.16.152.128";
+my $SERV_DB = "/db/ccmdb/test_db";
+my $USER_LOGIN = "user";
+my $USER_PASSWD = "password";
+my $USER_ROLE = "User";
 
-my ($opt_n,
-    $opt_a,
-    $opt_o,
-    $opt_c,
-    $opt_i,
-    $opt_u,
-    $opt_v,
-    $opt_x,
-    $opt_z,
-    $opt_r,
-    $opt_d,
-    $opt_p,
-    $opt_project,
-    $constraints);
+# Variables declaration
+my ($user, $results,
+    $queryargs, $querystring, 
+    $opt_query, $opt_help, 
+    $opt_format,
+    $identifier, @identifiers);
 
 # Define available options
-my $options = GetOptions( 'N' => \$opt_n,
-			  'A' => \$opt_a,
-			  'O' => \$opt_o,
-			  'C' => \$opt_c,
-			  'I' => \$opt_i,
-			  'u=s' => \$opt_u,
-			  'V' => \$opt_v,
-			  'X' => \$opt_x,
-			  'Z' => \$opt_z,
-			  'R' => \$opt_r,
-			  'D' => \$opt_d,
-			  'P' => \$opt_p,
-			  'p|project=s' => \$opt_project);
+my $options = GetOptions( 'q|query=s' => \$opt_query,
+  'h|help' => \$opt_help, 'f|format:s' => \$opt_format);
 
-if(defined($ARGV[0])) {
-   $constraints = "$ARGV[0]";
+die $usage if (defined($opt_help));
+
+# If no query is furnished, build a query to retrieve 
+# needed attributes from problem_number given as std 
+# input.
+if (defined($opt_query)) { $querystring = $opt_query; }
+else {
+  while (<STDIN>) {
+    chomp;
+    push @identifiers, $_;
+  }
+  $identifier = pop @identifiers;
+  $querystring = qq/(problem_number='$identifier')/;
+  foreach $identifier (@identifiers) {
+    $querystring = $querystring . qq/or(problem_number='$identifier')/;
+  }
+}
+    
+eval
+{
+  $queryargs = join "|", @ARGV;
+
+  my $csapi = new ChangeSynergy::csapi();
+  $csapi->setUpConnection("http", $SERV_IP, 8600);
+  $user = $csapi->Login($USER_LOGIN, $USER_PASSWD, 
+                        $USER_ROLE, $SERV_DB);
+  
+  # Get query data
+  $results = $csapi->QueryData($user, "Basic Summary", 
+     $querystring, undef, undef, undef, $queryargs);
+};
+
+if ($@)
+{
+  #print $@;
+  print "No match. Dying. \n";
+  exit 64;
+}  
+
+# Loop through the results to display formatted attributes
+for (my $i = 0 ; $i < $results->getDataSize() ; $i++) {
+  my $report_data = $results->getDataObject($i);
+  my @attribute_data;
+  my $finalattr;
+
+
+  for (my $j = 0 ; $j < $report_data->getDataSize() ; $j++) {
+    # converts universal time since epoch to modern styles.
+    if ($report_data->getDataObject($j)->getType() eq "CCM_DATE") {
+      my $gm = gmtime($report_data->getDataObject($j)->getValue());
+      $attribute_data[$j] = sprintf "%2.2d%2.2d%2.2d", 
+          $gm->year-100, $gm->mon+1, $gm->mday+1;
+    } else {
+      $attribute_data[$j] = $report_data->getDataObject($j)->getValue();
+    }
+  }
+  if (defined($opt_format)) {
+    $finalattr = sprintf $opt_format, @attribute_data;
+  } else {
+    $finalattr = join "|", @attribute_data;
+  }
+  print "$finalattr \n";
 }
 
-# We build the first part of the query string
-$querystring = qq/(cvtype="problem")/;
+__END__
 
-# If no state is given, assume all states are concerned.
-if (!defined($opt_n) &&
-    !defined($opt_a) &&
-    !defined($opt_o) &&
-    !defined($opt_c) &&
-    !defined($opt_i) &&
-    !defined($opt_v) &&
-    !defined($opt_x) &&
-    !defined($opt_z) &&
-    !defined($opt_r) &&
-    !defined($opt_d) &&
-    !defined($opt_p)) {
-    $querystatus = " and ((crstatus match 'detected') or (crstatus match 'detected_cr') or (crstatus match 'acknowledged')or (crstatus match 'acknowledged_cr') or (crstatus match 'corrected') or (crstatus match 'corrected_cr') or (crstatus match 'integrated') or (crstatus match 'opened') or (crstatus match 'opened_cr') or (crstatus match 'verified')  or (crstatus match 'verified_cr') or (crstatus match 'notabug') or (crstatus match 'dispensed') or (crstatus match 'rejected') or (crstatus match 'refused_cr') or (crstatus match 'duplicated') or (crstatus match 'postponed'))";
-} else {
-    my $first_arg = 1;
-    $querystatus = " and (";
-    # For each status, we add a constraint with a
-    # optional 'or' for neightborhood.
-    if (defined($opt_n)) {
-	$querystatus = $querystatus . "(crstatus match 'detected')";
-	$first_arg = 0;
-    }
-    if (defined($opt_a)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'acknowledged')";
-	$first_arg = 0;
-    }
-    if (defined($opt_o)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'opened')";
-	$first_arg = 0;
-    }
-    if (defined($opt_c)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'corrected')";
-	$first_arg = 0;
-    }
-    if (defined($opt_i)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'integrated')";
-	$first_arg = 0;
-    }
-    if (defined($opt_v)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'verified')";
-	$first_arg = 0;
-    }
-    if (defined($opt_x)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'notabug')";
-	$first_arg = 0;
-    }
-    if (defined($opt_z)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'dispensed')";
-	$first_arg = 0;
-    }
-    if (defined($opt_r)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'rejected')";
-	$first_arg = 0;
-    }
-    if (defined($opt_d)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'duplicated')";
-	$first_arg = 0;
-    }
-    if (defined($opt_p)) {
-	$querystatus = $querystatus . " or " unless ($first_arg);
-	$querystatus = $querystatus . "(crstatus match 'postponed')";
-	$first_arg = 0;
-    }
-    $querystatus = $querystatus . ")";
-}
+=pod
 
-# we add the crstatus part of the query
-$querystring = $querystring . $querystatus;
+=head1 Name
 
-# treat the -u switch
-if (defined($opt_u)) {
-    $querystring = $querystring . " and (assigned_engineer='$opt_u')";
-}
+B<getreport.pl> -- Displays specified fields from 
+a selection of problem reports.
 
+=head1 Synopsis
 
-# add the project entry, if the -p switch is found
-if (defined($opt_project)) {
-    $queryproject = qq/ and (working_project match "$opt_project")/;
-    $querystring = $querystring . $queryproject;
-}
+Usage: B<getreport.pl> [-h] [-f format ] [-q query] attributes
 
-# we just substitute has with match to send the queries to 
-# change synergy.
-if (defined($constraints)) {
-	$constraints =~ s/\&\&/and/g;
-	$constraints =~ s/\|\|/or/g;
-	if ($constraints =~m/\(((\w|-)+)\s+hasno\s+((\w|:)+)\)/) {
-    		$constraints =~ s/\(((\w|-)+)\s+hasno\s+((\w|:)+)\)/\($1 !match '*$3*'\)/g; 
-	}
-	if ($constraints =~m/\(((\w|-)+)\s+has\s+((\w|:)+)\)/) {
-    		$constraints =~ s/\(((\w|-)+)\s+has\s+((\w|:)+)\)/\($1 match '*$3*'\)/g; 
-	}
-	if ($constraints =~m/time\((.+?)\)/) {
-                $constraints =~ s/time\((.+?)\)/time('$1')/g;
-        }
-    	$querystring = $querystring . " and " . $constraints;
-}
+=head1 Description
 
-# Create a new csapi object.
+$0 displays a text report with specified attributes;
+
+The records to retrieve are either read on stdin
+or directly specified with a query string. 
+
+If a format string is provided (classic printf C 
+format) attributes will follow String format.
+
+$0 -f "[%s] %s|%s|%s" -q "(software match 'good*')" 
+"problem_number|problem_synopsis|software_platform|software_version" 
+[12990] search fails|embedded|2.3
+[14851] generated html does not validate|server|2.1
+[14928] dead links|server|2.1
+
+=cut
+\end{verbatim}
+
+\chapter{modifyrecord.pl}
+\label{sec:modifyrecord.pl}
+
+\begin{verbatim}
+#! /usr/bin/perl -w -I/path/to/lib
+# replace with your lib path 
+require 5.002;
+
+use strict;
+use Socket;
+use Carp;
+use FileHandle;
+use Getopt::Long;
+use ChangeSynergy::csapi;
+
+# Usage: modifyrecord.pl [-h|help] [-i|identifie identifier] attribute value
+# This script is gpl'ed. See www.fsf.org.
+
+my $usage = <<EOU;
+usage: $0 [-h|help] [-i|identifier identifier] attribute value
+
+$0 allows a Change Synergy administrator to set attributes 
+for problem_number furnished either on command line (with
+the -i switch) or on stdin.
+
+\$ $0 -i 567 problem_synopsis "User should be able to change theme."
+
+EOU
+die $usage if ($#ARGV == -1);
+
+Getopt::Long::Configure("bundling");
+
+# Set accordingly to your installation
+my $SERV_IP = "172.16.152.128";
+my $SERV_DB = "/db/ccmdb/test_db";
+my $USER_LOGIN = "user";
+my $USER_PASSWD = "password";
+my $USER_ROLE = "User";
+
+# variable declaration
+my ($record, $identifier, $queryargs, $user, 
+    $opt_help, $opt_id);
+
+my (@identifiers, $attribute,
+    $old_value, $new_value);
+
+# Define available options
+my $options = GetOptions( 'i|identifier=i' => \$opt_id,
+  'h|help' => \$opt_help);
+
+# Display usage if help is needed.
+die $usage if (defined($opt_help));
+
+# If no id is furnished on command line, get from 
+# stdin, one id per line.
+if (!defined($opt_id)) {
+    while (<STDIN>) {
+	chomp;
+	push @identifiers, $_;
+    }
+} else { push @identifiers, $opt_id; }
+
+# Get parameters.
+$attribute = shift;
+$new_value = shift;
+
 my $csapi = new ChangeSynergy::csapi();
 
 eval
 {
-    $csapi->setUpConnection("http", "172.16.1.22", 8600);
-    #$user = $csapi->Login("ccm_root", "ccmisdead", "Admin", "/db/ccmdb/cellon_db");
-    #$user = $csapi->Login("frq0511", "sce1pass", "Cellon", "/usr/local/ccmdb/cellon_db");
-    $user = $csapi->Login("guest", "g6u4e0s2t4", "Cellon", "/db/ccmdb/cellon_db");
+    $csapi->setUpConnection("http", $SERV_IP, 8600);
+    $user = $csapi->Login($USER_LOGIN, $USER_PASSWD, 
+			  $USER_ROLE, $SERV_DB);
+    
+    foreach $identifier (@identifiers) {
+	# Request an object representing the record.
+	$record = $csapi->GetCRData($user, $identifier, $attribute);
+	
+	# Request the "gravity" and "weight" attributes objects
+	$old_value = $record->getDataObjectByName($attribute)->getValue();
 
-    # Get query data
-    $results = $csapi->QueryData($user, "Basic Summary", $querystring, undef, "Example data report", undef, "problem_number");
+	print "Changed $identifier from [$old_value] to [$new_value] \n";
 
-    # Loop through the results to display 
-    # problem_number attribute only.
-    for (my $i = 0 ; $i < $results->getDataSize() ; $i++) {
-        my $report_data = $results->getDataObject($i);
-        my $attribute_data = $report_data->getDataObject(0)->getValue();
-        print "$attribute_data\n";
+	# assign result in weight attribute of the record
+	$record->getDataObjectByName($attribute)->setValue($new_value);
+
+	# apply changes
+	$csapi->ModifyCR($user, $record);
     }
 };
 
@@ -1165,52 +1201,23 @@ __END__
 
 =head1 Name
 
-B<findbugcs> -- Queries the CELLon Change Synergy database, according to specified criteria.
+B<modifyrecord.pl> -- Change the value of an attribute for a set of records.
 
 =head1 Synopsis
 
-Usage: B<findbugcs> -NAOICVZXPRD -p project [ constraints ]
+Usage: B<bugvalcs> [-h|help] [-i|identifier identifier] attribute value
 
 =head1 Description
 
-B<findbugcs> is an utility to query the CELLon change synergy database according to several criteria amongst attributes. The bug IDs of any record matching the criteria are printed to standard output, either to be displayed on terminal or to be re-entered in another command through standard input (eg. with the bugvalcs function).
+The script uses an array to store problem_number's. It either push id furnished on command line or read and push from standard input. 
 
-=head2 Advanced usage
-
-The constraints are roughly the same as the one used with DDTS, excepted some minor changes. Say you want to get identifiers of all records which have the field 'Validation Team' set to 'true', the field 'working_product' different than 'all' and ('milestone_target' set to 'SC' or 'urgency' set to 'U1' or 'detected_time' after the '04.10.2004'). You would issue the following constraint (on one line):
-
-    (validation_team has true)&&(working_product hasno all)&& \
-    ((milestone_target has SC)||(urgency has U1)|| (detected_time > time(04.10.2004 00:00:00))
-
-And (&&) and Or (||) constructions can be deeply nested; just pay attention to parenthesis. The hour after the date is not mandatory. If it lacks, 00:00:00 will be automatically inserted. Time attributes related to status (eg. date of transition to the verified state) are of the form: (status_name)_time.
-
-=head2 Architecture
-
-B<findbugcs> is written in perl. It accesses the Change Synergy application through a HTTP request (with Perl bindings). B<Be warned that the query and the attributes names are case-sensitive>. 
-
-Options handling is done with Getopt::Long. We first parse the state options (-NAOICVZXPRD) and add corresponding status values in the query string, then query the Change Synergy API with attributes needed (constraints, ID, etc.). We use the QueryData() function to get attributes objects, and values with the getDataObject()->getValue(). Results are parsed and displayed.
-
-=head1 Author
-
-This program has been written by Boris Baldassari for CELLon France on June 2004.
-
-=head1 See Also
-
-perl(1)
-
-bugvalcs
-
-dumpbugcs
-
-=head1 Copyright
-
-Copyright 2004, CELLon France. All Rights Reserved.
+For each element of the array, it retrieves an object (getCRData), read (getValue) and set (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem_number.
 
 =cut
-
 \end{verbatim}
 
 \chapter{Licensing of this document}
+\label{sec:license}
 
 This document is published under the Creative Commons License, Attribution-NonCommercial-ShareAlike 2.0 France.
 
