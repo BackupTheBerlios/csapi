@@ -27,12 +27,10 @@
         pdfauthor={Boris Baldassari},
         pdfsubject={A Short Introduction to Synergy/Change Administration},
         pdfkeywords={telelogic synergy change configuration management change},
- %       pdfadjustspacing=1,
         pagebackref,
         pdfpagemode=None,
         bookmarksopen=true]{hyperref}
     \pdfcompresslevel=9
-%    \usepackage[pdftex]{graphicx}
     \usepackage{thumbpdf}
 \else
     \usepackage[
@@ -73,12 +71,10 @@
 \newcommand{\cshome}{{\sc \$\{cs\_home\}}}
 \newcommand{\ccmhome}{{\sc \$\{ccm\_home\}}}
 \newcommand{\vdehome}{{\sc \$\{vde\_home\}}}
-\newcommand{\sdshome}{{\sc \$\{sds\_home\}}}
 \newcommand{\ccmroot}{ccm\_root}
 \newcommand{\jetty}{Jetty}
 \newcommand{\unix}{{\sc Unix}}
-\newcommand{\rightthing}{Right Thing}
-\newcommand{\webinf}{{\sc web-inf}}
+\newcommand{\webinf}{{\sc \$\{web-inf\}}}
 \newcommand{\wslet}{{\sc wslet}}
 \newcommand{\ccmrole}{CCMRole}
 \newcommand{\ccmroles}{CCMRoles}
@@ -112,13 +108,12 @@ Another implicit goal is that experimented people in the field correct, and comp
 
 Some paths and particularities differ from a server to another. In this paper, we will use pseudo-variables that should be adapted to other setups. 
 \begin{itemize}
-\item \ccmhome{} is the installation directory used by the \ccm{} engine; it is usually named \texttt{ccm63}, with a symbolic link from \ccm{} to \texttt{ccm63}. 
-\item \cshome{} is the installation directory used by the \cs{} engine; it is usually named \texttt{cs43}.
-\item \vdehome{} is the path to the \verb!vde.sh! executable.
-\item \sdshome{} is the installation directory used by the LDAP embedded server.
+\item \ccmhome{} is the installation directory used by the \ccm{} engine; it is usually named \texttt{ccm63}, with a symbolic link from \texttt{ccm} to \texttt{ccm63}. Default is \verb!/usr/local/ccm/!.
+\item \cshome{} is the installation directory used by the \cs{} engine; it is usually named \texttt{cs43}. Default is \verb!/usr/local/cs43/!.
+\item \vdehome{} is the installation directory used by the LDAP embedded server, and the path to the \verb!vde.sh! executable; default is \verb!/usr!\-\verb!/local!\-\verb!/sds20/!. The \verb!vde.sh! script is located in \vdehome{}\verb!/vde/!. 
 \end{itemize}
 
-Often, when addressing specific topics, we will simply say \webinf{}/wsconfig since there is only one \webinf{} directory in the \cs{} arborescence. The full path to \webinf{} should be read as \cshome{}/cs\_app/webapps/synergy/\webinf{}.
+Often, when addressing specific topics, we will simply say \webinf{}\-\verb!/wsconfig! since there is only one \webinf{} directory in the \cs{} arborescence. The full path to \webinf{} should be read as \cshome{}\verb!/cs_app!\-\verb!/webapps!\-\verb!/synergy!\-\verb!/WEB-INF!.
 
 All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
 
@@ -151,7 +146,7 @@ All operations in this guide have been made on a GNU/Linux RedHat Enterprise Lin
 
 \cs{} is written in Java, and seats on top of \cm{}. It uses the open-source Jetty JSP/Servlets server\footnote{See \url{http://jetty.mortbay.org/jetty/}.}. 
 
-It is composed of several Servlets classes from the Continuus engine (packages com.continuus.*), the \cs{} engine (packages comp.telelogic.*), and some other external classes (e.g. JavaChart). All classfiles are located in \texttt{\cshome{}/cs\_app/webapps/synergy/\webinf{}/classes}. The overall architecture of \cs{} is represented below.
+It is composed of several Servlets classes from the Continuus engine and the \cs{} engine, and some other external classes (e.g. JavaChart). All classfiles are located in \texttt{\cshome{}/cs\_app/webapps/synergy/\webinf{}/classes}. The overall architecture of \cs{} is represented below.
 
 \begin{figure}[h]
 \centering \epsfig{file=cs_diag.eps, width=10cm}
@@ -171,7 +166,7 @@ Some files are worth retaining their location.
 
 \item[\cshome{}/cs\_apps/csctl.sh] The script which starts \cs{} daemons. It should be invoked with the \ccmroot{} user, after the LDAP is connected (i.e. after the \verb!vde.sh! script is invoked if the internal LDAP is used). 
 
-\item[\sdshome{}/vde.sh] The script to start/stop the LDAP server furnished by Telelogic. It should be invoked with the \ccmroot{} user, before the \cs{} daemons are invoked.
+\item[\vdehome{}/vde.sh] The script to start/stop the LDAP server furnished by Telelogic. It should be invoked with the \ccmroot{} user, before the \cs{} daemons are invoked.
 
 \item[\ccmhome{}/etc/license\_data] The file which contains licensing data, as provided by Telelogic.
 
@@ -181,13 +176,17 @@ Some files are worth retaining their location.
 
 \item[\ccmhome{}/etc/ccm\_websrv.adr] contains the name of the webserver host and its IP address.
 
-\item[\webinf{}/wsconfig/] contains most configuration files (e.g. pt.cfg, see \ref{sec:pt.cfg}).
+\item[\webinf{}/wsconfig/] contains most configuration files (e.g. pt.cfg, see \ref{sec:pt.cfg} on page \pageref{sec:pt.cfg}).
 
-\item[\webinf{}/wsconfig/triggers/] contains all triggers defined for the current workflow.
+\item[\webinf{}/wsconfig/triggers/] contains all triggers defined for the current workflow (see section on triggers, \S \ref{sec:triggers} on page \pageref{sec:triggers}).
 
 \item[\webinf{}/wsconfig/tmpdir/] contains log files (e.g. pt.log).
 
 \item[\webinf{}/wsconfig/templates/pt/include/motd.js] contains the text to be displayed below the login screen. 
+
+\item[\webinf{}/packages/] is the directory containing all packages (installed/uninstalled).
+
+\item[\webinf{}/crprocess/] contains all XML process files.
 \end{description}
 
 
@@ -195,20 +194,20 @@ Some files are worth retaining their location.
 
 \subsection{Requirements}
 
-\cs{} is far less ressources-consuming than its main competitor Rational ClearQuest. A single server, hosting both backend sessions and database, can handle seamlessly a hundred of activ users and dozens of hundreds records. 
+\cs{} is far less ressources-consuming than its main competitor Rational ClearQuest. A single server, hosting both backend sessions and database, can handle seamlessly a hundred of activ users and several thousands of records. 
 
-Administration tasks are nevertheless still mandatory, and a full-time administrator -- as for any other software -- is mandatory. For full user satisfaction and efficiency consider hiring one administrator for 100 users.
+Administration tasks are nevertheless still mandatory, and a full-time administrator -- as for any other software -- is mandatory. For full user satisfaction and efficiency consider hiring one administrator for 100 activ users.
 
-On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary, a simple web browser do it all.
+On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary, a simple web browser do it all from any connected location in the world.
 
 
 \subsection{Patches}
 
-Patches are provided by Telelogic and are freely available on their website\footnote{If you have a valid account..}. All instructions are provided in the README file of each patch and \emph{must be read}. Applying a patch is usually harmless; but the principle of precaution suggests that your database should be backed up. Refer to section \ref{sec:maint_backup} for this. 
+Patches are provided by Telelogic and are freely available on their website\footnote{If you have a valid account..}. All instructions are provided in the README file of each patch and \emph{must be read}. Applying a patch is usually harmless; but the principle of precaution suggests that your database should be backed up. Refer to section \ref{sec:maint_backup} on page \pageref{sec:maint_backup} for this. 
 
 Install instructions vary from one patch to another. \emph{Really always check the readme instructions} provided with the package, since there may be patch-specific hints. In general, patches are reversible: check instructions in the README.
 
-\subsubsection{CM patches}
+\subsubsection{\ccm{} patches}
 
 The usual way to install a \ccm{} patch is through the ccm\_patch utility. 
 
@@ -250,7 +249,7 @@ $ cp cs4.3-030/ \webinf{}/packages/
 
 \section{The Perl API}
 
-A Perl API is provided with the software. Almost all operations can be scripted, from administration to reports or submitting. The extended list of features of the Perl API can be found below:
+A Perl API is provided by Telelogic and bundled with \cs{}. Almost all operations can be scripted, from administration to reports or submitting. Some of the most useful features of the Perl API can be found below:
 
 \begin{itemize}
 \item Users:
@@ -270,17 +269,37 @@ A Perl API is provided with the software. Almost all operations can be scripted,
 
 \section{Scripts}
 
-The Perl API deserves several goals, from server administration to records reporting. The scripts provided in this chapter have proven to be useful to integrate the \cs{} setup smoothly in company environments.
+The Perl API deserves several goals, from server administration to records reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} have proven to be useful to integrate the \cs{} setup smoothly in company environments.
 
-Such are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, etc.
+Such scripts are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, etc. POD (in-line) documentation is available, as well as usage through the \verb!-h!switch.
 
 \subsection{Get a report}
 
-This script retrieves attributes for either a query or a set of problem\_number's. The list of attributes to be retrieved must be passed on command line, and formatting of the ouput can be obtained by specifying the -f switch (using the classic C syntax, cf. man fprintf).
+The getreport.pl script (see \S \ref{sec:getreport.pl} on page \pageref{sec:getreport.pl}) retrieves attributes for either a query or a set of problem\_number's. 
+
+\begin{verbatim}
+getreport.pl [-h] [-f format ] [-q query] attributes
+\end{verbatim}
+
+The list of attributes to be retrieved must be passed on command line, and formatting of the ouput can be obtained by specifying the -f switch (using the classic C syntax, cf. man fprintf). 
+
+\begin{verbatim}
+$ getreport.pl -f "[%s] %s|%s|%s" -q "(software match 'good*')" 
+"problem_number|problem_synopsis|software_platform|software_version" 
+[12990] search fails|embedded|2.3
+[14851] generated html does not validate|server|2.1
+[14928] dead links|server|2.1
+\end{verbatim}%$
 
 \subsection{Modify records}
 
-This scripts allow someone to modify a record on the \cs{} server, according to the rights of the user provided for login.
+This script (see \S \ref{sec:modifyrecord.pl} on page \pageref{sec:modifyrecord.pl}) allows an user to modify a record on the \cs{} server, according to his rights. The synopsis of the script is:
+
+\begin{verbatim}
+modifyrecord.pl [-h|help] [-i|identifier identifier] attribute value
+\end{verbatim}
+
+It uses an array to store problem\_number's. It either push id furnished on command line or read and push from standard input. For each element of the array, it retrieves an object (getCRData), read (getValue) and set (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem\_number.
 
 
 \chapter{Maintenance}
@@ -288,7 +307,7 @@ This scripts allow someone to modify a record on the \cs{} server, according to 
 \section{Starting and Stopping the server}
 \label{section:start_stop_server}
 
-Since \cs{} is built upon several layers, they all have to be started sequentially, with correct user privileges. When su-ing to \ccmroot{} or Informix users, the dash option (\verb!su - ccm_root!) should always be used to set correct environment variables.
+Since \cs{} is built upon several layers, they all have to be started sequentially, with correct user privileges. When su-ing to \ccmroot{} or informix users, the dash option (\verb!su - ccm_root!) should always be used to set correct environment variables.
 
 You could get into troubles if the user starting the daemons is not correct. Right problems happen, and can e.g. forbid the engine to start the sessions. There should be no file with a root owner in the \cshome{} directory (and recursively); you can check it with a quick find:
 
@@ -297,14 +316,14 @@ $ find ${CS_HOME} -user root
 $
 \end{verbatim}
 
-A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning\ldots}.
-
+A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}.
+xx
 As user Informix, start the database (if there is only one database, you can omit the -s flag):
 \begin{verbatim}
 $ ccmsrv online -y -s /path/to/db
 \end{verbatim}
 
-As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, e.g. if the Telelogic local LDAP server is used) and the \cs{} daemons: %todo
+As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, i.e. if the Telelogic local LDAP server is used) and the \cs{} daemons: %todo
 \begin{verbatim}
 $ ccm_start_daemons
 $ vde.sh start
@@ -322,6 +341,13 @@ And as user Informix, type (-s flag is optional if there is only one db):
 \begin{verbatim}
 $ ccmsrv offline -y -s /path/to/db
 \end{verbatim}%$
+
+
+There is an issue here: if a {\tt csctl.sh start} gives {\tt already running\ldots}, and you are sure it is not, you probably did not shutdown correctly the host. 
+
+When stopping the running host, you must always shutdown the CS server, then the LDAP server (if you have one), then the \ccm{} daemons and the Informix DB. This allows all daemons and processes to end gracefully, and to remove any lock file. If you do not follow these steps carefully, and restart the application, it will look for a few locks files, find it and believe it is running.
+
+There are two options here: remove the lock file manually, or use the commands to shutdown the application, which will remove the files for you. After this step, you can start your \ccm{} daemons, csctl.sh and vde.sh scripts. 
 
 
 \section{Backups}
@@ -380,22 +406,16 @@ A few statistics can be gathered from \cs{}, for a pen-test measure or through a
 
 \end{description}
 
-XXX
-
-process.sh
-
 
 \section{Defragment the DB}
 
 Apart from an earthquake or alien intrusion in your server, backups will also be used for the Informix database defragmentation. After a long run time (say, a few months of intensive usage) the database becomes fragmented; and there is no tool to defragment it with \ccm{}. 
 
-When the application faces performances issues, it is usually the \rightthing{} to plan a maintenance operation, backup the database, delete and unpack it. The full re-insertion of all elements will re-order file fragments and speed up transactions.
+When the application faces performances issues, it is usually a good idea plan a maintenance operation, backup the database, delete and unpack it. The full re-insertion of all elements will re-order file fragments and speed up transactions.
 
-Deletion of the current database is done with the ccmdb {\texttt delete} command. Basically, the path to the db is the one you specify when invoking the ccmdb commands; but simply (re)moving the directory is a bad idea. The ccmdb delete not only removes it, but also do other changes in the server internals. This step should be achieved once the backup file has been verified.
+Deletion of the current database is done with the {\texttt ccmdb delete} command. Basically, the path to the db is the one you specify when invoking the ccmdb commands; but simply (re)moving the directory is a bad idea. The {\texttt ccmdb delete} not only removes it, but also do other changes in the server internals. This step should be achieved once the backup file has been verified.
 
-Stop the daemons, delete, start the daemons.
-
-as user \ccmroot{}:
+Stop the daemons, delete, start the daemons; as user \ccmroot{}:
 \begin{verbatim}
 $ csctl.sh stop
 $ vde.sh stop
@@ -408,23 +428,16 @@ $ csctl.sh start
 
 Check that the database is recognized in the Admin web interface, section Server (it should be enabled) and check backend sessions are running (see § \ref{sec:backend_sessions} on page \pageref{sec:backend_sessions}).
 
-\question{When I issue a {\tt csctl.sh start}, the prompt gives me {\tt already running\ldots}, but it is not (I cannot see it in processes list).} 
-
-You probably did not shutdown correctly the host; when stopping the running host, you must always shutdown the CS server, then the LDAP server (if you have one), then the \ccm{} daemons and the Informix DB. This allows all daemons and processes to end gracefully, and to remove any lock file. If you do not follow these steps carefully, and restart the application, it will look for a few locks files, find it and believe it is running.
-
-There are two options here: remove the lock file manually, or use the commands to shutdown the application, which will remove the files for you. After this step, you can start your \ccm{} daemons, csctl.sh and vde.sh scripts. Refer to \ref{section:start_stop_server}.
-
 
 \section{Expand the DB space}
 
-The Informix database uses four dbspaces, specified on installation: rootdbs, temp, log, ccm. If the workload of the server is surprisingly increasing more than expected, these dbspaces may fulfill quickly. In this section, w
+The Informix database uses four dbspaces, specified on installation: rootdbs, temp, log, ccm. If the workload of the server is surprisingly increasing more than expected, these dbspaces may fulfill quickly. In this section, we will study how DB space can be increased.
 
-See TB206\footnote{Increasing the Logical Logs in Informix On-Line 7.x and 9.x (UNIX and NT)}, TB217\footnote{Expanding An Informix On-Line 7.x or 9.x Database Server (UNIX)}. Also refer to the Administration Guide For \unix{} %todo: add bibtex reference
-and CM Synergy Administration Guide for \unix{}.
+You should have a look at some technical pages from the Telelogic support web site\footnote{https://support.telelogic.com/en/synergy/kb/}: TB206 -- Increasing the Logical Logs in Informix On-Line 7.x and 9.x (UNIX and NT) and TB217 -- Expanding An Informix On-Line 7.x or 9.x Database Server (UNIX). Also refer to the \ccm{} Synergy Administration Guide for \unix{}.
 
 A dbspace is divided into \emph{logical logs}, which are storage areas for transactions (i.e. actions made on the server) before they are processed. When processing (checkpoint) occurs\footnote{Checkpoints are defined by default to run every 5 minutes.}, all data are cleaned from the logical logs for future use, e.g. like in a fifo.
 
-So, the amount of memory used in dbspaces should remain approximately identical, excepted when the real-time workload increases significantly. You should monitor dbspace usage; when occupation exceeds 70%, consider adding some more chunks of free space.
+So, the amount of memory used in dbspaces should remain approximately identical, excepted when the real-time workload increases significantly. You should monitor dbspace usage; when occupation exceeds 70\%, consider adding some more chunks of free space.
 
 \paragraph{The ccm logspace} holds all informations about objects created by users. Especially, if you use a lot of strings in the creation of, say a CR, this dbspace will fulfill quickly\footnote{When installing \cs{}, the ccm dbspace is approximately twice as big as others, making it the biggest dbspace available amongst the four created.} --- attributes are stored elsewhere, in the st\_root directory.
 
@@ -467,28 +480,33 @@ To do the expansion, you have to add a chunk file to the selected dbspace. To ad
 $ ccmsrv expand -size new_size -path /path/to/chunkfiles/ -y -dbspace ccm
 \end{verbatim}%$
 
-%\question{I cannot see Process packages, what happens?} 
+After the command exits, a new chunkfiles has been created, and a \verb!ccmsrv status -d! shows a new line, as we can see on the preceding example:
 
-%Backends sessions are probably not activated, check in the Admin panel, section Server. See \S \ref{sec:backend_sessions} on page \pageref{sec:backend_sessions}.
-%\newline
+\begin{verbatim}
+--- dbspace ccm ---
+total free space:       48724 Kbytes
+chunk files:
+/chunkfiles/kadath_ccm.dbs 307200 Kbytes total, 12 Kbytes free
+/chunkfiles/kadath_ccm_2.dbs 200000 Kbytes total, 736 Kbytes free
+/chunkfiles/kadath_ccm_3.dbs 200000 Kbytes total, 199374 Kbytes free
+\end{verbatim}
 
 
 \chapter{Customizing \cs{}}
 
 \cs{} can be highly fine-tuned and customized to feet into the company's traditions. 
 
-First, the workflow for record management used in the company can be reproduced, with all states, transitions, attributes and rights. When implementation becomes tricky using the default features, triggers can provide a way to external resources or execute some complex operation to grant rights.
+First, the workflow for record management used in the company can be reproduced, with all states, transitions, attributes and rights. When implementation becomes tricky using the default features, triggers can provide a way to external resources or execute some complex operation, e.g. to grant rights.
 
 
 \section{Triggers}
+\label{sec:triggers}
 
-Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle.
-
-On transitions, triggers can be of pre-condition or post-condition. 
+Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle. Three types of triggers can be set in a workflow: 
 
 \begin{description}
-\item[pre-condition triggers] are executed {\em before} the transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
-\item[post-condition triggers] are executed {\em after} the transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
+\item[pre-condition triggers] are executed {\em before} a transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
+\item[post-condition triggers] are executed {\em after} a transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
 \item[attribute modification triggers] are fired when a specified attribute is modified, either while in a state or on transition. Modification attributes are set in the lifecycle editing facilities, Edit CRProcess, Attributes.
 \end{description}
 
@@ -499,52 +517,10 @@ If a check on an attribute value is mandatory, e.g. for conformance to a given f
 \begin{enumerate}
 \item read the transition log;
 \item parse and extract the last value of the attribute checked before modification occured;
-\item modify the attribute and set the original value.
+\item modify the attribute and set it back to the original value.
 \end{enumerate}
 
 Beware of loops: if you change the value of the attribute, the modification trigger will be re-fired, and re-executed. Thus a flag must be set and checked before any action.
-
-
-\section{Templates}
-
-As stated in section \ref{sec:server_architecture}, the \jetty{} engine uses templates to build the HTML pages. These templates are located in the \webinf{}/wsconfig/templates/pt directory, and can be customized. The main difficulty is the understanding of the template itself: \cs{} defines \wslet{}, which are on-the-fly replacements by e.g. database data. 
-
-It would be quite straightforward to remove an item, but difficult enough to add a newly created one. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. Customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} has two steps:
-
-\begin{description}
-\item[Create the link to the new template] through a configuration file indicating the path of the template to be used. Report definitions use it to format the report display (see \S \ref{sec:ccm_problem}), but it can also be used to completely redefine the main UI with the \verb!CCM_TEMPLATE! declaration.
-\item[Create the template] by modifying a known file. 
-\end{description}
-
-\begin{verbatim}
-[CCM_TEMPLATE]
-  [NAME][/NAME]
-  [ATTRS][/ATTRS]
-  [FILE][/FILE]
-  [ONLOAD_ACTION][/ONLOAD_ACTION]
-  [CSRole_a][/CSRole_a]
-  [CSRole_b][/CSRole_b]
-[/CCM_TEMPLATE]
-\end{verbatim}
-
-\begin{itemize}
-\item \verb!NAME! is the name of the \verb!CCM_TEMPLATE! declaration.
-\item \verb!ATTRS! is a list of attributes, separated by pipes. Depending on the configuration file, pipe-separated items may be only the name of the attribute (e.g. in crprocess\_xx.xml) or a 3-uple: \{attribute name, $-1$, false\}:
-\item \verb!ONLOAD_ACTION! contains the name of the corresponding action.
-\item \verb!FILE! is the path of the file to be loaded (if no \csrole{} has been specified on the line). 
-\item \verb!ROLE NAME! specifies which file to load for this particular \csrole{}.
-\end{itemize}
-
-As shown below, the admin\_framework.cfg contains one \verb!CCM_TEMPLATE! definition including two \csroles{}: Admin and ReportBuilder. The template loaded for an Admin \csrole{} would in this case be admin\_framework/buttonbar\_panel\_admin.html, and for an ReportBuilder \csrole{} admin\_framework/buttonbar\_panel\_reportbuilder.html. Paths are relative to the \webinf{}/wsconfig/templates/pt/forms/ directory.
-
-\begin{verbatim}
-[CCM_TEMPLATE]
-  [NAME]ButtonBar[/NAME]
-  [ONLOAD_ACTION]main_buttonbar_form[/ONLOAD_ACTION]
-  [Admin]admin_framework/buttonbar_panel_admin.html[/Admin]
-  [ReportBuilder]admin_framework/buttonbar_panel_reportbuilder.html[/ReportBuilder]
-[/CCM_TEMPLATE]
-\end{verbatim}
 
 
 \section{Configuration files}
@@ -558,9 +534,9 @@ Configuration files are divided into sections, containing lines of the form give
 [/CFG_SECTION]
 \end{verbatim}
 
-As an example, we will study how a configuration file can add or replace some elements of the user interface. This is done e.g. by report packages, but can also be needed to customize listboxes (e.g. hide the SimpleProcessQuery in the CustomQuery).
+There are several configuration files in the wsconfig directory\footnote{the wsconfig directory is located in \webinf{}\-/wsconfig.}. Some of them are directly used by \cs{}, others are installed along with packages. 
 
-There are several configuration files in the wsconfig directory\footnote{the wsconfig directory is located in \cshome{}/cs\_app/webapps/synergy/\webinf{}/wsconfig.}. Some of them are directly used by \cs{}, others are installed along with packages. 
+We will first address two main configuration files, \verb!pt.cfg! and \verb!pt_listbox.cfg!, then study how other configuration files from the \webinf{}\-\verb!/wsconfig! are built.
 
 \subsection{The pt.cfg configuration file}
 \label{sec:pt.cfg}
@@ -602,6 +578,53 @@ pt\_listbox.cfg contains the definition of all listboxes, as shown in the Listbo
 
 Since there may be dependent listboxes, this file can quickly become confusing and should as far as possible not be edited by hand. One exception is when Change Synergy itself falls and messes items; in which case you will have to investigate yourself. But, in any case, remember to often backup your wsconfig directory.
 
+\section{Template}
+
+An important part of configuration files present in the \verb!wsconfig! directory address package-specific customizations. The items studied here can be needed e.g. to customize listboxes (e.g. hide the SimpleProcessQuery in the CustomQuery), or restrict access to specific parts of the web interface.
+
+As stated in section \ref{sec:server_architecture}, the \jetty{} engine uses templates to build the HTML pages. These templates are located in the \webinf{}/wsconfig/templates/pt directory, and can be customized. The main difficulty is the understanding of the template itself: \cs{} defines \wslet{}, which are on-the-fly replacements by e.g. database data. 
+
+It is quite straightforward to remove an item. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. Customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} has two steps:
+
+\begin{description}
+\item[Create a link to the new template] through a configuration file indicating the path of the template to be used. Report definitions use it to format the report display (see \S \ref{sec:ccm_problem} on page \pageref{sec:ccm_problem}), but it can also be used to completely redefine the main UI with the \verb!CCM_TEMPLATE! declaration -- see below.
+\item[Create the template] by modifying and saving as one of the files present in the \verb!wsconfig! directory. 
+\end{description}
+
+To hide or show UI parts, the main configuration item is \verb!CCM_TEMPLATE!.
+
+\begin{verbatim}
+[CCM_TEMPLATE]
+  [NAME][/NAME]
+  [ATTRS][/ATTRS]
+  [FILE][/FILE]
+  [ONLOAD_ACTION][/ONLOAD_ACTION]
+  [CSRole_a][/CSRole_a]
+  [CSRole_b][/CSRole_b]
+[/CCM_TEMPLATE]
+\end{verbatim}
+
+\begin{itemize}
+\item \verb!NAME! is the name of the \verb!CCM_TEMPLATE! declaration.
+\item \verb!ATTRS! is a list of attributes, separated by pipes. Depending on the configuration file, pipe-separated items may be only the name of the attribute (e.g. in crprocess\_xx.xml) or a 3-uple: \{attribute name, $-1$, false\}:
+\item \verb!ONLOAD_ACTION! contains the name of the corresponding action.
+\item \verb!FILE! is the path of the file to be loaded (if no \csrole{} has been specified on the line). 
+\item \verb!ROLE NAME! specifies which file to load for this particular \csrole{}.
+\end{itemize}
+
+As shown below, the admin\_framework.cfg contains one \verb!CCM_TEMPLATE! definition including two \csroles{}: Admin and ReportBuilder. The template loaded for an Admin \csrole{} would in this case be admin\_framework/buttonbar\_panel\_admin.html, and for a ReportBuilder \csrole{} admin\_framework/buttonbar\_panel\_reportbuilder.html. Paths are relative to the \webinf{}/wsconfig/templates/pt/forms/ directory.
+
+\begin{verbatim}
+[CCM_TEMPLATE]
+  [NAME]ButtonBar[/NAME]
+  [ONLOAD_ACTION]main_buttonbar_form[/ONLOAD_ACTION]
+  [Admin]admin_framework/buttonbar_panel_admin.html[/Admin]
+  [ReportBuilder]admin_framework/buttonbar_panel_reportbuilder.html[/ReportBuilder]
+[/CCM_TEMPLATE]
+\end{verbatim}
+
+As often, an example is far better than 1000 words: we will study in section \ref{sec:custUI} how a configuration file can add or replace some elements of the user interface, using templates.
+
 
 \subsection{CCM\_LIST}
 
@@ -617,7 +640,7 @@ For reports, the \verb!CCM_LIST! section takes care of listboxes display. There 
 \end{verbatim}
 
 \begin{description}
-\item \verb!NAME! can address a specific workflow by just adding its short name at the end of the selected listbox name; say we have defined two workflows, one for Document Requests (short: doc) and another for Typography Fixes (short: typo). The listboxes could have the following names (we just demonstrates for the Document Requests and All workflows items):
+\item \verb!NAME! can address a specific workflow by just adding its short name at the end of the selected listbox name; say we have defined two workflows, one for Document Requests (short: doc) and another for Typography Fixes (short: typo). The listboxes could have the following names (we just list items for the Document Requests and All workflows items):
 
 \label{plain:crquerycustom}
 \begin{itemize}
@@ -662,7 +685,7 @@ For reports, the \verb!CCM_LIST! section takes care of listboxes display. There 
 
 \item \verb!VALUES! is a pipe-separated list of either report names or query names to be displayed in the selected listbox, as specified in other lines. The names must be \emph{exactly the same} than those defined in the \verb!NAME! section of the declaration. Beware of spaces and case.
 
-\item \verb!APPEND! is a boolean value. If it is set to true (normal behavior) the declaration will be appended to the existing list of reports to show. It set to false, any preceding value will be replaced by the current one. If other reports are specified later on, with a true \verb!APPEND! option, they will be appended to the current. This allow to easily erase a whole listbox and redefine its content.
+\item \verb!APPEND! is a boolean value. If it is set to true (normal behavior) the declaration will be appended to the existing list of reports to show. It set to false, any preceding value will be replaced by the current one. If other reports are specified later on, with a true \verb!APPEND! option, they will be appended to the current list. This allows to easily erase a whole listbox and redefine its content.
 \end{description}
 
 
@@ -834,7 +857,7 @@ Packages are located in \webinf{}/packages/*. The name of the directory is the s
 
 Every file (or directory) from the package will be copied on install in the \webinf{}/ directory, excepted README.txt, VERSION.txt and auto-generated elements. As an example, configuration files must be copied into the \webinf{}/wsconfig directory to be taken into account. That's why most of the packages contain a wsconfig subdir.
 
-\cs{}, upon install of package, also edits the pt.cfg file to add the name of the new configuration file to the CFG\_MERGE section (see in section \ref{plain:cfg_merge} for more information about the CFG\_MERGE section).
+\cs{}, upon install of package, also edits the pt.cfg file to add the name of the new configuration file to the CFG\_MERGE section (see in section \ref{plain:cfg_merge} on page \pageref{plain:cfg_merge} for more information about the CFG\_MERGE section).
 
 For the basic\_summary csreport package, one of the default report, we have the arborescence listed in figure \ref{list:basic_summary}. If it has already been installed, a backup directory may have been created automatically, with the date of install (e.g. backup\_16\_05\_2005\_10\_35\_39). The uninstall directory, as well, is automatically created upon install.
 
@@ -863,7 +886,7 @@ basic_summary/
 \end{verbatim}
 \label{list:basic_summary}
 
-Order of install for packages does matter, as it is implied in the \ref{plain:cfg_merge} section. 
+Order of install for packages does matter, as it is implied in section \ref{plain:cfg_merge}. 
 
 \section{Real-Life examples}
 
@@ -894,14 +917,14 @@ second hides the ``Home'' button from the top
 panel.
 \end{verbatim}
 
-\item[myPackage/VERSION.txt] contains three lines: the version of \cs{} it applies to including service pack (e.g. 4.3\_sp3), the \verb!CS! keyword and the type of package (see \S \ref{sec:packages} for more information on this file).
+\item[myPackage/VERSION.txt] contains three lines: the version of \cs{} it applies to including service pack (e.g. 4.3\_sp3), the \verb!CS! keyword and the type of package (see \S \ref{sec:packages} on page \pageref{sec:packages} for more information on this file).
 \begin{verbatim}
 4.3_sp1
 CS
 CUSTOMIZATION
 \end{verbatim}
 
-\item[myPackage/wsconfig/myPackage.cfg] will be appended, when installed, to the list of merges in the pt.cfg. It redefines the entries to be shown for the Query Custom listbox (see \S \ref{plain:crquerycustom}). The whole \verb!CCM_LIST! must be entered as one line!
+\item[myPackage/wsconfig/myPackage.cfg] will be appended, when installed, to the list of merges in the pt.cfg. It redefines the entries to be shown for the Query Custom listbox (see \S \ref{plain:crquerycustom} on page \pageref{plain:crquerycustom}). The whole \verb!CCM_LIST! must be entered as one line!
 \begin{verbatim}
 # removes the SimpleProcessQuery entry by
 # forcing only the Custom CR and
@@ -1201,17 +1224,22 @@ __END__
 
 =head1 Name
 
-B<modifyrecord.pl> -- Change the value of an attribute for a set of records.
+B<modifyrecord.pl> -- Change the value of an attribute for a set 
+of records.
 
 =head1 Synopsis
 
-Usage: B<bugvalcs> [-h|help] [-i|identifier identifier] attribute value
+Usage: B<modifyrecord.pl> [-h|help] [-i|identifier identifier] attribute value
 
 =head1 Description
 
-The script uses an array to store problem_number's. It either push id furnished on command line or read and push from standard input. 
+The script uses an array to store problem_number's. It either push 
+id furnished on command line or read and push from standard input. 
 
-For each element of the array, it retrieves an object (getCRData), read (getValue) and set (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem_number.
+For each element of the array, it retrieves an object (getCRData), 
+read (getValue) and set (setValue) the value of the attribute specified 
+on command line. A line is shown with old and new values, along with 
+corresponding problem_number.
 
 =cut
 \end{verbatim}
