@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="org.csapi.csplugin"
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Access to "
+            id="org.csapi.csplugin.actionSet"
+            label="S/Change ActionSet"
+            visible="true">
+         <menu
+               id="org.csapi.csplugin.actions"
+               label="S/Change"/>
+         <action
+               class="org.csapi.csplugin.actions.LoginAction"
+               id="org.csapi.csplugin.actions.LoginAction"
+               label="&amp;Login"
+               menubarPath="org.csapi.csplugin.actions/Login"
+               style="push"/>
+         <action
+               class="org.csapi.csplugin.actions.GetReportAction"
+               id="org.csapi.csplugin.actions.GetReportAction"
+               label="&amp;Get Report..."
+               menubarPath="org.csapi.csplugin.actions/getreport"
+               style="push"/>
+      </actionSet>
+   </extension>
+   <extension
+         id="org.csapi.csplugin.preferences"
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="Synergy/Change"
+            class="org.csapi.csplugin.preferences.UserDataPreferences"
+            id="org.csapi.csplugin.preferences.UserDataPreferences"
+            name="Synergy/Change"/>
+   </extension>
+   <extension
+         id="org.csapi.csplugin.views"
+         name="CSplugin views"
+         point="org.eclipse.ui.views">
+      <view
+            class="org.csapi.csplugin.views.ShowReportView"
+            id="org.csapi.csplugin.views.ShowReportView"
+            name="CS Report"/>
+   </extension>
+
+</plugin>

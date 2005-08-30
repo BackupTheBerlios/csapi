@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Csplugin Plug-in
+Bundle-SymbolicName: org.csapi.csplugin; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.csapi.csplugin.CSPlugin
+Bundle-Vendor: Boris Baldassari
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.csapi.csapicore
+Eclipse-AutoStart: true
