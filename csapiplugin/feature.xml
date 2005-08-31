@@ -2,7 +2,7 @@
 <feature
       id="csapiplugin"
       label="csapiplugin"
-      version="1.0.0"
+      version="0.1.0"
       provider-name="grandpas">
 
    <description url="http://csapi.berlios.de/csapicore/">
@@ -797,14 +797,14 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
          id="org.csapi.csapicore"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="0.1.0"
          unpack="false"/>
 
    <plugin
          id="org.csapi.csplugin"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="0.1.0"
          unpack="false"/>
 
    <plugin
