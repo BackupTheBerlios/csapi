@@ -794,14 +794,6 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
    </license>
 
    <plugin
-         id="org.apache.xerces"
-         nl="en"
-         download-size="0"
-         install-size="0"
-         version="4.0.13"
-         unpack="false"/>
-
-   <plugin
          id="org.csapi.csapicore"
          download-size="0"
          install-size="0"
@@ -814,5 +806,11 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
          install-size="0"
          version="1.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.apache.xerces"
+         download-size="0"
+         install-size="0"
+         version="4.0.13"/>
 
 </feature>
