@@ -30,7 +30,6 @@
          id="org.csapi.csplugin.preferences"
          point="org.eclipse.ui.preferencePages">
       <page
-            category="Synergy/Change"
             class="org.csapi.csplugin.preferences.UserDataPreferences"
             id="org.csapi.csplugin.preferences.UserDataPreferences"
             name="Synergy/Change"/>

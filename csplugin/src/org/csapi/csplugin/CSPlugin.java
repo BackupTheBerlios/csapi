@@ -6,6 +6,7 @@ package org.csapi.csplugin;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.csapi.csapicore.core.SessionMgr;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -29,7 +30,7 @@ public class CSPlugin extends AbstractUIPlugin {
 		plugin = this;
 		try {
 			resourceBundle = ResourceBundle
-				.getBundle("org.csapi.csplugin.CspluginPluginResources");
+				.getBundle("org.csapi.csplugin.CsPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -39,7 +40,18 @@ public class CSPlugin extends AbstractUIPlugin {
 	 * This method is called upon plug-in activation
 	 */
 	public void start(BundleContext context) throws Exception {
+		
 		super.start(context);
+		
+		IPreferenceStore store = getPreferenceStore();
+		
+		/* Initializes the shared instance of SessionMgr. */
+		SessionMgr sessionMgr = new SessionMgr(
+				store.getString("CSAPI_USER_LOGIN"),
+				store.getString("CSAPI_USER_PASSWORD"),
+				store.getString("CSAPI_USER_ROLE"),
+				store.getString("CSAPI_SERVER_IP"),
+				store.getString("CSAPI_SERVER_DB"));
 	}
 
 	/**

@@ -57,14 +57,15 @@ public class SessionMgr {
 	/** The path to the database, url encoded. */
 	private String csapiDatabase = "";
 	
-	// the server address, hard-coded (bah!)
-	private String DEFAULT_SERVER = "http://" + csapiServerIP
-		+ ":8600/servlet/com.continuus.websynergy.servlet.CsAPI";
+	/** The full path to the csapi on server, including protocol, address,
+	 *  port, and path on server. */
+	private String fullServerAddress = "";
 
 	/**
-	 * Constructor -- private to force clients to use getDefault().
+	 * Constructor -- public for initialization to force clients to use 
+	 * getDefault().
 	 */
-	private SessionMgr(
+	public SessionMgr(
 			String csapiUser,
 			String csapiPassword,
 			String csapiRole,
@@ -77,6 +78,10 @@ public class SessionMgr {
 		this.csapiRole = csapiRole;
 		this.csapiServerIP = serverIP;
 		this.csapiDatabase = serverDB;
+		fullServerAddress = "http://" + this.csapiServerIP
+		+ ":8600/servlet/com.continuus.websynergy.servlet.CsAPI";
+		
+		instance = this;
 	}
 	
 	/**
@@ -85,26 +90,29 @@ public class SessionMgr {
 	 * 
 	 * @return The instance of the SessionMgr class.
 	 */
-	public static SessionMgr getDefault(
-			String csapiUser,
-			String csapiPassword,
-			String csapiRole,
-			String serverIP,
-			String serverDB) {
-		if (instance == null) {
-			instance = new SessionMgr(csapiUser, csapiPassword, csapiRole,
-					serverIP, serverDB);
-		} 
-		return instance;
-	}
+//	public static SessionMgr getDefault(
+//			String csapiUser,
+//			String csapiPassword,
+//			String csapiRole,
+//			String serverIP,
+//			String serverDB) {
+//		if (instance == null) {
+//			instance = new SessionMgr(csapiUser, csapiPassword, csapiRole,
+//					serverIP, serverDB);
+//		} 
+//		return instance;
+//	}
 	
 	/**
+	 * The singleton accessor. 
 	 * 
+	 * @return The shared instance, null if the object has not been 
+	 * initialized.
 	 */
 	public static SessionMgr getDefault() {
-		if (instance == null) {
-			instance = new SessionMgr("", "", "", "", "");
-		} 
+//		if (instance == null) {
+//			instance = new SessionMgr("", "", "", "", "");
+//		} 
 		return instance;
 	}
 
@@ -184,7 +192,7 @@ public class SessionMgr {
 	 */
 	private HttpURLConnection getConnection() {
 
-		String server = DEFAULT_SERVER;
+		String server = fullServerAddress;
 
 		try {
 			URL u = new URL(server);
@@ -349,7 +357,7 @@ public class SessionMgr {
 	public void setCsapiServerIP(String csapiServerIP) {
 		this.csapiServerIP = csapiServerIP;
 
-		DEFAULT_SERVER = "http://" + csapiServerIP
+		fullServerAddress = "http://" + csapiServerIP
 			+ ":8600/servlet/com.continuus.websynergy.servlet.CsAPI";
 	}
 

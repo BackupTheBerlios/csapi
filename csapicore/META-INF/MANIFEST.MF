@@ -6,7 +6,7 @@ Bundle-Version: 0.1.0
 Bundle-Vendor: Boris Baldassari
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.apache.xerces
+ org.eclipse.core.runtime
 Bundle-Activator: org.csapi.csapicore.CsapiCorePlugin
 Export-Package: org.csapi.csapicore.core
+Bundle-ClassPath: jars/xercesImpl.jar
