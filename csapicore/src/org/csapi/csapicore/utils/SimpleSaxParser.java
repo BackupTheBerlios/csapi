@@ -63,6 +63,8 @@ public class SimpleSaxParser {
 		while ((line = bufReader.readLine()) != null) {
 			fullXML = fullXML + line + "\n"; 
 		}
+		
+		/* Introduce CDATA sections to preserve attributes values. */
 		fullXML = fullXML.replaceAll("<csapi_cobject_data_value>",
 				"<csapi_cobject_data_value><![CDATA[");
 		fullXML = fullXML.replaceAll("</csapi_cobject_data_value>",

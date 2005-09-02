@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin>
+<plugin
+   id="org.csapi.csapicore"
+   name="CS API Core"
+   version="0.1.0"
+   provider-name="Boris Baldassari"
+   class="org.csapi.csapicore.CsapiCorePlugin">
 
 </plugin>

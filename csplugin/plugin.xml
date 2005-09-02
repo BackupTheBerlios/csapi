@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin>
+<plugin
+   id="org.csapi.csplugin"
+   name="CS Plugin"
+   version="0.1.0"
+   provider-name="Boris Baldassari"
+   class="org.csapi.csplugin.CSPlugin">
+   <requires>
+      <import plugin="org.csapi.csapicore" export="true"/>
+   </requires>
    <extension
          id="org.csapi.csplugin"
          point="org.eclipse.ui.actionSets">

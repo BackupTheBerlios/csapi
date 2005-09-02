@@ -356,9 +356,12 @@ public class SimpleContentHandler implements ContentHandler {
 
 	/**
 	 * Get the currentReport private attribute.
-	 * @return Returns the currentReport object.
+	 * @return Returns the currentReport object, or an empty report if
+	 * it is null.
 	 */
 	public Report getReport() {
-		return currentReport;
+		if (currentReport != null)
+			return currentReport;
+		return new Report();
 	}
 }

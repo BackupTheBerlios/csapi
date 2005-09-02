@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="csapicoreplugin"
+      id="org.csapi.csapicoreplugin"
       label="org.csapi.csapicoreplugin"
       version="0.1.0"
       provider-name="grandpas">
@@ -20,11 +20,17 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.csapi.csapicore" version="0.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="org.csapi.csplugin"
+         download-size="0"
+         install-size="0"
+         version="0.1.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csapi.csapicore"
          download-size="0"
          install-size="0"
          version="0.1.0"
