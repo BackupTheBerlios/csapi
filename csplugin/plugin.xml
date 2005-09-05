@@ -7,7 +7,10 @@
    provider-name="Boris Baldassari"
    class="org.csapi.csplugin.CSPlugin">
    <requires>
-      <import plugin="org.csapi.csapicore" export="true"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.csapi.csapicore"/>
    </requires>
    <extension
          id="org.csapi.csplugin"
