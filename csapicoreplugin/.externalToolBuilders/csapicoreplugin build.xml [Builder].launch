@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.eclipse.ant.AntBuilderLaunchConfigurationType">
+<stringAttribute key="process_factory_id" value="org.eclipse.ant.ui.remoteAntProcessFactory"/>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="true"/>
+<mapAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_PROPERTIES">
+<mapEntry key="eclipse.running" value="true"/>
+<mapEntry key="baseos" value="linux"/>
+<mapEntry key="javacFailOnError" value="false"/>
+<mapEntry key="javacDebugInfo" value="on"/>
+<mapEntry key="javacVerbose" value="true"/>
+<mapEntry key="basenl" value="fr_FR"/>
+<mapEntry key="basearch" value="x86"/>
+<mapEntry key="bootclasspath" value="/usr/lib/j2sdk1.4.2/jre/lib/rt.jar;/usr/lib/j2sdk1.4.2/jre/lib/sunrsasign.jar;/usr/lib/j2sdk1.4.2/jre/lib/jsse.jar;/usr/lib/j2sdk1.4.2/jre/lib/jce.jar;/usr/lib/j2sdk1.4.2/jre/lib/charsets.jar;/usr/lib/j2sdk1.4.2/jre/lib/ext/sunjce_provider.jar;/usr/lib/j2sdk1.4.2/jre/lib/ext/dnsns.jar;/usr/lib/j2sdk1.4.2/jre/lib/ext/ldapsec.jar;/usr/lib/j2sdk1.4.2/jre/lib/ext/localedata.jar"/>
+<mapEntry key="basews" value="gtk"/>
+<mapEntry key="javacTarget" value="1.2"/>
+<mapEntry key="javacSource" value="1.3"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="csapicoreplugin"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/csapicoreplugin/build.xml}"/>
+<booleanAttribute key="org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+</launchConfiguration>

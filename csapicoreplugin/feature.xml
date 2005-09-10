@@ -2,7 +2,7 @@
 <feature
       id="org.csapi.csapicoreplugin"
       label="org.csapi.csapicoreplugin"
-      version="0.1.0"
+      version="0.1.5"
       provider-name="grandpas">
 
    <description url="http://www.example.com/description">
@@ -17,23 +17,22 @@
       [Enter License Description here.]
    </license>
 
+   <url>
+      <update url="http://localhost/updates"/>
+   </url>
+
    <requires>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
    <plugin
-         id="org.csapi.csplugin"
-         download-size="0"
-         install-size="0"
-         version="0.1.0"
-         unpack="false"/>
-
-   <plugin
          id="org.csapi.csapicore"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.1"
          unpack="false"/>
 
 </feature>

@@ -3,9 +3,14 @@
 <plugin
    id="org.csapi.csapicore"
    name="CS API Core"
-   version="0.1.0"
+   version="0.1.1"
    provider-name="Boris Baldassari"
    class="org.csapi.csapicore.CsapiCorePlugin">
+   <runtime>
+      <library name="jars/xercesImpl.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
    <requires>
       <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.jface"/>

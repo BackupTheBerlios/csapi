@@ -24,7 +24,6 @@ public class CSPlugin extends AbstractUIPlugin {
 	
 	/**
 	 * The constructor.
-	 * TODO set values for sessionmgr.
 	 */
 	public CSPlugin() {
 		plugin = this;
@@ -44,6 +43,11 @@ public class CSPlugin extends AbstractUIPlugin {
 		super.start(context);
 		
 		IPreferenceStore store = getPreferenceStore();
+		
+		if (store.getString("CSAPI_USER_LOGIN").equalsIgnoreCase("")) {
+			System.out.println("csapiuserlogin is empty [" 
+					+ store.getString("CSAPI_USER_LOGIN") +"]");
+		}
 		
 		/* Initializes the shared instance of SessionMgr. */
 		SessionMgr sessionMgr = new SessionMgr(

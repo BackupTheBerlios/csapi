@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="csapiplugin"
-      label="csapiplugin"
-      version="0.1.0"
+      id="org.csapi.csapiplugin"
+      label="org.csapi.csapiplugin"
+      version="0.1.6"
       provider-name="grandpas">
 
    <description url="http://csapi.berlios.de/csapicore/">
@@ -793,24 +793,22 @@ WITH ANY OTHER SOFTWARE), EVEN IF SUCH HOLDER OR OTHER PARTY
 HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
    </license>
 
-   <plugin
-         id="org.csapi.csapicore"
-         download-size="0"
-         install-size="0"
-         version="0.1.0"
-         unpack="false"/>
+   <url>
+      <update url="http://localhost/updates"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.csapi.csapicore" version="0.1.1"/>
+   </requires>
 
    <plugin
          id="org.csapi.csplugin"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.2"
          unpack="false"/>
-
-   <plugin
-         id="org.apache.xerces"
-         download-size="0"
-         install-size="0"
-         version="4.0.13"/>
 
 </feature>

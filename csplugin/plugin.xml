@@ -3,14 +3,19 @@
 <plugin
    id="org.csapi.csplugin"
    name="CS Plugin"
-   version="0.1.0"
+   version="0.1.2"
    provider-name="Boris Baldassari"
    class="org.csapi.csplugin.CSPlugin">
+   <runtime>
+      <library name="src/">
+         <export name="*"/>
+      </library>
+   </runtime>
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.csapi.csapicore"/>
+      <import plugin="org.csapi.csapicore" version="0.1.1"/>
    </requires>
    <extension
          id="org.csapi.csplugin"
