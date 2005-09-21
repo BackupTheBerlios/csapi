@@ -3,6 +3,11 @@
  */
 package org.csapi.csplugin.actions;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.csapi.csapicore.core.Report;
 import org.csapi.csplugin.views.ShowReportView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IViewPart;
@@ -26,6 +31,9 @@ public class TextReportAction extends Action {
 	}
 	
 	public void run() {
+		String path = null;
+		Report report = null;
+		
 		IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
 			.getWorkbenchWindows()[0];
 		IViewPart view = null;
@@ -33,7 +41,28 @@ public class TextReportAction extends Action {
 			.findView("org.csapi.csplugin.views.ShowReportView");
 		
 		if (view != null) {
-			((ShowReportView)view).getTextReport();
+			path = ((ShowReportView)view).getTextReport();
+			report = ((ShowReportView)view).getReport();
+		} else {
+			return;
 		}
+		
+		String[] records = report.toStrings();
+		
+		try {
+			PrintWriter out = new PrintWriter(new FileWriter(path));
+			for (int index = 0 ; index < records.length ; index++) {
+				out.println(records[index]);
+			}
+			out.flush();
+			out.close();
+		} catch(IOException iox) {
+			System.out.println("File read error...");
+			iox.printStackTrace();
+		}
+//		} catch (FileNotFoundException fnf) {
+//			System.out.println("File not found...");
+//			fnf.printStackTrace();
+//		}
 	}
 }

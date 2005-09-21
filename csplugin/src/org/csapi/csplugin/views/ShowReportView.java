@@ -147,14 +147,13 @@ public class ShowReportView extends ViewPart {
 	 * @return
 	 */
 	public String getTextReport() {
-//		Report report = (Report)viewer.getInput();
-//		String[] records = report.toStrings();
 		
 		FileDialog fileDialog = new FileDialog(
-				new Shell(Display.getDefault(), SWT.SAVE));
-		String retour = fileDialog.open();
-		System.out.println(retour);
-		return null;
+				new Shell(Display.getDefault(), SWT.CANCEL|SWT.OK), SWT.SAVE);
+		fileDialog.setFileName("report.txt");
+		String path = fileDialog.open();
+		System.out.println(path);
+		return path;
 	}
 
 	/**

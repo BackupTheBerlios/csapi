@@ -66,10 +66,22 @@ public class Report {
 	 * @returns An array of Strings, one record per line.
 	 */
 	public String[] toStrings() {
-		String[] txtRecords = new String[records.size()];
+		String[] txtRecords = new String[records.size()+1];
+		String headers= "";
+		boolean debut = true;
+		for (int i = 0 ; i < attributes.length ; i++) {
+			if (debut == true) {
+				debut = false;
+			} else {
+				headers += ";";
+			}
+			headers += attributes[i];
+		}
+		txtRecords[0] = headers;
+
 		
 		Iterator iterator = records.iterator();
-		for (int i = 0 ; i < records.size(); i++) {
+		for (int i = 1 ; i < records.size()+1; i++) {
 			txtRecords[i] = ((Record)iterator.next()).toString();
 		}
 		return txtRecords;

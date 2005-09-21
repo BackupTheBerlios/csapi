@@ -80,12 +80,17 @@ public class Record {
 //		System.out.println("About to display " + attributes.size()
 //				+ " att(s).");
 		String record = "";
-		record += " ";
 		
 		Set keys = attributes.keySet();
 		Iterator iterator = keys.iterator();
+		boolean debut = true;
 		for (int i = 0; i < keys.size(); i++) {
-			record += attributes.get((String) iterator.next()).toString() + " ";
+			if (debut == true) {
+				debut = false;
+			} else {
+				record += ";";
+			}
+			record += attributes.get((String) iterator.next()).toString();
 		}
 		//System.out.println("Sent " + record);
 		return record;

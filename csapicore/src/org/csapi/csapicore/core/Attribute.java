@@ -90,6 +90,6 @@ public class Attribute {
 	 * @returns A String representing the attribute main characteristics.
 	 */
 	public String toString() {
-		return attributeName + "=" + attributeValue;
+		return attributeValue;
 	}
 }
