@@ -3,7 +3,7 @@
 <plugin
    id="org.csapi.csplugin"
    name="CS Plugin"
-   version="0.1.4"
+   version="0.1.5"
    provider-name="Boris Baldassari"
    class="org.csapi.csplugin.CSPlugin">
    <runtime>
