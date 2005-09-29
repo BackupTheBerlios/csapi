@@ -2,7 +2,7 @@
 <feature
       id="org.csapi.csapiplugin"
       label="org.csapi.csapiplugin"
-      version="0.1.8"
+      version="0.1.9"
       provider-name="grandpas">
 
    <description url="http://csapi.berlios.de/csapicore/">

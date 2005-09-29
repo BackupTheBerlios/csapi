@@ -3,7 +3,6 @@
  */
 package org.csapi.csapicore;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -61,11 +60,11 @@ public class CsapiCorePlugin extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin
 	 * @see csapi.preferences.UserDataPreferences
 	 */
-	protected void initializeDefaultPreferences(IPreferenceStore store) {
-	    store.setDefault("CSAPI_USER_LOGIN", "");
-	    store.setDefault("CSAPI_USER_PASSWORD", "");
-	    store.setDefault("CSAPI_USER_ROLE", "");
-	    store.setDefault("CSAPI_SERVER_IP", "");
-	    store.setDefault("CSAPI_SERVER_DB", "");
-	}
+//	protected void initializeDefaultPreferences(IPreferenceStore store) {
+//	    store.setDefault("CSAPI_USER_LOGIN", "");
+//	    store.setDefault("CSAPI_USER_PASSWORD", "");
+//	    store.setDefault("CSAPI_USER_ROLE", "");
+//	    store.setDefault("CSAPI_SERVER_IP", "");
+//	    store.setDefault("CSAPI_SERVER_DB", "");
+//	}
 }
