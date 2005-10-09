@@ -2,7 +2,7 @@
  * Created on 13 août 2005
  */
 package org.csapi.csapicore;
-
+ 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
