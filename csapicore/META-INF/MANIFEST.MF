@@ -4,6 +4,7 @@ Bundle-Name: CSAPI Core plugin
 Bundle-SymbolicName: org.csapi.csapicore
 Bundle-Version: 0.1.5
 Bundle-ClassPath: jars/xercesImpl.jar,
+ jars/xml-apis.jar,
  csapicore.jar
 Bundle-Activator: org.csapi.csapicore.CsapiCorePlugin
 Bundle-Localization: plugin

@@ -90,7 +90,7 @@ public class SimpleSaxParser {
 		saxReader.parse(inputSource);
 		
 		/* csapiToken and currentReport are get from SimpleContentHandler 
-		 * and forwarded (or rather get by) this class caller. */
+		 * and forwarded to (or rather get by) this class caller. */
 		csapiToken = mySimpleContentHandler.getCsapiToken();
 		currentReport = mySimpleContentHandler.getReport();
 	}
