@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CSAPI Core plugin
 Bundle-SymbolicName: org.csapi.csapicore
-Bundle-Version: 0.1.5
+Bundle-Version: 0.1.8
 Bundle-ClassPath: jars/xercesImpl.jar,
  jars/xml-apis.jar,
  csapicore.jar
@@ -15,4 +15,4 @@ Export-Package: org.csapi.csapicore,
  org.csapi.csapicore.core,
  org.csapi.csapicore.utils
 Eclipse-AutoStart: true
-Bundle-Vendor: Boris Baldassari
+Bundle-Vendor: grandpas

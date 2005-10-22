@@ -82,7 +82,18 @@ public class Report {
 		
 		Iterator iterator = records.iterator();
 		for (int i = 1 ; i < records.size()+1; i++) {
-			txtRecords[i] = ((Record)iterator.next()).toString();
+			Record tmpRecord = (Record)iterator.next();
+			txtRecords[i] = "";
+			debut=true;
+			for (int j = 0 ; j < attributes.length ; j++) {
+				if (debut == true) {
+					debut = false;
+				} else {
+					txtRecords[i] += ";";
+				}
+				txtRecords[i] += tmpRecord.getAttribute(attributes[j]);
+			}
+//			txtRecords[i] = ((Record)iterator.next()).toString();
 		}
 		return txtRecords;
 	}
