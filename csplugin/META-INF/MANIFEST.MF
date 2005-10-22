@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CS plugin
 Bundle-SymbolicName: org.csapi.csplugin;singleton:=true
-Bundle-Version: 0.1.5
+Bundle-Version: 0.1.9
 Bundle-ClassPath: csplugin.jar
 Bundle-Activator: org.csapi.csplugin.CSPlugin
 Bundle-Localization: plugin
@@ -17,4 +17,4 @@ Export-Package: .,
  org.csapi.csplugin.preferences,
  org.csapi.csplugin.views
 Eclipse-AutoStart: true
-Bundle-Vendor: Boris Baldassari
+Bundle-Vendor: grandpas
