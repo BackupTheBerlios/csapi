@@ -3,22 +3,30 @@
       id="org.csapi.csapicoreplugin"
       label="org.csapi.csapicoreplugin"
       version="0.1.8"
-      provider-name="grandpas">
+      provider-name="Boris Baldassari">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://csapi.berlios.de/apicore">
+      Core CSAPI is a set of Java class files that provides pure Java
+access to a Telelogic Synergy Server.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.fsf.org/licensing/licenses/lgpl.html">
+      The licenses for most software are designed to take away your
+freedom to share and change it. By contrast, the GNU General
+Public Licenses are intended to guarantee your freedom to share
+and change free software--to make sure the software is free for
+all its users.
+This license, the Lesser General Public License, applies to some
+specially designated software packages--typically libraries--of
+the Free Software Foundation and other authors who decide to
+use it. You can use it too, but we suggest you first think carefully
+about whether this license or the ordinary General Public License
+is the better strategy to use in any particular case, based on
+the explanations below.
    </license>
 
    <url>
-      <update url="http://localhost/updates"/>
+      <update label="csapi.berlios.de" url="http://csapi.berlios.de/updates"/>
    </url>
 
    <requires>
@@ -30,9 +38,13 @@
 
    <plugin
          id="org.csapi.csapicore"
-         download-size="0"
-         install-size="0"
-         version="0.1.5"
+         os=""
+         ws=""
+         nl=""
+         arch=""
+         download-size="2412"
+         install-size="2612"
+         version="0.1.8"
          unpack="false"/>
 
 </feature>
