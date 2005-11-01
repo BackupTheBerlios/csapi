@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="toc.xml#reference">
+	<topic label="The csapi project"  href="html/reference/thecsapiproject.html" />
+	<topic label="Documents"  href="html/reference/documents.html" />
+	<topic label="Liens"  href="html/reference/links.html" />
+</toc>

@@ -8,25 +8,32 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * The ContentProvider for the ShowReportView.
+ * The ContentProvider for the ShowReportView. This view
  * 
- * ShowReportContentProvider extracts an array of elements (objects) 
- * from the model (a Report) to display in the view.
+ * ShowReportContentProvider extracts an array of elements (objects, 
+ * namely an array of Records) from the model (a Report) to display 
+ * in the view.
+ * 
+ * The CS Report view shows a set of records with their attribute 
+ * values. Recods are displayed in the order they are retrieved.
  * 
  * @author Boris Baldassari
  */
 public class ShowReportContentProvider implements IStructuredContentProvider {
 
-	/* Constructor for ShowReportContentProvider. */
+	/**
+	 *  Constructor for ShowReportContentProvider. 
+	 */
 	public ShowReportContentProvider() {
 		super();
 	}
 	
-	/* The core of the ContentProvider mechanism. Extracts from the model 
+	/**
+	 * The core of the ContentProvider mechanism. Extracts from the model 
 	 * and returns an array of Objects to be displayed.
 	 * 
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+	 * @param inputElement The report to extract objects from.
+	 * @return An array of Records.
 	 */
 	public Object[] getElements(Object inputElement) {
 		Report report = (Report)inputElement;

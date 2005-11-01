@@ -1,0 +1,21 @@
+a:visited { color: #717fff;}
+a:link {color: #717fff;}
+a:hover { color: red;}
+a:active { color: red;}
+body {
+	background-color: #ffffff;
+	font-family: arial, "lucida console", sans-serif;
+	font-size: 11pt;
+}
+h1 {
+	font-size:24pt;
+	text-align:center;
+	margin: 20px 40px;
+}
+.fig_central {
+	margin: 20px auto;
+	text-align: center;
+}
+p {
+	margin: 5px 20px;
+}

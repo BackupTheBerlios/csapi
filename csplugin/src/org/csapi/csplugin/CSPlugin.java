@@ -17,9 +17,10 @@ import org.osgi.framework.BundleContext;
  */
 public class CSPlugin extends AbstractUIPlugin {
 
-	// The shared instance.
+	/** The shared instance. */
 	private static CSPlugin plugin;
-	// Resource bundle.
+	
+	/** Resource bundle. */
 	private ResourceBundle resourceBundle;
 	
 	/**
