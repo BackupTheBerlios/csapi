@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CSAPI Core plugin
-Bundle-SymbolicName: org.csapi.csapicore
+Bundle-SymbolicName: org.csapi.csapicore; singleton:=true
 Bundle-Version: 0.1.8
 Bundle-ClassPath: jars/xercesImpl.jar,
  jars/xml-apis.jar,

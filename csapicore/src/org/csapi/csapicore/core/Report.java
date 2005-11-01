@@ -3,13 +3,13 @@
  */
 package org.csapi.csapicore.core;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Vector;
 
 
 /**
- * This class features a set of Change Synergy records.
+ * This class features a set of Change Synergy records, along with 
+ * informations relative to the report: attribute list and query string.
  * 
  * All records in this class <b>must</b> have at least the attributes 
  * specified in the attributes String[]. The Report class is responsible for
@@ -20,7 +20,7 @@ import java.util.Set;
 public class Report {
 
 	/** The set of records associated with the report. */
-	private Set records = new HashSet();
+	private Vector records = new Vector();
 	
 	/** The query string associated with the report. */
 	private String query;
@@ -41,7 +41,7 @@ public class Report {
 	 * before adding that attributes of the record are ok (at least equal 
 	 * to attributes from the attributes array of Strings).  
 	 * 
-	 * @param currentRecord The record to be added to the report set.
+	 * @param record The record to be added to the report set.
 	 */
 	public void addRecord(Record record) {
 		// TODO check if attributes are ok.
@@ -53,7 +53,7 @@ public class Report {
 	 * TODO implement me
 	 * 
 	 * @see java.lang.Object#toString()
-	 * @returns The String representation of the report.
+	 * @return The String representation of the report.
 	 */
 	public String toString() {
 		return "";
@@ -61,14 +61,19 @@ public class Report {
 
 	/**
 	 * Returns an array of String representing the report. Each element of 
-	 * the array is a toString representation of a record.
+	 * the array is a toString representation of a record. The Vector 
+	 * implementation allows to keep the sorting order of records used
+	 * when building the report. 
 	 * 
-	 * @returns An array of Strings, one record per line.
+	 * @return An array of Strings, one record per line.
 	 */
 	public String[] toStrings() {
 		String[] txtRecords = new String[records.size()+1];
 		String headers= "";
 		boolean debut = true;
+		
+		/* If the line is the first line, print headers (name of
+		 * attributes printed). */
 		for (int i = 0 ; i < attributes.length ; i++) {
 			if (debut == true) {
 				debut = false;
@@ -79,12 +84,16 @@ public class Report {
 		}
 		txtRecords[0] = headers;
 
-		
+		/* Get an iterator from the Vector (note that hashmap sets also
+		 * support iterators), and iterate over the set. */
 		Iterator iterator = records.iterator();
 		for (int i = 1 ; i < records.size()+1; i++) {
 			Record tmpRecord = (Record)iterator.next();
 			txtRecords[i] = "";
 			debut=true;
+			
+			/* For each record, extract all attributes in the order
+			 * they have been entered in the report. */
 			for (int j = 0 ; j < attributes.length ; j++) {
 				if (debut == true) {
 					debut = false;
@@ -93,7 +102,6 @@ public class Report {
 				}
 				txtRecords[i] += tmpRecord.getAttribute(attributes[j]);
 			}
-//			txtRecords[i] = ((Record)iterator.next()).toString();
 		}
 		return txtRecords;
 	}
@@ -101,7 +109,7 @@ public class Report {
 	/**
 	 * Returns an array of Records from the current set.
 	 * 
-	 * @returns The records attached to the report.
+	 * @return The records attached to the report.
 	 */
 	public Record[] getRecords() {
 		Record[] myRecords = new Record[records.size()];
@@ -116,23 +124,26 @@ public class Report {
 
 	/**
 	 * Get the attributes private attribute.
+	 * 
 	 * @return An array of Strings describing the attributes used in this 
 	 * report.
 	 */
 	public String[] getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
 	 * Get the query private attribute.
-	 * @return Returns the query.
+	 * 
+	 * @return Returns the query used for this report.
 	 */
 	public String getQuery() {
-		return query;
+		return this.query;
 	}
 
 	/**
 	 * Set the query private attribute.
+	 * 
 	 * @param query The query to set.
 	 */
 	public void setQuery(String query) {
@@ -140,7 +151,8 @@ public class Report {
 	}
 
 	/**
-	 * Set the attributes private attribute.
+	 * Set the attributes private attribute, as an array of Strings.
+	 * 
 	 * @param attributes The attributes to set.
 	 */
 	public void setAttributes(String[] attributes) {

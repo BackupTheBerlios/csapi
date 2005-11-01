@@ -18,8 +18,6 @@ public class CsapiCorePlugin extends AbstractUIPlugin {
 
 	/**
 	 * The constructor.
-	 * 
-	 * @param descriptor
 	 */
 	public CsapiCorePlugin() {
 		super();
@@ -44,7 +42,7 @@ public class CsapiCorePlugin extends AbstractUIPlugin {
 	 * Returns the default instance of the CsapiCorePlugin class. If it does
 	 * not exist, then create it.
 	 * 
-	 * @returns The default instance of the plugin.
+	 * @return The default instance of the plugin.
 	 */
 	public static CsapiCorePlugin getDefault() {
 		if (plugin == null) {
@@ -52,19 +50,4 @@ public class CsapiCorePlugin extends AbstractUIPlugin {
 		}			
 		return plugin;
 	}
-	
-	/**
-	 * Defines the default preferences settings (needed to reset 
-	 * preference page).
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin
-	 * @see csapi.preferences.UserDataPreferences
-	 */
-//	protected void initializeDefaultPreferences(IPreferenceStore store) {
-//	    store.setDefault("CSAPI_USER_LOGIN", "");
-//	    store.setDefault("CSAPI_USER_PASSWORD", "");
-//	    store.setDefault("CSAPI_USER_ROLE", "");
-//	    store.setDefault("CSAPI_SERVER_IP", "");
-//	    store.setDefault("CSAPI_SERVER_DB", "");
-//	}
 }

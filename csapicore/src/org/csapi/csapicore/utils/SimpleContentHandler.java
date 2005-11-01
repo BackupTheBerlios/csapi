@@ -17,33 +17,68 @@ import org.xml.sax.helpers.LocatorImpl;
 
 
 /**
- * An implementation for the XML SAX ContentHandler. Attributes and Records
- * are built and put together on-the-fly, then associated to the report.
+ * <p>An implementation for the XML SAX ContentHandler. Attributes and Records
+ * are built and put together on-the-fly, then associated to the report. This 
+ * class is also used for login, thus the csapiToken item.</p>
  * 
- * This class is also used to login, thus the csapiToken item.
+ * <p>The mechanism used to parse SOAP is defined thereafter:</p>
+ * <ul>
+ * <li>When an opening tag is found, we set the currentNode private integer 
+ * to one of the type defined in the <a href="#listoftypes">list of types
+ * below</a>. Some actions are taken from there, such as object creations.</li>
+ * <li>When non-null values are encountered, they are considered as values 
+ * for the object currently treated, either an attribute name, value, type,
+ * or any data found in the XML steam.</li>
+ * <li>When a closing tar is found, we reset some values which may be 
+ * un-intentionally re-used. Fulfilled attributes are added to the current
+ * record, and records are added to the current report.</li>
+ * </ul>
  * 
- * Acknowledgements go to smeric for his excellent (and useful) models 
- * for XML processing. 
+ * <p><a name="listoftypes" />The list of types found in the SOAP stream are:</p>
+ * <ul>
+ * <li>FAULT = 5</li>
+ * <li>FAULTCODE = 2</li>
+ * <li>FAULTSTRING = 3</li>
+ * <li>CSAPI_RESPONSE = 1</li>
+ * <li>CSAPI_CQUERY_DATA = 4</li>
+ * <li>CSAPI_COBJECT_DATA = 10</li>
+ * <li>CSAPI_COBJECT_VECTOR_SIZE = 11</li>
+ * <li>CSAPI_COBJECT_VECTOR_TYPE = 12</li>
+ * <li>CSAPI_COBJECT_VECTOR_POSITION = 13</li>
+ * <li>CSAPI_COBJECT_VECTOR_0 = 14</li>
+ * <li>CSAPI_COBJECT_DATA_SIZE = 141</li>
+ * <li>CSAPI_COBJECT_VECTOR_TRANSITIONS = 142</li>
+ * <li>CSAPI_COBJECT_DATA_NAME = 101</li>
+ * <li>CSAPI_COBJECT_DATA_VALUE = 102</li>
+ * <li>CSAPI_COBJECT_DATA_DATE = 106</li>
+ * <li>CSAPI_COBJECT_DATA_TYPE = 103</li>
+ * <li>CSAPI_COBJECT_DATA_READONLY = 104</li>
+ * <li>CSAPI_COBJECT_DATA_REQUIRED = 105</li>
+ * </ul>
+ * 
+ * <p>Acknowledgements go to smeric for his excellent (and useful) models 
+ * for XML processing.</p> 
  * 
  * @author Boris Baldassari
  */
 public class SimpleContentHandler implements ContentHandler {
 
-	/* The token to retrieve for login. */
+	/** The token to retrieve for login. */
 	private String csapiToken;
 
-	/* Objects built while parsing is done. */
+	/** Objects built while parsing is done. */
 	private Report currentReport;
 	
-	/* Record and Attribute objects are temporary, since they are added to
+	/** Record and Attribute objects are temporary, since they are added to
 	 * the record set as soon as they are finished. */
 	private Record currentRecord;
+	
+	/** Record and Attribute objects are temporary, since they are added to
+	 * the record set as soon as they are finished. */
 	private Attribute currentAttribute;
 
-	/* Identification of the Node we are currently visiting. */
+	/** Identification of the Node we are currently visiting. */
 	private int currentNode;
-	
-	private int longerAttribute;
 
 	private Locator locator;
 
@@ -140,8 +175,14 @@ public class SimpleContentHandler implements ContentHandler {
 	}
 
 	/**
-	 * Event sent on every XML tag opening. Used to mark the currentNode
-	 * attribute with the property treated on next CDATA value.
+	 * <p>Event sent on every XML tag opening. Used to mark the currentNode
+	 * attribute with the property treated on next CDATA value.</p>
+	 * 
+	 * <p>In the context of the SOAP protocol, we use this method to set
+	 * the type of node to be treated next. When the parser hits the 
+	 * values of XML tag via the characters() method call, the node type 
+	 * is used to take actions. Node types are defined <a href="#listoftypes">
+	 * list of types above</a>.</p>
 	 * 
 	 * @param nameSpaceURI URI of the current namespace.
 	 * @param localName Local name of the opening tag.
@@ -202,9 +243,6 @@ public class SimpleContentHandler implements ContentHandler {
 		} else if (localName.equalsIgnoreCase("csapi_cobject_data_size")) {
 			/* The number of attributes for this record. */
 			currentNode = CSAPI_COBJECT_DATA_SIZE;
-//		} else if (localName.equalsIgnoreCase("csapi_cobject_data_date")) {
-			/* The number of attributes for this record. */
-//			currentNode = CSAPI_COBJECT_DATA_DATE;
 		}
 	}
 
@@ -254,9 +292,13 @@ public class SimpleContentHandler implements ContentHandler {
 	}
 
 	/**
-	 * Event sent when the parser encounters a character outside
+	 * <p>Event sent when the parser encounters a character outside
 	 * of a XML tag. We must check that characters returned are real, and
-	 * not just newline characters (which are not useful).
+	 * not just newline characters (which are not useful).</p>
+	 * 
+	 * <p>Depending on the node type defined in the startElement() method,
+	 * we set values for the element treated. It may be attribute name, 
+	 * value and type, or csapiToken, or any data from the SOAP exchange.</p>
 	 * 
 	 * @param ch The set of characters read.
 	 * @param start Rank of the first character read.
@@ -290,19 +332,12 @@ public class SimpleContentHandler implements ContentHandler {
 				break;
 			case CSAPI_COBJECT_DATA_VALUE:
 				/* The effective value of the attribute. */
-				longerAttribute = end;
 				currentAttribute.setValue(myChars);
 				break;
 			case CSAPI_COBJECT_DATA_TYPE:
 				/* The effective CCM_TYPE of the attribute. */
 				currentAttribute.setType(myChars);
 				break;
-//			case CSAPI_COBJECT_DATA_DATE:
-//				/* On GNU/Linux the xerces parser sometimes fails to 
-//				 * retranscript the whole attribute. So check.. */
-//				if (end > longerAttribute) 
-//					currentAttribute.setValue(myChars);
-//				break;
 			default:
 			}
 		}

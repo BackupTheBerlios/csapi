@@ -9,17 +9,22 @@ import java.util.Set;
 
 
 /**
- * This class features a Change Synergy record. It provides methods to 
+ * <p>This class features a Change Synergy record. It provides methods to 
  * easily play with attributes (add, remove, etc.) and the record itself
- * (conversion of data to text or csv format, etc.). 
+ * (conversion of data to text or csv format, etc.).</p>
+ * 
+ * <p>Some methods are targeted to mandatory values, such as problem_number,
+ * which is often a useful key.</p>
  * 
  * @author Boris Baldassari
  */
 public class Record {
 
-	/* A set of attributes. The implementation of this set MUST be hidden
-	 * from external resources. We actually use a HashTable, but pay 
-	 * attention to XXX.*/
+	/** A set of attributes. The implementation of this set MUST be hidden
+	 * from external resources. We actually use a HashTable, but encapsulation
+	 * has to be carefully preserved.
+	 * 
+	 * Keys are attribute names, values are Attribute objects. */
 	private Hashtable attributes = new Hashtable();
 	
 	/**
@@ -30,18 +35,23 @@ public class Record {
 	}
 
 	/**
-	 * Adds an Attribute object to the current set.
-	 * TODO: check if it does not already exists.
+	 * Adds an Attribute object to the current set. Also checks that the
+	 * attribute does not already exists.
 	 * 
 	 * @param newAttribute The Attribute object to add to the set.
 	 */
 	public void addAttribute(Attribute newAttribute){
-		attributes.put(newAttribute.getName(), newAttribute);
+		if (!attributes.containsKey(newAttribute.getName())) {
+			attributes.put(newAttribute.getName(), newAttribute);
+		}
 	}
 	
 	/**
-	 * Get the problem_number attribute of the current record.
-	 * @return Returns the problem_number String.
+	 * Get the problem_number attribute of the current record, if defined.
+	 * If problem_number does not belong to the attribute set requested, 
+	 * returns null.
+	 * 
+	 * @return Returns the problem_number String, null if not defined.
 	 */
 	public String getProblemNumber() {
 		return ((Attribute)attributes.get("problem_number")).getValue();
@@ -59,13 +69,17 @@ public class Record {
 	 * not exist.
 	 */
 	public String getAttribute(String attributeName) {
-		if (attributes.containsKey(attributeName))
+		if (attributes.containsKey(attributeName)) {
 			return ((Attribute)attributes.get(attributeName)).getValue();
-		 return null;
+		}
+		return null;
 	}
 	
 	
 	/**
+	 * A facility to get a CSV (comma separated values) version of 
+	 * the current Record.
+	 * 
 	 * @return Returns a coma-separated list of attributes in this record.
 	 */
 	public String toCSVString() {
@@ -74,11 +88,12 @@ public class Record {
 	}
 
 	/**
-	 * @return Returns a list of attributes in this record.
+	 * A facility to get a String representation of the Record. Actually
+	 * returns a list of attributes separated with ';'.
+	 * 
+	 * @return Returns a list of attributes in this record, separated by ';'.
 	 */
 	public String toString() {
-//		System.out.println("About to display " + attributes.size()
-//				+ " att(s).");
 		String record = "";
 		
 		Set keys = attributes.keySet();
@@ -92,7 +107,6 @@ public class Record {
 			}
 			record += attributes.get((String) iterator.next()).toString();
 		}
-		//System.out.println("Sent " + record);
 		return record;
 	}
 }

@@ -19,21 +19,24 @@ import org.csapi.csapicore.utils.XMLProvider;
 
 
 /**
- * The SessionMgr class takes care of the communication with the server. It
+ * <p>The SessionMgr class takes care of the communication with the server. It
  * contains all needed information to handle a full session, from login to 
- * reports.
+ * reports.</p>
  * 
- * It also provides a single point of access to methods related to session 
- * handling.
+ * <p>It also provides a single point of access to methods related to session 
+ * handling, with items such as csapi_token. Since there is only one SessionMgr for the current eclipse session, the 
+ * singleton design pattern is used.</p>
  * 
- * Since there is only one SessionMgr for the current eclipse session, the 
- * singleton design pattern is used.
+ * <p>For more information about the protocol used by the Telelogic Perl API,
+ * please refer to documentation on the <a 
+ * href="http://developer.berlios.de/docman/?group_id=4391">project 
+ * site</a>.</p>
  * 
  * @author Boris Baldassari
  */
 public class SessionMgr {
 	
-	/** The shared instance, fro the singleton design pattern. */
+	/** The shared instance, for the singleton design pattern. */
 	private static SessionMgr instance;
 
 	/** The token to be used when communicating with the server. */
@@ -79,46 +82,28 @@ public class SessionMgr {
 		this.csapiServerIP = serverIP;
 		this.csapiDatabase = serverDB;
 		fullServerAddress = "http://" + this.csapiServerIP
-		+ ":8600/servlet/com.continuus.websynergy.servlet.CsAPI";
+		+ "/servlet/com.continuus.websynergy.servlet.CsAPI";
 		
 		instance = this;
 	}
 	
 	/**
-	 * Get the only instance of the SessionMgr class, or create
-	 * it if needed.
-	 * 
-	 * @return The instance of the SessionMgr class.
-	 */
-//	public static SessionMgr getDefault(
-//			String csapiUser,
-//			String csapiPassword,
-//			String csapiRole,
-//			String serverIP,
-//			String serverDB) {
-//		if (instance == null) {
-//			instance = new SessionMgr(csapiUser, csapiPassword, csapiRole,
-//					serverIP, serverDB);
-//		} 
-//		return instance;
-//	}
-	
-	/**
-	 * The singleton accessor. 
+	 * The singleton accessor. Returns the shared instance or null if the 
+	 * object has not been initialized. This method is useless as long as 
+	 * a SessionMgr object has been initialized through the above 
+	 * constructor.
 	 * 
 	 * @return The shared instance, null if the object has not been 
 	 * initialized.
 	 */
 	public static SessionMgr getDefault() {
-//		if (instance == null) {
-//			instance = new SessionMgr("", "", "", "", "");
-//		} 
 		return instance;
 	}
 
 	/** 
-	 * Returns a ready-to-use xml string corresponding 
-	 * to a login attempt.
+	 * Returns a ready-to-use xml string corresponding to a login attempt.
+	 * This String can safely be sent through a socket to the Synergy/Change
+	 * server.
 	 * 
 	 * @return the xml string.
 	 */	
@@ -138,11 +123,12 @@ public class SessionMgr {
 	}
 
 	/** 
-	 * Returns a ready-to-use xml string corresponding 
-	 * to a record search.
+	 * Returns a ready-to-use xml string corresponding to a record search.
+	 * This String can safely be sent through a socket to the Synergy/Change
+	 * server.
 	 * 
 	 * @param query The query to be executed on the server. 
-	 * @param attributes The list of attributes t be retrieved, 
+	 * @param attributes The list of attributes to be retrieved, 
 	 * separated by pipes.
 	 * 
 	 * @return The full xml string.
@@ -151,10 +137,12 @@ public class SessionMgr {
 		
 		/* Report additional information used in request. */
 		String reportName = "Basic%20Summary";
-		String reportTitle = "Example%20data%20report";
+		String reportTitle = "csapi%20project%20data%20report";
 		
 		if (csapiToken.equalsIgnoreCase("")) {
-			// XXX
+			/* XXX throw an exception
+			 * Login has not been successfully requested, and
+			 * csapi_token is not set correctly. */
 			return "You must login before acting.";
 		}
 		
@@ -175,10 +163,10 @@ public class SessionMgr {
 		myXML += XMLProvider.getXMLDatabase(csapiDatabase);
 		myXML += XMLProvider.getXMLUser(csapiUser);
 		myXML += XMLProvider.getXMLActionFlagDataReport();
-		myXML += "%3Ccsapi_chosen_report%3E" + reportName + "%3C%2Fcsapi_chosen_report%3E";
-		myXML += "%3Ccsapi_query_string%3E" + encodedQuery + "%3C%2Fcsapi_query_string%3E";
-		myXML += "%3Ccsapi_report_title%3E" + reportTitle + "%3C%2Fcsapi_report_title%3E";
-		myXML += "%3Ccsapi_attribute_list%3E" + encodedAttributes + "%3C%2Fcsapi_attribute_list%3E";
+		myXML += XMLProvider.getXMLChosenReport(reportName);
+		myXML += XMLProvider.getXMLQueryString(encodedQuery);
+		myXML += XMLProvider.getXMLReportTitle(reportTitle);
+		myXML += XMLProvider.getXMLAttributeList(encodedAttributes);
 		myXML += XMLProvider.getXMLSoapTail();
 
 		return myXML;
@@ -358,7 +346,7 @@ public class SessionMgr {
 		this.csapiServerIP = csapiServerIP;
 
 		fullServerAddress = "http://" + csapiServerIP
-			+ ":8600/servlet/com.continuus.websynergy.servlet.CsAPI";
+			+ "/servlet/com.continuus.websynergy.servlet.CsAPI";
 	}
 
 	/**

@@ -19,9 +19,20 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Creates and instanciates the SimpleContentHandler. Handles XML features
+ * <p>Creates and instanciates the SimpleContentHandler. Handles XML features
  * related to the XML parser (xerces) and run the effective parsing of the 
- * XML stream.
+ * XML stream.</p>
+ * 
+ * <p>The SimpleSaxParser main method is given an InputStream, encoded with
+ * regular ISO-8859-1 characters. The assembled String is parsed to insert
+ * CDATA sections to XML content (needed to handle ambigous characters, 
+ * such as entities or greater-than and less-than). To handle XML sent by 
+ * the Synergy/Change server, we have to switch some parser features: 
+ * namespaces-awareness is turned off, and continue-after-fatal-error is 
+ * set to true.</p>
+ * 
+ * <p>The String is then parsed with SimpleContentHandler, and csapitoken 
+ * and current report are retrieved from simpleContentHandler.</p>
  * 
  * @author Boris Baldassari
  */
@@ -69,10 +80,10 @@ public class SimpleSaxParser {
 				"<csapi_cobject_data_value><![CDATA[");
 		fullXML = fullXML.replaceAll("</csapi_cobject_data_value>",
 				"]]></csapi_cobject_data_value>");
-		fullXML = fullXML.replaceAll("<csapi_cobject_data_date>",
-				"<csapi_cobject_data_date><![CDATA[");
-		fullXML = fullXML.replaceAll("</csapi_cobject_data_date>",
-				"]]></csapi_cobject_data_date>");
+//		fullXML = fullXML.replaceAll("<csapi_cobject_data_date>",
+//				"<csapi_cobject_data_date><![CDATA[");
+//		fullXML = fullXML.replaceAll("</csapi_cobject_data_date>",
+//				"]]></csapi_cobject_data_date>");
 		StringReader sReader = new StringReader(fullXML);
 
 		InputSource inputSource = new InputSource(sReader);
@@ -94,6 +105,7 @@ public class SimpleSaxParser {
 		csapiToken = mySimpleContentHandler.getCsapiToken();
 		currentReport = mySimpleContentHandler.getReport();
 	}
+	
 
 	/**
 	 * Parse the inputStream provided as parameter. This really invokes 
@@ -112,16 +124,20 @@ public class SimpleSaxParser {
 		return null;
 	}
 	
+	
 	/**
 	 * Get csapiToken private attribute.
+	 * 
 	 * @return The csapiToken String.
 	 */
 	public String getCsapiToken() {
 		return csapiToken;
 	}
+	
 
 	/**
 	 * Get the currentReport private attribute.
+	 * 
 	 * @return The report attached to this object.
 	 */
 	public Report getReport() {
