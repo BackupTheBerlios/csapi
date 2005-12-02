@@ -68,7 +68,7 @@ public class UserDataPreferences extends FieldEditorPreferencePage implements
 	            "CSAPI_USER_ROLE", "User role", 
 	            getFieldEditorParent());
 		serverIP = new StringFieldEditor(
-	            "CSAPI_SERVER_IP", "Server IP", 
+	            "CSAPI_SERVER_IP", "Server IP:Port", 
 	            getFieldEditorParent());
 		serverDB = new StringFieldEditor(
 	            "CSAPI_SERVER_DB", "Server database", 

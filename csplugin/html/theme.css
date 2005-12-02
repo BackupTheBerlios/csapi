@@ -5,12 +5,20 @@ a:active { color: red;}
 body {
 	background-color: #ffffff;
 	font-family: arial, "lucida console", sans-serif;
-	font-size: 11pt;
+	font-size: 10pt;
+	margin: 0px 0px 50px 0px;
 }
 h1 {
 	font-size:24pt;
 	text-align:center;
 	margin: 20px 40px;
+}
+h2 {
+	font-size: 14pt;
+	margin: 40px 60px 20px 20px;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #000000;
 }
 .fig_central {
 	margin: 20px auto;
@@ -18,4 +26,7 @@ h1 {
 }
 p {
 	margin: 5px 20px;
+}
+li {
+	margin: 5px 10px;
 }

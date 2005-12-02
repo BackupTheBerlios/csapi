@@ -4,7 +4,10 @@
 package org.csapi.csplugin.views;
 
 import org.csapi.csapicore.core.Report;
+import org.csapi.csplugin.actions.ChangeAttributesAction;
 import org.csapi.csplugin.actions.ClearReportViewAction;
+import org.csapi.csplugin.actions.QuerySelectAction;
+import org.csapi.csplugin.actions.RefreshAction;
 import org.csapi.csplugin.actions.TextReportAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -79,12 +82,19 @@ public class ShowReportView extends ViewPart {
 		
 		TextReportAction textReportAction = new TextReportAction();
 		ClearReportViewAction clearReport = new ClearReportViewAction();
+		ChangeAttributesAction changeAttributesAction = 
+			new ChangeAttributesAction();
+		QuerySelectAction querySelectAction = new QuerySelectAction();
+		RefreshAction refreshAction = new RefreshAction();
 		
 		MenuManager menuManager = (MenuManager)getViewSite().getActionBars()
 			.getMenuManager();
 		
-		menuManager.add(textReportAction);
+		menuManager.add(refreshAction);
+		menuManager.add(querySelectAction);
+		menuManager.add(changeAttributesAction);
 		menuManager.add(new Separator());
+		menuManager.add(textReportAction);
 		menuManager.add(clearReport);
 	}
 	

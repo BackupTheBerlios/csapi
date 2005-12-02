@@ -23,7 +23,7 @@ public class ClearReportViewAction extends Action {
 		super();
 		
 		this.setDescription("Clear the Report view.");
-		this.setText("Clear View.");
+		this.setText("Clear View");
 	}
 
 	public void run() {

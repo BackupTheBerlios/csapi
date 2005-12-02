@@ -24,6 +24,12 @@
                label="&amp;Get Report..."
                menubarPath="org.csapi.csplugin.actions/getreport"
                style="push"/>
+         <action
+               class="org.csapi.csplugin.actions.ManageMyReportsAction"
+               id="core.csapi.csplugin.actions.ManageMyReportsAction"
+               label="Manage My Reports"
+               menubarPath="org.csapi.csplugin.actions/getreport"
+               style="push"/>
       </actionSet>
    </extension>
    <extension
@@ -39,21 +45,26 @@
          name="CSplugin views"
          point="org.eclipse.ui.views">
       <view
+            category="csplugin.category"
             class="org.csapi.csplugin.views.ShowReportView"
             id="org.csapi.csplugin.views.ShowReportView"
             name="CS Report"/>
+      <view
+            category="csplugin.category"
+            class="org.csapi.csplugin.views.MyReportsView"
+            id="org.csapi.csplugin.views.MyReportsView"
+            name="My Reports"/>
+      <category
+            id="csplugin.category"
+            name="Csapi Plugin"/>
    </extension>
    <extension
          point="org.eclipse.help.toc">
       <toc
             file="toc.xml"
             primary="true"/>
-      <toc
-            file="tocgettingstarted.xml">
-      </toc>
-      <toc
-            file="tocreference.xml">
-      </toc>
+      <toc file="tocgettingstarted.xml" />
+      <toc file="tocreference.xml" />
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">

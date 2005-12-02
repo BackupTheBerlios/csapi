@@ -4,6 +4,7 @@
 package org.csapi.csplugin.jobs;
 
 import org.csapi.csapicore.core.SessionMgr;
+import org.csapi.csapicore.exceptions.PluginException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -12,7 +13,7 @@ import org.eclipse.core.runtime.jobs.Job;
 /**
  * A job.
  * 
- * @author Boris Baldassari
+ * @author grandpas
  */
 public class LoginJob extends Job {
 
@@ -26,11 +27,14 @@ public class LoginJob extends Job {
 	 * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected IStatus run(IProgressMonitor monitor) {
-		System.out.println("avant getdefault");
 		SessionMgr sessionMgr = SessionMgr.getDefault();
-		System.out.println("avant login");
-		sessionMgr.login();
-		System.out.println("après login");
+		try {
+			sessionMgr.login();
+		} catch (PluginException pe) {
+//			JOptionPane.showMessageDialog(null, pe.getMessage());
+			return new Status(Status.ERROR, "CSplugin", 0, pe.getMessage(),
+					null);
+		}
 		return new Status(Status.OK, "CSplugin", 0,
 				"Connection successful.", null);
 	}

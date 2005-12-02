@@ -27,7 +27,7 @@ public class TextReportAction extends Action {
 	public TextReportAction() {
 		super();
 		this.setDescription("Export the current report as a text file.");
-		this.setText("To Text");
+		this.setText("To Text...");
 	}
 	
 	public void run() {

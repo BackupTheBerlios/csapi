@@ -7,6 +7,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.csapi.csapicore.core.SessionMgr;
+import org.csapi.csplugin.exceptions.CSPluginException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -119,5 +120,9 @@ public class CSPlugin extends AbstractUIPlugin {
 	    store.setDefault("CSAPI_USER_ROLE", "");
 	    store.setDefault("CSAPI_SERVER_IP", "");
 	    store.setDefault("CSAPI_SERVER_DB", "");
+	}
+	
+	public void sendMessage(CSPluginException cse) {
+//		MessageDialog.openInformation(view.getSite().getShell(),"Readme Editor","View Action executed");
 	}
 }

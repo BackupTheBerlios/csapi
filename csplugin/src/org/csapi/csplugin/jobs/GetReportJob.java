@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import org.csapi.csapicore.core.Report;
 import org.csapi.csapicore.core.SessionMgr;
+import org.csapi.csapicore.exceptions.PluginException;
 import org.csapi.csplugin.views.ShowReportView;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -42,8 +43,8 @@ public class GetReportJob extends Job {
                 "(product_name='Product A')");
         // if cancel is hit
         if (query == null) { 
-            return new Status(Status.CANCEL, "ClearCS", 0, 
-            		"ClearCS findRecord cancelled", null); 
+            return new Status(Status.CANCEL, "CSPlugin", 0, 
+            		"Query cancelled", null); 
             }
         
         // Get the list of attributes.
@@ -52,18 +53,23 @@ public class GetReportJob extends Job {
                 JOptionPane.OK_CANCEL_OPTION, null, null, "problem_number|problem_synopsis");
         // if cancel is hit
         if (attributesList == null) { 
-            return new Status(Status.CANCEL, "ClearCS", 0, "ClearCS bugval " +
-    	            "cancelled", null); 
+            return new Status(Status.CANCEL, "CSPlugin", 0, 
+            		"Attributes cancelled", null); 
             }
 		
 		Display.getDefault().asyncExec(new Runnable() { public void run() {
 		    try {
-				System.out.println("avant getdefault");
 				SessionMgr sessionMgr = SessionMgr.getDefault();
-				System.out.println("avant getReport");
-				Report report = sessionMgr.getReport(query, attributesList);
-				System.out.println("après getReport");
 				
+				Report report;
+				
+				try {
+					report = sessionMgr.getReport(query, attributesList);
+				} catch (PluginException pe) {
+					report = null;
+					JOptionPane.showMessageDialog(null, pe.getMessage());
+				}
+					
 		        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
 		        IViewPart inst = null;
 		        
@@ -80,8 +86,8 @@ public class GetReportJob extends Job {
 		}
 		});
 		
-		return new Status(Status.OK, "MyFirstPlugin", 0,
-				"Hello, Eclipse world Tasks Completed successfully", null);
+		return new Status(Status.OK, "CSPlugin", 0,
+				"Get Report successfull.", null);
 	}
 
 }
