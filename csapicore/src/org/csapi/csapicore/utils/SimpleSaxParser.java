@@ -13,6 +13,7 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 
 import org.csapi.csapicore.core.Report;
+import org.csapi.csapicore.exceptions.PluginException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -40,6 +41,8 @@ public class SimpleSaxParser {
 
 	private String csapiToken;
 	private Report currentReport;
+	private int faultCode;
+	private String faultString;
 
 	/**
 	 * Contructor.
@@ -49,7 +52,7 @@ public class SimpleSaxParser {
 	 * @throws IOException
 	 */
 	protected SimpleSaxParser(InputStream inputStream) 
-			throws SAXException, IOException {
+			throws SAXException, IOException, PluginException {
 		
 		/* Indicates what parser we want to use. */
 		System.setProperty(
@@ -74,16 +77,28 @@ public class SimpleSaxParser {
 		while ((line = bufReader.readLine()) != null) {
 			fullXML = fullXML + line + "\n"; 
 		}
+
+		System.out.println("fullXML is [" + fullXML + "].");
+		
+//		fullXML = fullXML.replaceAll(">\\s*([^<]+)\\s*</",
+//		"><![CDATA[\1]]></");
 		
 		/* Introduce CDATA sections to preserve attributes values. */
 		fullXML = fullXML.replaceAll("<csapi_cobject_data_value>",
 				"<csapi_cobject_data_value><![CDATA[");
 		fullXML = fullXML.replaceAll("</csapi_cobject_data_value>",
 				"]]></csapi_cobject_data_value>");
+
+		/* Introduce CDATA sections to preserve attributes names. */
+		fullXML = fullXML.replaceAll("<csapi_cobject_data_name>",
+				"<csapi_cobject_data_name><![CDATA[");
+		fullXML = fullXML.replaceAll("</csapi_cobject_data_name>",
+				"]]></csapi_cobject_data_name>");
 //		fullXML = fullXML.replaceAll("<csapi_cobject_data_date>",
 //				"<csapi_cobject_data_date><![CDATA[");
 //		fullXML = fullXML.replaceAll("</csapi_cobject_data_date>",
 //				"]]></csapi_cobject_data_date>");
+		System.out.println("fullXML is [" + fullXML + "].");
 		StringReader sReader = new StringReader(fullXML);
 
 		InputSource inputSource = new InputSource(sReader);
@@ -100,8 +115,15 @@ public class SimpleSaxParser {
 		saxReader.setContentHandler(mySimpleContentHandler);
 		saxReader.parse(inputSource);
 		
+		if (mySimpleContentHandler == null) {
+			throw new PluginException("Echec lors de la communication avec le "
+					+ "serveur. mySimpleContentHandler is null.");
+		}
+		
 		/* csapiToken and currentReport are get from SimpleContentHandler 
 		 * and forwarded to (or rather get by) this class caller. */
+		faultCode = mySimpleContentHandler.getFaultCode();
+		faultString = mySimpleContentHandler.getFaultString();
 		csapiToken = mySimpleContentHandler.getCsapiToken();
 		currentReport = mySimpleContentHandler.getReport();
 	}
@@ -142,5 +164,13 @@ public class SimpleSaxParser {
 	 */
 	public Report getReport() {
 		return currentReport;
+	}
+	
+	public int getFaultCode() {
+		return this.faultCode;
+	}
+	
+	public String getFaultString() {
+		return this.faultString;
 	}
 }

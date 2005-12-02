@@ -3,6 +3,8 @@
  */
 package org.csapi.csapicore.core;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -18,6 +20,10 @@ import java.util.Vector;
  * @author Boris Baldassari
  */
 public class Report {
+	
+	/** The name of the report. it identifies the report (used e.g. in 
+	 * favorites). */
+	private String name;
 
 	/** The set of records associated with the report. */
 	private Vector records = new Vector();
@@ -34,7 +40,16 @@ public class Report {
 	 */
 	public Report() {
 		super();
+
+		this.name = easyDateFormat("dd.MM.yy-hh:mm:ss");
 	}
+	
+	public String easyDateFormat (String format) {
+	    Date today = new Date();
+	    SimpleDateFormat formatter = new SimpleDateFormat(format);
+	    String datenewformat = formatter.format(today);
+	    return  datenewformat;
+	    }
 
 	/**
 	 * Add a Record object to the current set of records. We must verify 
@@ -133,6 +148,26 @@ public class Report {
 	}
 
 	/**
+	 * Get the attributes private attribute.
+	 * 
+	 * @return An array of Strings describing the attributes used in this 
+	 * report.
+	 */
+	public String getAttributesString() {
+		String attributes = "";
+		boolean debut = true;
+		for (int i = 0 ; i < this.attributes.length ; i++) {
+			if (debut) { 
+				debut = false;
+			} else {
+				attributes += "|";
+			}
+			attributes += this.attributes[i];
+		}
+		return attributes;
+	}
+
+	/**
 	 * Get the query private attribute.
 	 * 
 	 * @return Returns the query used for this report.
@@ -157,5 +192,13 @@ public class Report {
 	 */
 	public void setAttributes(String[] attributes) {
 		this.attributes = attributes;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

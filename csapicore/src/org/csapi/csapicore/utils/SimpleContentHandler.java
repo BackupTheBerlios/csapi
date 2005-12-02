@@ -79,6 +79,9 @@ public class SimpleContentHandler implements ContentHandler {
 
 	/** Identification of the Node we are currently visiting. */
 	private int currentNode;
+	
+	private Integer faultCode;
+	private String faultString;
 
 	private Locator locator;
 
@@ -86,9 +89,9 @@ public class SimpleContentHandler implements ContentHandler {
 	 * parsing the document. */
 	private final static int CSAPI_NULL = 0;
 	
-	private final static int FAULT = 5;
-	private final static int FAULTCODE = 2;
-	private final static int FAULTSTRING = 3;
+	private final static int CSAPI_FAULT = 5;
+	private final static int CSAPI_FAULTCODE = 2;
+	private final static int CSAPI_FAULTSTRING = 3;
 	
 	private final static int CSAPI_RESPONSE = 1;
 	private final static int CSAPI_CQUERY_DATA = 4;
@@ -209,6 +212,12 @@ public class SimpleContentHandler implements ContentHandler {
 		if (localName.equalsIgnoreCase("csapi_response")) {
 			/* This tag sometimes contains the csapi_token. */
 			currentNode = CSAPI_RESPONSE;
+		} else if (localName.equalsIgnoreCase("faultcode")) {
+			/* The identifier of the fault been reported. */
+			currentNode = CSAPI_FAULTCODE;
+		} else if (localName.equalsIgnoreCase("faultstring")) {
+			/* The identifier of the fault been reported. */
+			currentNode = CSAPI_FAULTSTRING;
 		} else if (localName.equalsIgnoreCase("csapi_cquery_data")) {
 			/* Beginning of a new set of records: Create a 
 			 * Report object. */
@@ -265,6 +274,12 @@ public class SimpleContentHandler implements ContentHandler {
 		} else if (localName.equalsIgnoreCase("csapi_cquery_data")) {
 			/* The currentReport is ok (finished). */
 			currentNode = CSAPI_NULL;
+		} else if (localName.equalsIgnoreCase("faultcode")) {
+			/* The identifier of the fault been reported. */
+			currentNode = CSAPI_NULL;
+		} else if (localName.equalsIgnoreCase("faultstring")) {
+			/* The identifier of the fault been reported. */
+			currentNode = CSAPI_NULL;
 		} else if (localName.equalsIgnoreCase("csapi_cobject_vector_size")) {
 			/* The number of records in the report. */
 			currentNode = CSAPI_NULL;
@@ -315,6 +330,12 @@ public class SimpleContentHandler implements ContentHandler {
 			switch (currentNode) {
 			case CSAPI_RESPONSE:
 				csapiToken = myChars;
+				break;
+			case CSAPI_FAULTCODE:
+				faultCode = new Integer(myChars);
+				break;
+			case CSAPI_FAULTSTRING:
+				faultString = myChars;
 				break;
 			case CSAPI_CQUERY_DATA:
 				break;
@@ -391,12 +412,22 @@ public class SimpleContentHandler implements ContentHandler {
 
 	/**
 	 * Get the currentReport private attribute.
+	 * 
 	 * @return Returns the currentReport object, or an empty report if
 	 * it is null.
 	 */
 	public Report getReport() {
-		if (currentReport != null)
+		if (currentReport != null) {
 			return currentReport;
-		return new Report();
+		}
+		return null;
+	}
+	
+	public int getFaultCode() {
+		return this.faultCode.intValue();
+	}
+
+	public String getFaultString() {
+		return this.faultString;
 	}
 }

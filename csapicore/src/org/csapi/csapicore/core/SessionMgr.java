@@ -14,6 +14,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import javax.swing.JOptionPane;
+
+import org.csapi.csapicore.exceptions.PluginException;
 import org.csapi.csapicore.utils.SimpleSaxParser;
 import org.csapi.csapicore.utils.XMLProvider;
 
@@ -38,6 +41,9 @@ public class SessionMgr {
 	
 	/** The shared instance, for the singleton design pattern. */
 	private static SessionMgr instance;
+	
+	/** The favorite object loaded for this instance of SessionMgr. */
+	private Favorites favorites;
 
 	/** The token to be used when communicating with the server. */
 	private String csapiToken = "";
@@ -83,6 +89,8 @@ public class SessionMgr {
 		this.csapiDatabase = serverDB;
 		fullServerAddress = "http://" + this.csapiServerIP
 		+ "/servlet/com.continuus.websynergy.servlet.CsAPI";
+		
+		favorites = new Favorites();
 		
 		instance = this;
 	}
@@ -178,7 +186,7 @@ public class SessionMgr {
 	 * 
 	 * @return The connection to be used for communications.
 	 */
-	private HttpURLConnection getConnection() {
+	private HttpURLConnection getConnection() throws PluginException {
 
 		String server = fullServerAddress;
 
@@ -196,10 +204,9 @@ public class SessionMgr {
 
 			return connection;
 		} catch (Exception e) {
-			// TODO: throw an exception.
-			System.err.println(e);
+			throw new PluginException("Could not connect to the server. Please "
+					+ "check your settings.");
 		}
-		return null;
 	}
 
 	/**
@@ -214,7 +221,7 @@ public class SessionMgr {
 	 * @param xmlRequest The XML full request to send to the server.
 	 * @return A SimpleSaxParser object, containing XML analysis result.
 	 */
-	private SimpleSaxParser connect(String xmlRequest) {
+	private SimpleSaxParser connect(String xmlRequest) throws PluginException {
 		/* Ask for the connection. */
 		HttpURLConnection connection = getConnection();
 		
@@ -243,15 +250,17 @@ public class SessionMgr {
 			 * on-the-fly objects (e.g. report), and holds them until its
 			 * disposal. */
 			SimpleSaxParser simpleSaxParser = SimpleSaxParser.run(in);
-
-			// TODO throw an exception if simpleSaxParser is null
+			
+			if (simpleSaxParser.getFaultCode() != 0) {
+				throw new PluginException("Error " 
+						+ simpleSaxParser.getFaultCode() + ": \n"
+						+ simpleSaxParser.getFaultString() + ".");
+			}
 			
 			return simpleSaxParser;
 		} catch (IOException e) {
-			// TODO throw an exception.
-			System.out.println("Exception: " + e.getStackTrace());
+			throw new PluginException("IOException: " + e.getMessage());
 		}
-		return null;
 	}
 	
 	
@@ -260,7 +269,7 @@ public class SessionMgr {
 	 * session. Must be the first method to be invoked, since the token is
 	 * mandatory for any other action.
 	 */
-	public void login() {
+	public void login() throws PluginException {
 		/* Get the XML string to be sent to the server. */
 		String xmlRequest = getXMLLogin();
 		
@@ -282,15 +291,18 @@ public class SessionMgr {
 	 * pipes.
 	 * @return A report containing all records returned by the server.
 	 */
-	public Report getReport(String query, String attributesList) {
+	public Report getReport(String query, String attributesList) 
+		throws PluginException {
 
 		Report myReport = null;
 		
 		/* Checks if the csapiToken is set (i.e. not null). If not (i.e.
 		 * csapiToken is null) return an empty report for now.
 		 * TODO throw an exception. */
-		if (csapiToken.equalsIgnoreCase("")) 
+		if (csapiToken.equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(null, "You have to login first.");
 			return new Report();
+		}
 
 		/* Get the XML string to be sent to the server. */
 		String xmlRequest = getXMLFindRecord(query, attributesList);
@@ -308,6 +320,8 @@ public class SessionMgr {
 			System.out.println(myStrings[i]);
 		// DEBUG ------------------------------------
 
+		favorites.addFavoriteReport(myReport);
+		
 		return myReport;
 	}
 
@@ -356,5 +370,17 @@ public class SessionMgr {
 	 */
 	public void setCsapiUser(String csapiUser) {
 		this.csapiUser = csapiUser;
+	}
+	
+	public void setFavorites(Favorites favorites) {
+		this.favorites = favorites;
+	}
+	
+	public Favorites getDefaultFavorites() {
+		if (favorites == null) {
+			this.favorites = new Favorites();
+			return this.favorites;
+		}
+		return favorites;
 	}
 }
