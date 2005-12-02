@@ -2,7 +2,7 @@
 <feature
       id="org.csapi.csapiplugin"
       label="org.csapi.csapiplugin"
-      version="0.1.9"
+      version="0.1.10"
       provider-name="Boris Baldassari">
 
    <description url="http://csapi.berlios.de/csplugin">
@@ -42,7 +42,7 @@ the explanations below.
          id="org.csapi.csplugin"
          download-size="0"
          install-size="0"
-         version="0.1.9"
+         version="0.1.10"
          unpack="false"/>
 
 </feature>
