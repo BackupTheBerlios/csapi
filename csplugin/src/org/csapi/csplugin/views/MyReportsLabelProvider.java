@@ -1,5 +1,5 @@
 /**
- * 
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.views;
 
@@ -9,6 +9,12 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 /**
+ * <p>The Label provider for the MyReports view.</p>
+ * 
+ * <p>The Label providers returns to the Eclipse view mechanism the Strings 
+ * or pictures to be displayed in the view, for a given object and index
+ * in the display. </p>
+ * 
  * @author Boris Baldassari
  */
 public class MyReportsLabelProvider extends LabelProvider implements

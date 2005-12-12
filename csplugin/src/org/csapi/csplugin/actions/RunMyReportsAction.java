@@ -1,5 +1,5 @@
 /*
- * Created on 23 août 2005
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.actions;
 
@@ -9,9 +9,11 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
+ * <p>This class is the action attached to the Run Report View command
+ * in the MyReportsView view's menu. It basically just fires the
+ * RunMyReportsJob run method.</p>
  * 
- * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class RunMyReportsAction extends Action {
 

@@ -16,9 +16,14 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * @author Boris Baldassari
+ * <p>This class is the action attached to the Manage My Reports... command
+ * in the global menu. There is no need to run an aSyncExec session because 
+ * actions do entirely take place in the current thread worspace.</p>
  * 
- * An Action.
+ * <p>The action simply shows the view, and creates it if it does not 
+ * already exists.</p>
+ * 
+ * @author Boris Baldassari
  */
 public class ManageMyReportsAction implements IWorkbenchWindowActionDelegate {
 

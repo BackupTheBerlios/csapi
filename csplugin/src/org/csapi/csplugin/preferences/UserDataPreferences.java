@@ -1,5 +1,5 @@
 /**
- * 
+ * Created on 23 août 2005.
  */
 package org.csapi.csplugin.preferences;
 
@@ -12,13 +12,13 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
- * The Preference page for user login and co.
+ * <p>The Preference page for user login and co.</p>
  * 
- * We use here a FieldEditorPreferencePage; this allow easy handling of 
+ * <p>We use here a FieldEditorPreferencePage; this allow easy handling of 
  * preference attributes, but is far less flexible (e.g. password appears 
- * in clear form).
+ * in clear form).</p>
  * 
- * Preferences are initialized in {@link csapi.CsapiPlugin CsapiPlugin}. 
+ * <p>Preferences are initialized in {@link csapi.CsapiPlugin CsapiPlugin}.</p> 
  * 
  * @author Boris Baldassari
  */

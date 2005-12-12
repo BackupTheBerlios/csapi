@@ -11,9 +11,14 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 /**
- * A job.
+ * <p>The job class for the Login command in the global menu.</p>
  * 
- * @author grandpas
+ * <p>From the csapicore point of view, this is done with the login() method
+ * from the sessionMgr. The singleton pattern implementation allows to retrieve 
+ * the sessionMgr instance easily from static methods in the sessionMgr 
+ * class.</p>
+ * 
+ * @author Boris Baldassari
  */
 public class LoginJob extends Job {
 

@@ -237,8 +237,10 @@ public class SessionMgr {
 			wout.flush();
 			wout.close();
 		} catch (IOException e) {
-			// TODO throw an exception
 			System.out.println(e.getMessage());
+			throw new PluginException("Error " 
+					+ e.getMessage() + ": \n"
+					+ e.getMessage() + ".");
 		}
 		
 		/* Receive feedback from server. */

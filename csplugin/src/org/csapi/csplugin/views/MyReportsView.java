@@ -1,5 +1,5 @@
 /**
- * Created on 23 july 2005
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.views;
 
@@ -19,9 +19,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * The view displaying the content of a report. It is composed of a 
- * TableViewer, which displays data a record per line. All chosen attributes 
- * are displayed in columns.
+ * <p>The view displaying the history of reports ran by the user. It is 
+ * composed of a TableViewer, which displays favorites a report per line. 
+ * Attributes displayed are name (date), query and attributes.</p>
  * 
  * @author Boris Baldassari
  */

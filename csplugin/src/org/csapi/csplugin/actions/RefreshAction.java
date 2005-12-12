@@ -1,5 +1,5 @@
 /*
- * Created on 23 août 2005
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.actions;
 
@@ -9,14 +9,16 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
+ * <p>This class is the action attached to the Refresh View command
+ * in the ShowReportView view's menu. It basically just fires the
+ * RefreshJob run method.</p>
  * 
- * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class RefreshAction extends Action {
 
 	/**
-	 * 
+	 * The constructor of the action.
 	 */
 	public RefreshAction() {
 		super();
@@ -25,6 +27,9 @@ public class RefreshAction extends Action {
 		this.setText("Refresh Report");
 	}
 
+	/**
+	 * The execution method of the action.
+	 */
 	public void run() {
 		RefreshJob job = new RefreshJob("Refresh Report");
 		

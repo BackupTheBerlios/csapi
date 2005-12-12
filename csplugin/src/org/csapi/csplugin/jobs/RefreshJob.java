@@ -1,5 +1,5 @@
 /**
- * 
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.jobs;
 
@@ -20,8 +20,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * <p>The job class for the Refresh Report command in the ShowReport view.</p>
+ * 
+ * <p>It retrieves the viewer (Report) from ShowReportView, and re-run it
+ * with same query and attributes. If the execution is successfull, then
+ * it updates the viewer and refreshes the view.</p>
+ * 
  * @author Boris Baldassari
- *
  */
 public class RefreshJob extends Job {
 	
@@ -51,8 +56,10 @@ public class RefreshJob extends Job {
 				e.printStackTrace();
 			}
 			
+			/* Get the current sessionMgr object. */
 			SessionMgr sessionMgr = SessionMgr.getDefault();
 			
+			/* Actually get the report from the sessionMgr object. */
 			try {
 				report = sessionMgr.getReport(report.getQuery(), 
 						report.getAttributesString());

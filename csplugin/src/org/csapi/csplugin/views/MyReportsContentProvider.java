@@ -1,5 +1,5 @@
 /**
- * 
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.views;
 
@@ -8,21 +8,19 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * The ContentProvider for the ShowReportView. This view
+ * <p>The ContentProvider for the MyReportsView. This view shows reports
+ * executed by the user.</p>
  * 
- * ShowReportContentProvider extracts an array of elements (objects, 
- * namely an array of Records) from the model (a Report) to display 
- * in the view.
- * 
- * The CS Report view shows a set of records with their attribute 
- * values. Recods are displayed in the order they are retrieved.
+ * <p>MyReportsContentProvider extracts an array of elements (objects, 
+ * namely an array of Reports) from the model (a Favorite) to display 
+ * in the view.</p>
  * 
  * @author Boris Baldassari
  */
 public class MyReportsContentProvider implements IStructuredContentProvider {
 
 	/**
-	 *  Constructor for ShowReportContentProvider. 
+	 * Constructor for ShowReportContentProvider. 
 	 */
 	public MyReportsContentProvider() {
 		super();

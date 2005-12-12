@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * @author grandpas
+ * @author Boris Baldassari
  *
  */
 public class Favorites {

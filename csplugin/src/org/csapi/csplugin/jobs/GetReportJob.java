@@ -21,6 +21,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * <p>The Job class for the Get Report command in the global menu.</p>
+ * 
+ * <p>It prompts for query and attributes (in the current thread workspace,
+ * then get the default sessionMgr and execute the query. When result is
+ * returned, the view's viewer is updated.</p>
+ * 
  * @author Boris Baldassari
  *
  */

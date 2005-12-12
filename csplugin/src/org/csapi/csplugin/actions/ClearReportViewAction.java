@@ -10,14 +10,21 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * <p>This class is the action attached to the ClearReport command
+ * in the ShowReportView view's menu.  There is no need to run an 
+ * aSyncExec session because actions do entirely take place in the
+ * current thread worspace.</p>
  * 
+ * <p>It Gets the view's viewer and resets the current viewer through
+ * the clearViewer() method. Since the viewer has its own clearing 
+ * method, this method belongs to the view object.</p>
  * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class ClearReportViewAction extends Action {
 
 	/**
-	 * 
+	 * The constructor for the action.
 	 */
 	public ClearReportViewAction() {
 		super();
@@ -26,6 +33,9 @@ public class ClearReportViewAction extends Action {
 		this.setText("Clear View");
 	}
 
+	/**
+	 * The execution method for the action.
+	 */
 	public void run() {
 		IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
 			.getWorkbenchWindows()[0];

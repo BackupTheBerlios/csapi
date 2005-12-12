@@ -1,22 +1,24 @@
 /*
- * Created on 23 août 2005
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.actions;
 
-import org.csapi.csplugin.jobs.RunMyReportsJob;
+import org.csapi.csplugin.jobs.QuerySelectJob;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
+ * <p>This class is the action attached to the Query Select command
+ * in the MyReportsView view's menu. It basically just fires the
+ * QuerySelectJob run method.</p>
  * 
- * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class QuerySelectAction extends Action {
 
 	/**
-	 * 
+	 * The constructor for the action.
 	 */
 	public QuerySelectAction() {
 		super();
@@ -25,8 +27,11 @@ public class QuerySelectAction extends Action {
 		this.setText("Query Selection");
 	}
 
+	/**
+	 * The execution method for the action.
+	 */
 	public void run() {
-		RunMyReportsJob job = new RunMyReportsJob("Get My Reports");
+		QuerySelectJob job = new QuerySelectJob("Query selected records");
 		
 		/* Prevent display of the progress bar. */
 		job.setUser(false);

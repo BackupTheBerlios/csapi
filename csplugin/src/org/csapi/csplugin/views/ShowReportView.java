@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * The view displaying the content of a report. It is composed of a 
+ * <p>The view displaying the content of a report. It is composed of a 
  * TableViewer, which displays data a record per line. All chosen attributes 
- * are displayed in columns.
+ * are displayed in columns.</p>
  * 
  * @author Boris Baldassari
  */
@@ -174,4 +174,14 @@ public class ShowReportView extends ViewPart {
 	    viewer.setInput(report);
 		viewer.refresh();
 	}
+	
+	/**
+	 * Get the report attached to the viewer.
+	 * 
+	 * @return The report attached to the viewer.
+	 */
+	public TableViewer getViewer() {
+		return viewer;
+	}
+	
 }

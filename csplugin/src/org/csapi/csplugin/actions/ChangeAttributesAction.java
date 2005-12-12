@@ -1,5 +1,5 @@
 /*
- * Created on 23 août 2005
+ * Created on 08 dec. 2005
  */
 package org.csapi.csplugin.actions;
 
@@ -9,14 +9,16 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
+ * <p>This class is the action attached to the ChangeAttribute command
+ * in the MyReportsView view's menu. It basically just fires the
+ * ChangeAttributesJob run method.</p>
  * 
- * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class ChangeAttributesAction extends Action {
 
 	/**
-	 * 
+	 * The constructor for the Action.
 	 */
 	public ChangeAttributesAction() {
 		super();
@@ -25,6 +27,9 @@ public class ChangeAttributesAction extends Action {
 		this.setText("Change Attributes...");
 	}
 
+	/**
+	 * The execution method for this action.
+	 */
 	public void run() {
 		ChangeAttributesJob job = new ChangeAttributesJob("Change Attributes");
 		

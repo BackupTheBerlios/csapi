@@ -1,5 +1,5 @@
 /**
- * 
+ * Created on 08 dec. 2005.
  */
 package org.csapi.csplugin.jobs;
 
@@ -22,6 +22,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * <p>The job class for the Run Report command in the MyReports view.</p>
+ * 
+ * <p>It retrieves the selection (Report) from MyReportsView, and re-run it
+ * with same query and attributes. If the execution is successfull, then
+ * it updates the viewer of ShowReportView and refreshes the ShowReportView 
+ * view. The asyncExec session allows to access the visual thread, which is
+ * actually out of scope for the current thread. </p>
+ * 
  * @author Boris Baldassari
  *
  */
@@ -56,6 +64,9 @@ public class RunMyReportsJob extends Job {
 		        instShowReport = wkbch.getActivePage().showView(
 		        		"org.csapi.csplugin.views.ShowReportView");
 		
+		        /* If both views have been retrieved, then get selection
+		         * from myreports, run the report and update the viewer and
+		         * view of ShowReportView. */
 		        if (instMyReports != null || instShowReport != null) {
 		        	StructuredSelection mySel = 
 		        		(StructuredSelection)((MyReportsView)instMyReports)

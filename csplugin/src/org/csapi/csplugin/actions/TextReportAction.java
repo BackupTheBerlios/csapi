@@ -1,5 +1,5 @@
 /**
- * Created on 22 août 2005
+ * Created on 22 août 2005.
  */
 package org.csapi.csplugin.actions;
 
@@ -15,9 +15,16 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * <p>This class is the action attached to the ClearView command
+ * in the MyReportsView view's menu. There is no need to run an 
+ * aSyncExec session because actions do entirely take place in the
+ * current thread worspace.</p>
  * 
+ * <p>It gets the current view's viewer and extract a text (String) 
+ * version of the report. It then prompts the user for a name and saves 
+ * the text report as a text file.</p>
  * 
- * @author grandpas
+ * @author Boris Baldassari
  */
 public class TextReportAction extends Action {
 

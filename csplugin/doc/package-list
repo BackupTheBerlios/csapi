@@ -1,5 +1,10 @@
+org.csapi.csapicore
+org.csapi.csapicore.core
+org.csapi.csapicore.exceptions
+org.csapi.csapicore.utils
 org.csapi.csplugin
 org.csapi.csplugin.actions
+org.csapi.csplugin.exceptions
 org.csapi.csplugin.jobs
 org.csapi.csplugin.preferences
 org.csapi.csplugin.views

@@ -4,7 +4,7 @@
 package org.csapi.csapicore.exceptions;
 
 /**
- * @author grandpas
+ * @author Boris Baldassari
  *
  */
 public class ServerException extends Exception {

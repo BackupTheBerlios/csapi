@@ -13,10 +13,10 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 
 /**
- * Get a Change Synergy report from the menu.
+ * <p>Get a Change Synergy report from the menu.</p>
  * 
- * Most of the code is in the GetReportJob class, since we want the UI 
- * to be scheduled even when the report is running.
+ * <p>Most of the code is in the GetReportJob class, since we want the UI 
+ * to be scheduled even when the report is running.</p>
  * 
  * @author Boris Baldassari
  */
@@ -47,7 +47,7 @@ public class GetReportAction implements IWorkbenchWindowActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		GetReportJob job = new GetReportJob("GetReportJob");
+		GetReportJob job = new GetReportJob("Get A Change/Synergy Report");
 		
 		/* Prevent display of the progress bar. */
 		job.setUser(false);

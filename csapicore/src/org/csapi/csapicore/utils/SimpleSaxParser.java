@@ -78,7 +78,7 @@ public class SimpleSaxParser {
 			fullXML = fullXML + line + "\n"; 
 		}
 
-		System.out.println("fullXML is [" + fullXML + "].");
+//		System.out.println("fullXML is [" + fullXML + "].");
 		
 //		fullXML = fullXML.replaceAll(">\\s*([^<]+)\\s*</",
 //		"><![CDATA[\1]]></");
@@ -98,7 +98,7 @@ public class SimpleSaxParser {
 //				"<csapi_cobject_data_date><![CDATA[");
 //		fullXML = fullXML.replaceAll("</csapi_cobject_data_date>",
 //				"]]></csapi_cobject_data_date>");
-		System.out.println("fullXML is [" + fullXML + "].");
+//		System.out.println("fullXML is [" + fullXML + "].");
 		StringReader sReader = new StringReader(fullXML);
 
 		InputSource inputSource = new InputSource(sReader);

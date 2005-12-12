@@ -13,9 +13,11 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 
 /**
- * @author Boris Baldassari
+ * <p>This class is the action attached to the Login command
+ * in the menu. It basically just fires the ChangeAttributesJob 
+ * run method.</p>
  * 
- * An Action.
+ * @author Boris Baldassari
  */
 public class LoginAction implements IWorkbenchWindowActionDelegate {
 
@@ -37,7 +39,7 @@ public class LoginAction implements IWorkbenchWindowActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		LoginJob job = new LoginJob("LoginJob");
+		LoginJob job = new LoginJob("Login");
 		job.setUser(true);
 		job.schedule();
 		job.addJobChangeListener(new JobChangeAdapter(){
