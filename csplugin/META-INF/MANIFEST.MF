@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Export-Package: .,
  org.csapi.csplugin,
  org.csapi.csplugin.actions,
+ org.csapi.csplugin.exceptions,
  org.csapi.csplugin.jobs,
  org.csapi.csplugin.preferences,
  org.csapi.csplugin.views
