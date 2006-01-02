@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import org.csapi.csapicore.core.Report;
 import org.csapi.csapicore.core.SessionMgr;
 import org.csapi.csapicore.exceptions.PluginException;
-import org.csapi.csplugin.views.MyReportsView;
+import org.csapi.csplugin.views.ReportHistoryView;
 import org.csapi.csplugin.views.ShowReportView;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -24,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * <p>The job class for the Run Report command in the MyReports view.</p>
  * 
- * <p>It retrieves the selection (Report) from MyReportsView, and re-run it
+ * <p>It retrieves the selection (Report) from ReportHistoryView, and re-run it
  * with same query and attributes. If the execution is successfull, then
  * it updates the viewer of ShowReportView and refreshes the ShowReportView 
  * view. The asyncExec session allows to access the visual thread, which is
@@ -33,9 +33,9 @@ import org.eclipse.ui.PlatformUI;
  * @author Boris Baldassari
  *
  */
-public class RunMyReportsJob extends Job {
+public class RunReportHistoryJob extends Job {
 	
-	public RunMyReportsJob(String name) {
+	public RunReportHistoryJob(String name) {
 		super(name);
 	}
 
@@ -58,7 +58,7 @@ public class RunMyReportsJob extends Job {
 		        
 		        // Get the instance of the view and focus it.
 		        instMyReports = wkbch.getActivePage().showView(
-		        		"org.csapi.csplugin.views.MyReportsView");
+		        		"org.csapi.csplugin.views.ReportHistoryView");
 		        
 		        // Get the instance of the view and focus it.
 		        instShowReport = wkbch.getActivePage().showView(
@@ -69,7 +69,7 @@ public class RunMyReportsJob extends Job {
 		         * view of ShowReportView. */
 		        if (instMyReports != null || instShowReport != null) {
 		        	StructuredSelection mySel = 
-		        		(StructuredSelection)((MyReportsView)instMyReports)
+		        		(StructuredSelection)((ReportHistoryView)instMyReports)
 		        		.getViewer().getSelection();
 		        	report = (Report)mySel.toArray()[0];
 		        	

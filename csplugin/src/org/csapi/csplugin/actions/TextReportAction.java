@@ -16,7 +16,7 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>This class is the action attached to the ClearView command
- * in the MyReportsView view's menu. There is no need to run an 
+ * in the ReportHistoryView view's menu. There is no need to run an 
  * aSyncExec session because actions do entirely take place in the
  * current thread worspace.</p>
  * 

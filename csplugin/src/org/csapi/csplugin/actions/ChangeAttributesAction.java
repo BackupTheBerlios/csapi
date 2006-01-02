@@ -10,7 +10,7 @@ import org.eclipse.jface.action.Action;
 
 /**
  * <p>This class is the action attached to the ChangeAttribute command
- * in the MyReportsView view's menu. It basically just fires the
+ * in the ReportHistoryView view's menu. It basically just fires the
  * ChangeAttributesJob run method.</p>
  * 
  * @author Boris Baldassari

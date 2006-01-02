@@ -5,8 +5,8 @@ package org.csapi.csplugin.views;
 
 import org.csapi.csapicore.core.Favorites;
 import org.csapi.csapicore.core.SessionMgr;
-import org.csapi.csplugin.actions.ClearMyReportsViewAction;
-import org.csapi.csplugin.actions.RunMyReportsAction;
+import org.csapi.csplugin.actions.ClearReportHistoryViewAction;
+import org.csapi.csplugin.actions.RunReportHistoryAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -25,11 +25,11 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Boris Baldassari
  */
-public class MyReportsView extends ViewPart
+public class ReportHistoryView extends ViewPart
 	implements IDoubleClickListener {
 
 	// The shared instance.
-	private static MyReportsView instance;
+	private static ReportHistoryView instance;
 	
 	/* The (Table)viewer used for the view. */
 	private TableViewer viewer;
@@ -37,7 +37,7 @@ public class MyReportsView extends ViewPart
 	/**
 	 * Constructor.
 	 */
-	public MyReportsView() {
+	public ReportHistoryView() {
 		super();
 		instance = this;
 	}
@@ -47,7 +47,7 @@ public class MyReportsView extends ViewPart
 	 * 
 	 * @return The shared instance.
 	 */
-	public static MyReportsView getDefault() {
+	public static ReportHistoryView getDefault() {
 		return instance;
 	}
 
@@ -75,16 +75,16 @@ public class MyReportsView extends ViewPart
 		
 		/* Defines the LabelProvider and ContentProvider for the 
 		 * current Viewer, and set the input (model) for it. */
-		viewer.setContentProvider(new MyReportsContentProvider());
-		viewer.setLabelProvider(new MyReportsLabelProvider());
+		viewer.setContentProvider(new ReportHistoryContentProvider());
+		viewer.setLabelProvider(new ReportHistoryLabelProvider());
 		
 	    /* The double click is used to remove an item from the model. */
 	    viewer.addDoubleClickListener(this);
 		
-		setInput(SessionMgr.getDefault().getDefaultFavorites());
+		setInput(SessionMgr.getDefault().getDefaultReportHistory());
 		
-		RunMyReportsAction runRapportAction = new RunMyReportsAction();
-		ClearMyReportsViewAction clearReport = new ClearMyReportsViewAction();
+		RunReportHistoryAction runRapportAction = new RunReportHistoryAction();
+		ClearReportHistoryViewAction clearReport = new ClearReportHistoryViewAction();
 		
 		MenuManager menuManager = (MenuManager)getViewSite().getActionBars()
 			.getMenuManager();
@@ -148,8 +148,8 @@ public class MyReportsView extends ViewPart
 	}
 
 	public void doubleClick(DoubleClickEvent event) {
-        RunMyReportsAction gmrAction = 
-            new RunMyReportsAction();
+        RunReportHistoryAction gmrAction = 
+            new RunReportHistoryAction();
         gmrAction.run();
 	}
 	

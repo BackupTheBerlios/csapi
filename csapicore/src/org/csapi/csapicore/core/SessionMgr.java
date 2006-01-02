@@ -42,8 +42,9 @@ public class SessionMgr {
 	/** The shared instance, for the singleton design pattern. */
 	private static SessionMgr instance;
 	
-	/** The favorite object loaded for this instance of SessionMgr. */
-	private Favorites favorites;
+	/** The favorite object loaded for this instance of SessionMgr. 
+	 * This one is especially for report history. */
+	private Favorites reportHistory;
 
 	/** The token to be used when communicating with the server. */
 	private String csapiToken = "";
@@ -90,7 +91,7 @@ public class SessionMgr {
 		fullServerAddress = "http://" + this.csapiServerIP
 		+ "/servlet/com.continuus.websynergy.servlet.CsAPI";
 		
-		favorites = new Favorites();
+		reportHistory = new Favorites();
 		
 		instance = this;
 	}
@@ -322,7 +323,7 @@ public class SessionMgr {
 			System.out.println(myStrings[i]);
 		// DEBUG ------------------------------------
 
-		favorites.addFavoriteReport(myReport);
+		reportHistory.addFavoriteReport(myReport);
 		
 		return myReport;
 	}
@@ -374,15 +375,15 @@ public class SessionMgr {
 		this.csapiUser = csapiUser;
 	}
 	
-	public void setFavorites(Favorites favorites) {
-		this.favorites = favorites;
+	public void setReportHistory(Favorites favorites) {
+		this.reportHistory = favorites;
 	}
 	
-	public Favorites getDefaultFavorites() {
-		if (favorites == null) {
-			this.favorites = new Favorites();
-			return this.favorites;
+	public Favorites getDefaultReportHistory() {
+		if (reportHistory == null) {
+			this.reportHistory = new Favorites();
+			return this.reportHistory;
 		}
-		return favorites;
+		return reportHistory;
 	}
 }

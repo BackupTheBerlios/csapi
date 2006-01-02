@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author Boris Baldassari
  */
-public class MyReportsLabelProvider extends LabelProvider implements
+public class ReportHistoryLabelProvider extends LabelProvider implements
 		ITableLabelProvider {
 
 	/* (non-Javadoc)

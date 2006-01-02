@@ -41,7 +41,7 @@ public class Report {
 	public Report() {
 		super();
 
-		this.name = easyDateFormat("dd.MM.yy-hh:mm:ss");
+		this.name = easyDateFormat("dd.MM.yy-HH:mm:ss");
 	}
 	
 	public String easyDateFormat (String format) {

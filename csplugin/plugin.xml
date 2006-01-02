@@ -25,9 +25,9 @@
                menubarPath="org.csapi.csplugin.actions/getreport"
                style="push"/>
          <action
-               class="org.csapi.csplugin.actions.ManageMyReportsAction"
+               class="org.csapi.csplugin.actions.ManageReportHistoryAction"
                id="core.csapi.csplugin.actions.ManageMyReportsAction"
-               label="Manage My Reports"
+               label="&amp;Report History"
                menubarPath="org.csapi.csplugin.actions/getreport"
                style="push"/>
       </actionSet>
@@ -51,9 +51,9 @@
             name="CS Report"/>
       <view
             category="csplugin.category"
-            class="org.csapi.csplugin.views.MyReportsView"
+            class="org.csapi.csplugin.views.ReportHistoryView"
             id="org.csapi.csplugin.views.MyReportsView"
-            name="My Reports"/>
+            name="Report History"/>
       <category
             id="csplugin.category"
             name="Csapi Plugin"/>

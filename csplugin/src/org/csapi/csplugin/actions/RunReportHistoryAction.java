@@ -3,24 +3,24 @@
  */
 package org.csapi.csplugin.actions;
 
-import org.csapi.csplugin.jobs.RunMyReportsJob;
+import org.csapi.csplugin.jobs.RunReportHistoryJob;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
  * <p>This class is the action attached to the Run Report View command
- * in the MyReportsView view's menu. It basically just fires the
- * RunMyReportsJob run method.</p>
+ * in the ReportHistoryView view's menu. It basically just fires the
+ * RunReportHistoryJob run method.</p>
  * 
  * @author Boris Baldassari
  */
-public class RunMyReportsAction extends Action {
+public class RunReportHistoryAction extends Action {
 
 	/**
 	 * 
 	 */
-	public RunMyReportsAction() {
+	public RunReportHistoryAction() {
 		super();
 		
 		this.setDescription("Run selected report.");
@@ -28,7 +28,7 @@ public class RunMyReportsAction extends Action {
 	}
 
 	public void run() {
-		RunMyReportsJob job = new RunMyReportsJob("Get My Reports");
+		RunReportHistoryJob job = new RunReportHistoryJob("Get My Reports");
 		
 		/* Prevent display of the progress bar. */
 		job.setUser(false);

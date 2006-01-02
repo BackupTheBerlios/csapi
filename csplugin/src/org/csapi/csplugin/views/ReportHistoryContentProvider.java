@@ -8,21 +8,21 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * <p>The ContentProvider for the MyReportsView. This view shows reports
+ * <p>The ContentProvider for the ReportHistoryView. This view shows reports
  * executed by the user.</p>
  * 
- * <p>MyReportsContentProvider extracts an array of elements (objects, 
+ * <p>ReportHistoryContentProvider extracts an array of elements (objects, 
  * namely an array of Reports) from the model (a Favorite) to display 
  * in the view.</p>
  * 
  * @author Boris Baldassari
  */
-public class MyReportsContentProvider implements IStructuredContentProvider {
+public class ReportHistoryContentProvider implements IStructuredContentProvider {
 
 	/**
 	 * Constructor for ShowReportContentProvider. 
 	 */
-	public MyReportsContentProvider() {
+	public ReportHistoryContentProvider() {
 		super();
 	}
 	
