@@ -23,9 +23,9 @@
         linkcolor=rltred,               % \ref{...} and \pageref{...}
         menucolor=webdarkblue,
         citecolor=webbrightgreen,
-        pdftitle={A Short Introduction to Synergy/Change Administration},
+        pdftitle={A Short Introduction to Synergy/Change 4.3 Administration},
         pdfauthor={Boris Baldassari},
-        pdfsubject={A Short Introduction to Synergy/Change Administration},
+        pdfsubject={A Short Introduction to Synergy/Change 4.3 Administration},
         pdfkeywords={telelogic synergy change configuration management change},
         pagebackref,
         pdfpagemode=None,
@@ -62,7 +62,6 @@
 \definecolor{webgreen}{rgb}{0,0.5,0}
 
 \title{A Short Introduction to \cs{} 4.3 Administration}
-\author{Boris Baldassari}
 \date{}
 
 \newcommand{\cs}{Synergy/Change}
@@ -96,17 +95,27 @@
 
 \cs{} is a major piece in the field of Change Management Tools. 
 
-This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 not fully documented, and provide him with hints and tricks about its everyday administration. Most of the information published here is available on the world wide web\footnote{Refer to the Bibtex entries at the end of the document for links.}.
+This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 not fully documented, and provides hints and tricks about its everyday administration. Most of the information published here is available on the world wide web\footnote{Refer to the Bibtex entries at the end of the document for links.}.
 
-Several specific topics are not addressed by Telelogic, and the documentation for administrators is not always up to date. This document capitalizes some of the knowledge acquired while administering \cs{}, in an attempt to share it. 
+Several specific topics are not addressed by Telelogic, and the documentation for administrators is not always up to date. This document summarizes some of the knowledge acquired while administering \cs{}, in an attempt to share it.
 
-Another implicit goal is that experimented people in the field correct, and complete it thanks to a free license (See Annex \ref{sec:license} on page \pageref{sec:license}) allowing modifications of the document.
+Another implicit goal is that readers experiment with and correct the information contained in this guide. Thanks to a free license, modifications are allowed to this document (See Annex \ref{sec:license} on page \pageref{sec:license}).
  
+
+\section{Acknowledgements}
+
+This guide is a common work from administrators of Telelogic \cs{} 4.3. It is intended for knowledge and ideas free exchange; see licensing for more information. People having contributed so far are:
+
+\begin{itemize}
+\item Andre A'Quillen,
+\item Boris Baldassari ({\textit official maintainer}),
+\item Per Lundborg.
+\end{itemize}
 
 
 \section{Conventions}
 
-Some paths and particularities differ from a server to another. In this paper, we will use pseudo-variables that should be adapted to other setups. 
+Some paths and particularities differ from one server to another. In this paper, we will use pseudo-variables that should be adapted to other setups. 
 \begin{itemize}
 \item \ccmhome{} is the installation directory used by the \ccm{} engine; it is usually named \texttt{ccm63}, with a symbolic link from \texttt{ccm} to \texttt{ccm63}. Default is \verb!/usr/local/ccm/!.
 \item \cshome{} is the installation directory used by the \cs{} engine; it is usually named \texttt{cs43}. Default is \verb!/usr/local/cs43/!.
@@ -131,15 +140,14 @@ All operations in this guide have been made on a GNU/Linux RedHat Enterprise Lin
 \begin{description}
 \item[Advanced Tracking and Reporting of Change Requests:] create, edit, retrieve records transparently in and from \cs{}, assign tasks, create reports in a few clicks.
 
-\item[Lifecycle Management:] define one or several lifecycles, with per-lifecycle states, transitions, attributes, rights and roles. Create specific reports, complex triggers to map your company own process.
+\item[Lifecycle Management:] define one or several lifecycles, with per-lifecycle states, transitions, attributes, rights and roles. Create specific reports, complex triggers to map your company's own process.
 
-\item[Web-Based Change Management:] access to the \cs{} interface with just any of the main browser available: IExplorer, Mozilla or Firefox. This first means that \cs{} can be executed (almost) whatever the operating system is, and second that no heavy client installation is needed. Itinerant workers as well as customers can access it with a secured gateway from any connected location in the world.
+\item[Web-Based Change Management:] access to the \cs{} interface with any of the top browsers available: IExplorer, Mozilla or Firefox.  A main advantage of this is that \cs{} execution is not operating system dependent and no heavy client installation is needed.  Employees on travel, and even customers, can access it with a secured gateway from any connected location in the world.
 
-\item[Powerful Reporting Tools:] users can query the database through user-defined queries, predefined reports, or do power-search (i.e. with wildcards). Export formats include XML, HTML, CSV and XLS files to interact with other tools as well.
+\item[Powerful Reporting Tools:] users can query the database through user-defined queries, predefined reports, or via wildcard searches. Export formats include XML, HTML, CSV and XLS, thereby allowing interaction with other tools.
 \end{description}
 
-\cs{} can as well be used for any other record-based purpose, needing custom workflows and set of attributes. Given a dedicated workflow, records can be interpreted as bugs (Bug Tracking System), tasks, or any item which needs to be followed through a workflow.
-
+\cs{} can also be used for any other record-based purposes that require custom workflows and a set of attributes.
 
 \section{Architecture}
 \label{sec:server_architecture}
@@ -160,7 +168,7 @@ Oracle and Informix databases are supported by \cm{} -- but the former is limite
 
 \section{Important files}
 
-Some files are worth retaining their location.
+Below is the location for some of the more important \cs{} files:
 
 \begin{description}
 
@@ -198,7 +206,7 @@ Some files are worth retaining their location.
 
 Administration tasks are nevertheless still mandatory, and a full-time administrator -- as for any other software -- is mandatory. For full user satisfaction and efficiency consider hiring one administrator for 100 activ users.
 
-On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary, a simple web browser do it all from any connected location in the world.
+On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary. A simple web browser is all that is needed to connect from any location in the world.
 
 
 \subsection{Patches}
@@ -356,6 +364,8 @@ There are two options here: remove the lock file manually, or use the commands t
 \cs{} is probably a vital part of your company's information system, and as such it should be backed up often. \cs{} {\em can} introduce inconsistencies in the database, fire could spread across your datacenter or a black hat could erase half of the records. Ok, \cs{} {\em needs} backups.
 
 This part addresses only the pure \cs{} method of backup and restoration using the ccmdb command set. Other backup methods (such as full system backups) can also be used -- but be warned that the database needs specific backup, just as would any other database.
+
+The LDAP server within C/S maintains a local backup schema, executed once every midnight (approx). The backups are stored in: \vdehome{}\verb!/vde/backup/!. Files are in zip format, you can use unzip (UNIX) to extract the files, which should go into \vdehome{}\verb!/vde/data!. Prior to copying files back to the data sub dir, the LDAP server needs to be taken down... 
 
 \subsection{Backup}
 
@@ -576,7 +586,7 @@ If \cs{} is used for purposes other than change requests, it may be interesting 
 
 pt\_listbox.cfg contains the definition of all listboxes, as shown in the Listbox section of the Admin web interface.
 
-Since there may be dependent listboxes, this file can quickly become confusing and should as far as possible not be edited by hand. One exception is when Change Synergy itself falls and messes items; in which case you will have to investigate yourself. But, in any case, remember to often backup your wsconfig directory.
+Since there may be dependent listboxes, this file can quickly become confusing and should as far as possible not be edited by hand. One exception is when \cs{} itself falls and messes items; in which case you will have to investigate yourself. But, in any case, remember to often backup your wsconfig directory.
 
 \section{Template}
 
@@ -1270,5 +1280,11 @@ Under the following conditions:
 Your fair use and other rights are in no way affected by the above.
 
 This is a human-readable summary of the Legal Code\footnote{http://creativecommons.org/licenses/by-nc-sa/2.0/fr/legalcode}.
+
+
+%-------------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{cs_admin}
+
 
 \end{document}
