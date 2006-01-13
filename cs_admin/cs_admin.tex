@@ -61,8 +61,11 @@
 \definecolor{webblue}{rgb}{0,0,0.75}
 \definecolor{webgreen}{rgb}{0,0.5,0}
 
-\title{A Short Introduction to \cs{} 4.3 Administration}
+\title{A Short Introduction to \cs{} 4.3 Administration
+    \thanks{Version 1.1, published on \today}}
 \date{}
+
+
 
 \newcommand{\cs}{Synergy/Change}
 \newcommand{\ccm}{{\sc ccm}}
@@ -97,10 +100,11 @@
 
 This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 not fully documented, and provides hints and tricks about its everyday administration. Most of the information published here is available on the world wide web\footnote{Refer to the Bibtex entries at the end of the document for links.}.
 
-Several specific topics are not addressed by Telelogic, and the documentation for administrators is not always up to date. This document summarizes some of the knowledge acquired while administering \cs{}, in an attempt to share it.
+This document summarizes some of the knowledge acquired while administering \cs{}, in an attempt to share it.
 
 Another implicit goal is that readers experiment with and correct the information contained in this guide. Thanks to a free license, modifications are allowed to this document (See Annex \ref{sec:license} on page \pageref{sec:license}).
- 
+
+The latest version of this document can always be found online on the homepage of this document\footnote{\href{http://csapi.berlios.de/cs\_admin}{csapi.berlios.de/cs\_admin}}.
 
 \section{Acknowledgements}
 
@@ -108,7 +112,7 @@ This guide is a common work from administrators of Telelogic \cs{} 4.3. It is in
 
 \begin{itemize}
 \item Andre A'Quillen,
-\item Boris Baldassari ({\textit official maintainer}),
+\item Boris Baldassari (\textit{official maintainer}),
 \item Per Lundborg.
 \end{itemize}
 
@@ -124,7 +128,10 @@ Some paths and particularities differ from one server to another. In this paper,
 
 Often, when addressing specific topics, we will simply say \webinf{}\-\verb!/wsconfig! since there is only one \webinf{} directory in the \cs{} arborescence. The full path to \webinf{} should be read as \cshome{}\verb!/cs_app!\-\verb!/webapps!\-\verb!/synergy!\-\verb!/WEB-INF!.
 
-All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
+The path environment variable should contain the \ccmhome{}\verb!/bin!, \cshome{}\verb!/cs_app/! and \vdehome{} XXX entries. This is not required, but be warned that all executables are assumed to be in the path for the examples provided.
+
+All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system, and concern Change Synergy 4.3. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
+
 
 \chapter{About \cs{}}
 
@@ -167,6 +174,7 @@ The LDAP server can either be the server furnished by Telelogic or an external s
 Oracle and Informix databases are supported by \cm{} -- but the former is limited to Solaris, HP-UX (and AIX for \cm{} 6.3).
 
 \section{Important files}
+\label{sec_important_files}
 
 Below is the location for some of the more important \cs{} files:
 
@@ -215,7 +223,7 @@ Patches are provided by Telelogic and are freely available on their website\foot
 
 Install instructions vary from one patch to another. \emph{Really always check the readme instructions} provided with the package, since there may be patch-specific hints. In general, patches are reversible: check instructions in the README.
 
-\subsubsection{\ccm{} patches}
+\subsubsection{CCM patches}
 
 The usual way to install a \ccm{} patch is through the ccm\_patch utility. 
 
@@ -225,7 +233,7 @@ The usual way to install a \ccm{} patch is through the ccm\_patch utility.
 \begin{verbatim}
 $ ccmdb shutdown /path/to/db
 \end{verbatim}
-\item Read documentation with the \verb!-readme! switch and apply the patch. You must be root to run it, the script changes the user to \ccmroot{} itself when needed.
+\item Read documentation with the \verb!-readme! switch and apply the patch. You must be root to run it, the script changes the user to \ccmroot{} when needed.
 \begin{verbatim}
 $ ccm_patch -readme patch_6.3 > readme_patch_6.3.txt
 $ less readme_patch_6.3.txt
@@ -260,6 +268,11 @@ $ cp cs4.3-030/ \webinf{}/packages/
 A Perl API is provided by Telelogic and bundled with \cs{}. Almost all operations can be scripted, from administration to reports or submitting. Some of the most useful features of the Perl API can be found below:
 
 \begin{itemize}
+\item Records:
+\begin{itemize}
+\item Get reports, queries.
+\item Find records, and get complete attributes set.
+\end{itemize}
 \item Users:
 \begin{itemize}
 \item Create, edit and delete users.
@@ -271,25 +284,28 @@ A Perl API is provided by Telelogic and bundled with \cs{}. Almost all operation
 \item Set debuging mode to true or false.
 \item Get or delete the current log file.
 \end{itemize}
-
 \end{itemize}
+
+It is very common to use Perl scripts in lifecycle triggers, either pre-condition for checks or post-condition for actions. The diversity of Perl modules, combined with the flexibility of the language, allow almost any operation or integration.
 
 
 \section{Scripts}
 
-The Perl API deserves several goals, from server administration to records reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} have proven to be useful to integrate the \cs{} setup smoothly in company environments.
+The Perl API deserves several goals, from server administration to periodic reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} provide a template that you can safely use and adapt to your environment. POD (in-line) documentation is available, as well as usage through the \verb!-h!switch.
 
-Such scripts are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, etc. POD (in-line) documentation is available, as well as usage through the \verb!-h!switch.
+Maintenance scripts are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, periodic reporting and statistics, and more\footnote{The scripts are also available online: \href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}.}.
+
+One more remark: these scripts have been developed and tested on a Perl 5.6.1 environment, but some (rare) environments won't work (possibly missing modules).
 
 \subsection{Get a report}
 
-The getreport.pl script (see \S \ref{sec:getreport.pl} on page \pageref{sec:getreport.pl}) retrieves attributes for either a query or a set of problem\_number's. 
+The getreport.pl script (see \S \ref{sec:getreport.pl} on page \pageref{sec:getreport.pl}) retrieves attributes for either a query or a set of problem\_number's, provided on the standard input (standard input is intended for piped commands).
 
 \begin{verbatim}
 getreport.pl [-h] [-f format ] [-q query] attributes
 \end{verbatim}
 
-The list of attributes to be retrieved must be passed on command line, and formatting of the ouput can be obtained by specifying the -f switch (using the classic C syntax, cf. man fprintf). 
+The list of attributes to be retrieved must be passed on command line, separated by spaces. The ouput can be formatted with the -f switch (using the classic C syntax, cf. man fprintf). 
 
 \begin{verbatim}
 $ getreport.pl -f "[%s] %s|%s|%s" -q "(software match 'good*')" 
@@ -299,9 +315,10 @@ $ getreport.pl -f "[%s] %s|%s|%s" -q "(software match 'good*')"
 [14928] dead links|server|2.1
 \end{verbatim}%$
 
+
 \subsection{Modify records}
 
-This script (see \S \ref{sec:modifyrecord.pl} on page \pageref{sec:modifyrecord.pl}) allows an user to modify a record on the \cs{} server, according to his rights. The synopsis of the script is:
+This script (see \S \ref{sec:modifyrecord.pl} on page \pageref{sec:modifyrecord.pl}) allows an user to modify a record on the \cs{} server, according to his rights. A list of problem\_number's can be furnished on command-line, for batch treatments. The synopsis of the script is:
 
 \begin{verbatim}
 modifyrecord.pl [-h|help] [-i|identifier identifier] attribute value
@@ -309,6 +326,14 @@ modifyrecord.pl [-h|help] [-i|identifier identifier] attribute value
 
 It uses an array to store problem\_number's. It either push id furnished on command line or read and push from standard input. For each element of the array, it retrieves an object (getCRData), read (getValue) and set (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem\_number.
 
+\subsection{Power of CLI}
+
+Command-Line Interface comes handy for mass treatments. The getreport and modifyrecord scripts can be piped to achieve fine-tuned treatments. A classic example could be ``change all records with release 2.1 to release 3.0 in project website''. A way to achieve this request could be: 
+
+\begin{verbatim}
+$ getreport.pl -q (release='2.1' and project='website') problem_number
+| modifyrecord.pl release '3.0'
+\end{verbatim}
 
 \chapter{Maintenance}
 
@@ -325,20 +350,22 @@ $
 \end{verbatim}
 
 A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}.
-xx
+
 As user Informix, start the database (if there is only one database, you can omit the -s flag):
 \begin{verbatim}
 $ ccmsrv online -y -s /path/to/db
 \end{verbatim}
 
-As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, i.e. if the Telelogic local LDAP server is used) and the \cs{} daemons: %todo
+As user \ccmroot{}, start the \ccm{} daemons, the LDAP server (if needed, i.e. if the Telelogic local LDAP server is used) and the \cs{} daemons\footnote{Beware of path issues, vde and csctl need specific entries in the path (see section \ref{sec_important_files} for details).}: 
 \begin{verbatim}
 $ ccm_start_daemons
 $ vde.sh start
 $ csctl.sh start
 \end{verbatim}
 
-Order does matter. Starting the \cs{} daemons when there is no active LDAP connection may cause a mess in the connections opened by the engine\footnote{And several CLOSE\_WAIT may appear in the output of \texttt{netstat -na}. When there are too many of these (thousands) the server may become unresponsive. The only issue found so far is to reset all CLOSE\_WAIT'd sockets through a script and restart all daemons --- or reboot the server.}. When stopping the server, the reverse steps have to be followed. As user \ccmroot{} type:
+% XXX SCRIPT!
+
+Order does matter. Starting the \cs{} daemons when there is no active LDAP connection may cause a mess in the connections opened by the engine\footnote{And several CLOSE\_WAIT may appear in the output of \texttt{netstat -na}. When there are too many of these (thousands) the server may become unresponsive. The only issue we've found so far is to reset all CLOSE\_WAIT'd sockets through a script and restart all daemons --- or reboot the server.}. When stopping the server, the reverse steps have to be followed. As user \ccmroot{} type:
 \begin{verbatim}
 $ csctl.sh stop
 $ vde.sh stop
@@ -363,13 +390,13 @@ There are two options here: remove the lock file manually, or use the commands t
 
 \cs{} is probably a vital part of your company's information system, and as such it should be backed up often. \cs{} {\em can} introduce inconsistencies in the database, fire could spread across your datacenter or a black hat could erase half of the records. Ok, \cs{} {\em needs} backups.
 
-This part addresses only the pure \cs{} method of backup and restoration using the ccmdb command set. Other backup methods (such as full system backups) can also be used -- but be warned that the database needs specific backup, just as would any other database.
+This part addresses only the pure \cs{} method of backup and restoration using the ccmdb command set. Other backup methods (such as full system backups) can also be used -- but be warned that the database needs specific backup.
 
 The LDAP server within C/S maintains a local backup schema, executed once every midnight (approx). The backups are stored in: \vdehome{}\verb!/vde/backup/!. Files are in zip format, you can use unzip (UNIX) to extract the files, which should go into \vdehome{}\verb!/vde/data!. Prior to copying files back to the data sub dir, the LDAP server needs to be taken down... 
 
 \subsection{Backup}
 
-Backups need a stop of the \cs{} engine and the database. To ensure that users won't use the database, the LDAP server can also be stopped. As user \ccmroot{}, the following commands stop the application, do the backup and restarts all daemons. The backup is a compressed .cpk file.
+Backups need a stop of the \cs{} engine and the database. To ensure that users won't use the database, the LDAP server can also be stopped. As user \ccmroot{}, the following commands stop the application, do the backup and restart all daemons. The backup is a compressed .cpk file.
 
 \begin{verbatim}
 $ csctl.sh stop
@@ -377,15 +404,15 @@ $ vde.sh stop
 $ ccmdb shutdown /path/to/db
 $ ccmdb backup /path/to/db -t /path/to/backup
 $ ccmdb unprotect /path/to/db
-$ vde.sh stop
-$ csctl.sh stop
+$ vde.sh start
+$ csctl.sh start
 \end{verbatim}
 
-Carefully look at the output generated by the ccmdb commands: the ccmdb\_backup command looks for inconsistencies before backup by running a ccmdb check. Note that the later can be executed as a stand-alone run, and (Telelogic say it) should be executed daily.
+Carefully look at the output generated by the ccmdb commands: the ccmdb\_backup command looks for inconsistencies before backup by running a ccmdb check. Note that the later can be executed as a stand-alone run, and should be executed daily (but you should have a backup daily anyway).
 
 \subsection{Restore}
 
-To restore a database, get the \verb!.cpk! file. Check that the path to your database is the same that the one used in the originating .cpk file (if you have more than one host running \cs{}), or every User-Defined query, queryformat or report will be lost.
+To restore a database, get the \verb!.cpk! file. Check that the path to your database is the same that the one used in the originating .cpk file (e.g. if you have more than one host running \cs{}), or every User-Defined query, queryformat or report will be lost.
 
 Basically, the procedure is the same that the one used for backup: shutdown all daemons, unpack and restart all daemons. The ccmsrv has to be online too. As user \ccmroot{}, issue the following commands:
 
@@ -421,11 +448,11 @@ A few statistics can be gathered from \cs{}, for a pen-test measure or through a
 
 Apart from an earthquake or alien intrusion in your server, backups will also be used for the Informix database defragmentation. After a long run time (say, a few months of intensive usage) the database becomes fragmented; and there is no tool to defragment it with \ccm{}. 
 
-When the application faces performances issues, it is usually a good idea plan a maintenance operation, backup the database, delete and unpack it. The full re-insertion of all elements will re-order file fragments and speed up transactions.
+When the application faces performance issues, it is usually a good idea to plan a maintenance operation, backup the database, delete and unpack it. The full re-insertion of all elements will re-order file fragments and speed up transactions.
 
 Deletion of the current database is done with the {\texttt ccmdb delete} command. Basically, the path to the db is the one you specify when invoking the ccmdb commands; but simply (re)moving the directory is a bad idea. The {\texttt ccmdb delete} not only removes it, but also do other changes in the server internals. This step should be achieved once the backup file has been verified.
 
-Stop the daemons, delete, start the daemons; as user \ccmroot{}:
+Once backups have been made, stop the daemons, delete the database, start the daemons. As user \ccmroot{} commands are:
 \begin{verbatim}
 $ csctl.sh stop
 $ vde.sh stop
@@ -434,6 +461,12 @@ $ ccmdb delete /path/to/db
 $ ccm_start_daemons
 $ vde.sh start
 $ csctl.sh start
+\end{verbatim}
+
+You can then unpack your database at the same location: 
+
+\begin{verbatim}
+$ ccmdb unpack /path/to/backup.cpk -t /path/to/db
 \end{verbatim}
 
 Check that the database is recognized in the Admin web interface, section Server (it should be enabled) and check backend sessions are running (see § \ref{sec:backend_sessions} on page \pageref{sec:backend_sessions}).
@@ -487,10 +520,11 @@ chunk files:
 
 To do the expansion, you have to add a chunk file to the selected dbspace. To add a new chunk file of size \verb!new_size! in the ccm dbspace, use the following command: 
 \begin{verbatim}
-$ ccmsrv expand -size new_size -path /path/to/chunkfiles/ -y -dbspace ccm
+$ ccmsrv expand -size new_size -path /path/to/chunkfiles/ -y 
+ -dbspace ccm
 \end{verbatim}%$
 
-After the command exits, a new chunkfiles has been created, and a \verb!ccmsrv status -d! shows a new line, as we can see on the preceding example:
+After the command exits, a new chunkfiles has been created, and a \verb!ccmsrv status -d! shows a new line.
 
 \begin{verbatim}
 --- dbspace ccm ---
@@ -514,13 +548,15 @@ First, the workflow for record management used in the company can be reproduced,
 
 Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle. Three types of triggers can be set in a workflow: 
 
+% XXX add ptcli.cfg pre-condition triggers 
+
 \begin{description}
 \item[pre-condition triggers] are executed {\em before} a transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
 \item[post-condition triggers] are executed {\em after} a transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
 \item[attribute modification triggers] are fired when a specified attribute is modified, either while in a state or on transition. Modification attributes are set in the lifecycle editing facilities, Edit CRProcess, Attributes.
 \end{description}
 
-On attribute modification, only post-condition triggers can be defined. This is a bad move, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at last, it allows operations on the new value.
+On attribute modification, only post-condition triggers can be defined. This is a bad thing, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at last, it allows operations on the new value.
 
 If a check on an attribute value is mandatory, e.g. for conformance to a given format, it may still be accomplished through a modification trigger. Although it is somewhat complex, the following method can be used:
 
@@ -529,6 +565,8 @@ If a check on an attribute value is mandatory, e.g. for conformance to a given f
 \item parse and extract the last value of the attribute checked before modification occured;
 \item modify the attribute and set it back to the original value.
 \end{enumerate}
+
+% XXX add modification trigger script
 
 Beware of loops: if you change the value of the attribute, the modification trigger will be re-fired, and re-executed. Thus a flag must be set and checked before any action.
 
@@ -896,14 +934,14 @@ basic_summary/
 \end{verbatim}
 \label{list:basic_summary}
 
-Order of install for packages does matter, as it is implied in section \ref{plain:cfg_merge}. 
+Order of install for packages does matter, as stated in section \ref{plain:cfg_merge}. 
 
 \section{Real-Life examples}
 
 \subsection{The custUI package}
 \label{sec:custUI}
 
-In this section, we will apply some of the previously seen aspects of \cs{} customization. We will use a template and a configuration file put together in a package for convenient install/unintall.
+In this section, we will apply some of the previously seen aspects of \cs{} customization. We will use a template and a configuration file put together in a package for convenient install/uninstall.
 
 \paragraph{Statement of work}
 
@@ -934,7 +972,7 @@ CS
 CUSTOMIZATION
 \end{verbatim}
 
-\item[myPackage/wsconfig/myPackage.cfg] will be appended, when installed, to the list of merges in the pt.cfg. It redefines the entries to be shown for the Query Custom listbox (see \S \ref{plain:crquerycustom} on page \pageref{plain:crquerycustom}). The whole \verb!CCM_LIST! must be entered as one line!
+\item[myPackage/wsconfig/myPackage.cfg] will be appended, when installed, to the list of merges in the pt.cfg. It redefines the entries to be shown for the Query Custom listbox (see \S \ref{plain:crquerycustom} on page \pageref{plain:crquerycustom}). Note that the whole \verb!CCM_LIST! must be entered as one line.
 \begin{verbatim}
 # removes the SimpleProcessQuery entry by
 # forcing only the Custom CR and
@@ -956,7 +994,7 @@ CUSTOMIZATION
 
 We want to add ReportBuilder \ccmrole{} and \csrole{}. It would allow administrators to add reporting capabilities to specific users through the Web Interface easily. Selected users would then connect with the ReportBuilder role, without needs for any other right.
 
-To create the \ccmrole{}, we have to add it for at last one user in the \ccm{} engine. Once created it will remain for future use and will only need to be activated in the User tab of the Admin web interface.
+To create the \ccmrole{}, we have to add it for at last one user in the \cm{} engine. Once created it will remain for future use and will only need to be activated in the User tab of the Admin web interface.
 \begin{verbatim}
 $ ccm start -d /path/to/db
 Starting CM Synergy...
@@ -976,6 +1014,7 @@ user dupont = developer;
 
 Stop the \ccm{} session (\verb!ccm stop!), login as Administrator to the web interface, go in the Lifecycle editor and add for the reportbuilder \ccmrole{} a new \csrole{} --- e.g. ReportBuilder. This will allow users without any other \csrole{} to connect only with ReportBuilder. Install the new process package and the ReportBuilder \csrole{} appears in the login page.
 
+Note that users with a ReportBuilder role can crash others sessions, if reports used in your defintion files (customization of listboxes) are removed\footnote{This warning only applies if you have modified the contents of query or reports listboxes, as e.g. described in section \ref{sec:custUI}.}.
 
 \appendix
 
