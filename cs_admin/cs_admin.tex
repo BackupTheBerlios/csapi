@@ -349,7 +349,9 @@ $ find ${CS_HOME} -user root
 $
 \end{verbatim}
 
-A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}. A script for \cs{} 4.3 is provided in appendix \ref{sec:synergy4.3} on page \pageref{sec:synergy4.3} for your convenience. An alternative version for \cs{} 4.4 is also furnished on the homepage of the project\footnote{\href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}}.
+A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}. A script for \cs{} 4.3 is provided in appendix \ref{sec:synergy4.3} on page \pageref{sec:synergy4.3} for your convenience. It should be put in the \verb!/etc/init.d/! directory, with links from /etc/rc*.d/ for startup.
+
+An alternative version for \cs{} 4.4 is also furnished on the homepage of the project\footnote{\href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}}.
 
 As user Informix, start the database (if there is only one database, you can omit the -s flag):
 \begin{verbatim}
