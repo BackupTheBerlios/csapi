@@ -1,0 +1,73 @@
+#!/bin/bash
+# CM Synergy 4.4 Startup/Shutdown script
+
+# Define setup variables
+# Note that you can override these variables, by setting environment variable.
+# Following lines only execute when the variable is empty on script startup.
+export MAC_ADDR="00:00:00:00:00:00"
+export IP_ADDR="192.168.230.128"
+export CCM_HOME="${CCM_HOME-/usr/local/ccm}"
+export CS_HOME="${CS_HOME-/usr/local/sc44/cs_app}"
+export VDE_HOME="${VDE_HOME-/usr/local/tds/vde}"
+export FLEXLM_HOME="${FLEXLM_HOME-/usr/local/flexlm}"
+export LICENSE_FILE="${LICENSE_FILE-/usr/local/flexlm/license.dat}"
+export PATH="$CCM_HOME/bin:$PATH"
+
+# Handle start, stop, restart
+case $1 in
+
+'start')
+/sbin/ifconfig eth0 down
+/sbin/ifconfig eth0 hw ether ${MAC_ADDR} ${IP_ADDR} up
+echo "Start Flexlm server"
+su - ccm_root -c "${FLEXLM_HOME}/lmgrd -c ${LICENSE_FILE}"
+echo "Start server Informix"
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start Synergy/Change server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+
+'stop')
+echo "Stop Synergy/Change server..."
+su - ccm_root -c "${CS_HOME}/csctl.sh stop"
+su - ccm_root -c "${VDE_HOME}/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Stop Flexlm server..."
+su - ccm_root -c "${FLEXLM}/lmutil lmdown -force -q -c license.dat"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+;;
+
+'restart')
+echo "Stop Synergy/Change server..."
+su - ccm_root -c "${CS_HOME}/csctl.sh stop"
+su - ccm_root -c "${VDE_HOME}/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Stop Flexlm server..."
+su - ccm_root -c "${FLEXLM}/lmutil lmdown -force -q -c license.dat"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+
+echo "Start Flexlm server"
+su - ccm_root -c "${FLEXLM_HOME}/lmgrd -c ${LICENSE_FILE}"
+echo "Start server Informix"
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start Synergy/Change server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+*)
+echo "usage synergy4.4 {start|stop|restart}"
+;;
+esac

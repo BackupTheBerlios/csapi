@@ -1,0 +1,64 @@
+#!/bin/bash
+# CM Synergy 4.3 Startup/Shutdown script
+
+# Define setup variables
+# Note that you can override these variables, by setting environment variable.
+# Following lines only execute when the variable is empty on script startup.
+export MAC_ADDR="00:00:00:00:00:00"
+export IP_ADDR="192.168.230.128"
+export CCM_HOME="${CCM_HOME-/usr/local/ccm}"
+export CS_HOME="${CS_HOME-/usr/local/cs43/cs_app}"
+export VDE_HOME="${VDE_HOME-/usr/local/sds20/vde}"
+export PATH="$CCM_HOME/bin:$PATH"
+
+# Handles start, stop, restart
+case $1 in
+
+'start')
+/sbin/ifconfig eth0 down
+/sbin/ifconfig eth0 hw ether ${MAC_ADDR} ${IP_ADDR} up
+echo "Start Informix server..."
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start ChangeSynergy server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+
+'stop')
+echo "Stop ChangeSynergy server..."
+su - ccm_root -c "/usr/local/sc/cs_app/csctl.sh stop"
+su - ccm_root -c "/usr/local/tds/vde/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+;;
+
+'restart')
+echo "Stop ChangeSynergy server..."
+su - ccm_root -c "/usr/local/sc/cs_app/csctl.sh stop"
+su - ccm_root -c "/usr/local/tds/vde/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+
+echo "Start server Informix..."
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start ChangeSynergy server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+*)
+echo "usage synergy4.3 {start|stop|restart}"
+;;
+esac
+
