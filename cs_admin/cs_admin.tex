@@ -123,12 +123,12 @@ Some paths and particularities differ from one server to another. In this paper,
 \begin{itemize}
 \item \ccmhome{} is the installation directory used by the \ccm{} engine; it is usually named \texttt{ccm63}, with a symbolic link from \texttt{ccm} to \texttt{ccm63}. Default is \verb!/usr/local/ccm/!.
 \item \cshome{} is the installation directory used by the \cs{} engine; it is usually named \texttt{cs43}. Default is \verb!/usr/local/cs43/!.
-\item \vdehome{} is the installation directory used by the LDAP embedded server, and the path to the \verb!vde.sh! executable; default is \verb!/usr!\-\verb!/local!\-\verb!/sds20/!. The \verb!vde.sh! script is located in \vdehome{}\verb!/vde/!. 
+\item \vdehome{} is the installation directory used by the LDAP embedded server, and the path to the \verb!vde.sh! executable; default is \verb!/usr!\-\verb!/local!\-\verb!/sds20/vde/!. The \verb!vde.sh! script is located in this directory. 
 \end{itemize}
 
 Often, when addressing specific topics, we will simply say \webinf{}\-\verb!/wsconfig! since there is only one \webinf{} directory in the \cs{} arborescence. The full path to \webinf{} should be read as \cshome{}\verb!/cs_app!\-\verb!/webapps!\-\verb!/synergy!\-\verb!/WEB-INF!.
 
-The path environment variable should contain the \ccmhome{}\verb!/bin!, \cshome{}\verb!/cs_app/! and \vdehome{} XXX entries. This is not required, but be warned that all executables are assumed to be in the path for the examples provided.
+The path environment variable should contain the \ccmhome{}\verb!/bin!, \cshome{}\verb!/cs_app/! and \vdehome{} entries. This is not required, but be warned that all executables are assumed to be in the path for the examples provided.
 
 All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system, and concern Change Synergy 4.3. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
 
@@ -349,7 +349,7 @@ $ find ${CS_HOME} -user root
 $
 \end{verbatim}
 
-A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}.
+A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}. A script for \cs{} 4.3 is provided in appendix \ref{sec:synergy4.3} on page \pageref{sec:synergy4.3} for your convenience. An alternative version for \cs{} 4.4 is also furnished on the homepage of the project\footnote{\href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}}.
 
 As user Informix, start the database (if there is only one database, you can omit the -s flag):
 \begin{verbatim}
@@ -362,8 +362,6 @@ $ ccm_start_daemons
 $ vde.sh start
 $ csctl.sh start
 \end{verbatim}
-
-% XXX SCRIPT!
 
 Order does matter. Starting the \cs{} daemons when there is no active LDAP connection may cause a mess in the connections opened by the engine\footnote{And several CLOSE\_WAIT may appear in the output of \texttt{netstat -na}. When there are too many of these (thousands) the server may become unresponsive. The only issue we've found so far is to reset all CLOSE\_WAIT'd sockets through a script and restart all daemons --- or reboot the server.}. When stopping the server, the reverse steps have to be followed. As user \ccmroot{} type:
 \begin{verbatim}
@@ -1292,6 +1290,78 @@ corresponding problem_number.
 
 =cut
 \end{verbatim}
+
+\chapter{Startup script}
+\label{sec:synergy4.3}
+
+\begin{verbatim}
+#!/bin/bash
+# CM Synergy 4.3 Startup/Shutdown script
+
+# Define setup variables
+# Note that you can override these variables, by setting environment variable.
+# Following lines only execute when the variable is empty on script startup.
+export MAC_ADDR="00:00:00:00:00:00"
+export IP_ADDR="192.168.230.128"
+export CCM_HOME="${CCM_HOME-/usr/local/ccm}"
+export CS_HOME="${CS_HOME-/usr/local/cs43/cs_app}"
+export VDE_HOME="${VDE_HOME-/usr/local/sds20/vde}"
+export PATH="$CCM_HOME/bin:$PATH"
+
+# Handles start, stop, restart
+case $1 in
+
+'start')
+/sbin/ifconfig eth0 down
+/sbin/ifconfig eth0 hw ether ${MAC_ADDR} ${IP_ADDR} up
+echo "Start Informix server..."
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start ChangeSynergy server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+
+'stop')
+echo "Stop ChangeSynergy server..."
+su - ccm_root -c "/usr/local/sc/cs_app/csctl.sh stop"
+su - ccm_root -c "/usr/local/tds/vde/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+;;
+
+'restart')
+echo "Stop ChangeSynergy server..."
+su - ccm_root -c "/usr/local/sc/cs_app/csctl.sh stop"
+su - ccm_root -c "/usr/local/tds/vde/vde.sh stop"
+echo "Stop Synergy/CM server..."
+su - ccm_root -c "ccm_stop_daemons"
+echo "Stop Informix server..."
+su - informix -c "ccmsrv offline -y"
+echo "Kill remaining processes..."
+pkill -f -u ccm_root
+
+echo "Start server Informix..."
+su - informix -c "ccmsrv online -y"
+echo "Start Synergy/CM server..."
+su - ccm_root -c "ccm_start_daemons"
+echo "Start ChangeSynergy server..."
+su - ccm_root -c "${VDE_HOME}/vde.sh start"
+su - ccm_root -c "${CS_HOME}/csctl.sh start"
+;;
+*)
+echo "usage synergy4.3 {start|stop|restart}"
+;;
+esac
+
+
+\end{verbatim}
+
 
 \chapter{Licensing of this document}
 \label{sec:license}
