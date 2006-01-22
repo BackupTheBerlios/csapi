@@ -3,11 +3,10 @@
 #   <version>4.3_sp2</version>
 #   <description>reset_attribute.pl should be set as a post-condition triggers
 #   on an attribute. It checks for its value and set it back if changed, under
-#   some conditions.
+#   some conditions. If the project_name is "Product A" the script changes 
+#   the project_name value to "Project B".
 #   </description>
 # </trigger>
-
-# If the project_name is "Product A" the script changes the project_name value to "Project B"
 
 require 5.002;
 use strict;
@@ -82,19 +81,21 @@ eval
     $crstatus = $problem->getDataObjectByName("crstatus")->getValue();
     $project_name = $problem->getDataObjectByName("project_name")->getValue();
 
-    # Comment for silent execution.
+    # Comment prints for silent execution.
     print "cr in [$crstatus] from [$project_name].. ";
     
     # If miscellanous_checks() returns false, the script does not change 
     # the value and therefore exits.
-    my $check_result = miscellaneous_checks($crstatus, $project_name);
+    my $check_result = miscellaneous_checks($project_name);
     if (!$check_result)
     {
-	print "failed.\n";
+	print "not changed.\n";
 	exit;
     }
 
     # Change attribute value to "Product B".
+    # If you want to replace by the old value look back in the
+    # transition_log attribute (with fine perl regexp's).
     $problem->getDataObjectByName("project_name")->setValue("Product B");
 
     # Apply modifications.
@@ -112,20 +113,17 @@ if($@)
 
 #################################################################
 #                                                               #
-# sub miscellaneous_checks($crstatus, $project_name)            #
+# sub miscellaneous_checks($project_name)                       #
 #                                                               #
 # Do some checks and returns a boolean indicating if the cr     #
 # should be changed or not.                                     #
 #                                                               #
 # Parameters are:                                               # 
-#  * $crstatus is the state where the records currently stay    #
-#     in.                                                       #
 #  * $project_name is the attribute to check.                   #
 #                                                               #
 #################################################################
 
 sub miscellaneous_checks {
-    my $crstatus = shift;
     my $project_name = shift;
 
     if ($project_name = "Product A")
