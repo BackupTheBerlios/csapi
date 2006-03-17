@@ -23,9 +23,9 @@
         linkcolor=rltred,               % \ref{...} and \pageref{...}
         menucolor=webdarkblue,
         citecolor=webbrightgreen,
-        pdftitle={A Short Introduction to Synergy/Change 4.3 Administration},
+        pdftitle={A Short Introduction to SYNERGY/Change 4.3 Administration},
         pdfauthor={Boris Baldassari},
-        pdfsubject={A Short Introduction to Synergy/Change 4.3 Administration},
+        pdfsubject={A Short Introduction to SYNERGY/Change 4.3 Administration},
         pdfkeywords={telelogic synergy change configuration management change},
         pagebackref,
         pdfpagemode=None,
@@ -67,9 +67,9 @@
 
 
 
-\newcommand{\cs}{Synergy/Change}
+\newcommand{\cs}{SYNERGY/Change}
 \newcommand{\ccm}{{\sc ccm}}
-\newcommand{\cm}{Synergy/CM}
+\newcommand{\cm}{SYNERGY/CM}
 \newcommand{\cshome}{{\sc \$\{cs\_home\}}}
 \newcommand{\ccmhome}{{\sc \$\{ccm\_home\}}}
 \newcommand{\vdehome}{{\sc \$\{vde\_home\}}}
@@ -96,13 +96,13 @@
 
 \section{Intent of this document}
 
-\cs{} is a major piece in the field of Change Management Tools. 
+\cs{} is one of the major tools for Change Management. 
 
-This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 not fully documented, and provides hints and tricks about its everyday administration. Most of the information published here is available on the world wide web\footnote{Refer to the Bibtex entries at the end of the document for links.}.
+This document introduces the \cs{} administrator to some aspects of \cs{} 4.3 not fully documented, and provides hints and tricks about its everyday administration. Most of the information published here is available on the world wide web.
 
 This document summarizes some of the knowledge acquired while administering \cs{}, in an attempt to share it.
 
-Another implicit goal is that readers experiment with and correct the information contained in this guide. Thanks to a free license, modifications are allowed to this document (See Annex \ref{sec:license} on page \pageref{sec:license}).
+Another implicit goal is that readers experiment with and correct the information contained in this guide. Thanks to the free licensing, readers are allowed -- and encouraged -- to make modifications (See Annex \ref{sec:license} on page \pageref{sec:license}) in this document.
 
 The latest version of this document can always be found online on the homepage of this document\footnote{\href{http://csapi.berlios.de/cs\_admin}{csapi.berlios.de/cs\_admin}}.
 
@@ -113,6 +113,7 @@ This guide is a common work from administrators of Telelogic \cs{} 4.3. It is in
 \begin{itemize}
 \item Andre A'Quillen,
 \item Boris Baldassari (\textit{official maintainer}),
+\item Philippe Leblanc,
 \item Per Lundborg.
 \end{itemize}
 
@@ -130,12 +131,12 @@ Often, when addressing specific topics, we will simply say \webinf{}\-\verb!/wsc
 
 The path environment variable should contain the \ccmhome{}\verb!/bin!, \cshome{}\verb!/cs_app/! and \vdehome{} entries. This is not required, but be warned that all executables are assumed to be in the path for the examples provided.
 
-All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system, and concern Change Synergy 4.3. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
+All operations in this guide have been made on a GNU/Linux RedHat Enterprise Linux 2.1 system, and concern \cs{} 4.3. Instructions found in this document should also apply to any *NIX system where \cs{} can be run.
 
 
 \chapter{About \cs{}}
 
-\cs{} is a Change Management System developed by Telelogic. Its main features are, according to their official web site: 
+\cs{} is a Change Management System developed by Telelogic. Its main features are, according to their official web site\footnote{See \href{http://www.telelogic.com/}{http://www.telelogic.com}.}: 
 
 \begin{itemize}
 \item Advanced Tracking and Reporting of Change Requests
@@ -169,7 +170,7 @@ It is composed of several Servlets classes from the Continuus engine and the \cs
 \label{fig:cs_diag}
 \end{figure}
 
-The LDAP server can either be the server furnished by Telelogic or an external source to plug into enterprise resources.
+The LDAP server can either be the server delivered by Telelogic or an external source to plug into enterprise resources.
 
 Oracle and Informix databases are supported by \cm{} -- but the former is limited to Solaris, HP-UX (and AIX for \cm{} 6.3).
 
@@ -180,11 +181,11 @@ Below is the location for some of the more important \cs{} files:
 
 \begin{description}
 
-\item[\cshome{}/cs\_apps/csctl.sh] The script which starts \cs{} daemons. It should be invoked with the \ccmroot{} user, after the LDAP is connected (i.e. after the \verb!vde.sh! script is invoked if the internal LDAP is used). 
+\item[\cshome{}/cs\_apps/csctl.sh] This script starts \cs{} daemons. It should be invoked with the \ccmroot{} user, after the LDAP is connected (i.e. after the \verb!vde.sh! script is invoked if the internal LDAP is used). 
 
-\item[\vdehome{}/vde.sh] The script to start/stop the LDAP server furnished by Telelogic. It should be invoked with the \ccmroot{} user, before the \cs{} daemons are invoked.
+\item[\vdehome{}/vde.sh] This script starts/stops the LDAP server provided by Telelogic. It should be invoked with the \ccmroot{} user, before the \cs{} daemons are invoked.
 
-\item[\ccmhome{}/etc/license\_data] The file which contains licensing data, as provided by Telelogic.
+\item[\ccmhome{}/etc/license\_data] This file contains licensing data, as provided by Telelogic.
 
 \item[\ccmhome{}/etc/.router.adr] contains the name of the router host and its IP address.
 
@@ -210,25 +211,25 @@ Below is the location for some of the more important \cs{} files:
 
 \subsection{Requirements}
 
-\cs{} is far less ressources-consuming than its main competitor Rational ClearQuest. A single server, hosting both backend sessions and database, can handle seamlessly a hundred of activ users and several thousands of records. 
+\cs{} is far less ressources-consuming than its main competitor Rational ClearQuest. A single server, hosting both backend sessions and database, can handle seamlessly a hundred of active users and several thousands of records. 
 
-Administration tasks are nevertheless still mandatory, and a full-time administrator -- as for any other software -- is mandatory. For full user satisfaction and efficiency consider hiring one administrator for 100 activ users.
+Administration tasks are nevertheless still mandatory, and a full-time administrator -- as for any other software -- is required. For full user satisfaction and efficiency consider hiring one administrator for 100 active users.
 
 On the client side, the web approach delivers all its flexibility and power; no heavy software setup is necessary. A simple web browser is all that is needed to connect from any location in the world.
 
 
 \subsection{Patches}
 
-Patches are provided by Telelogic and are freely available on their website\footnote{If you have a valid account..}. All instructions are provided in the README file of each patch and \emph{must be read}. Applying a patch is usually harmless; but the principle of precaution suggests that your database should be backed up. Refer to section \ref{sec:maint_backup} on page \pageref{sec:maint_backup} for this. 
+Patches are provided by Telelogic and are freely available on their website\footnote{You need to be registered and logged in.}. All instructions are provided in the README file of each patch and \emph{must be read}. Applying a patch is usually harmless; but the principle of precaution suggests that your database should be backed up. Refer to section \ref{sec:maint_backup} on page \pageref{sec:maint_backup} for this. 
 
-Install instructions vary from one patch to another. \emph{Really always check the readme instructions} provided with the package, since there may be patch-specific hints. In general, patches are reversible: check instructions in the README.
+Install instructions vary from one patch to another. \emph{Really always check the README instructions} provided with the package, since there may be patch-specific hints. In general, patches are reversible: check instructions in the README.
 
 \subsubsection{CCM patches}
 
 The usual way to install a \ccm{} patch is through the ccm\_patch utility. 
 
 \begin{enumerate}
-\item Get and install the latest ccm\_patch utility: it can be retrieved with ftp from \verb!ftp.continuus.com/pub/patches/!. Login as anonymous and get \verb!ccm_patch! and \verb!ccm_patch_README!. You should always check that the version of the utility is the latest available. You will also need the \verb!ncompress! utility\footnote{The ncompress utility is NOT installed as a default package in the RedHat E.L. 2.1.}.
+\item Get and install the latest ccm\_patch utility: it can be downloaded with ftp from \verb!ftp.continuus.com/pub/patches/!. Login as anonymous and get \verb!ccm_patch! and \verb!ccm_patch_README!. You should always check that the version of the utility is the latest available. You will also need the \verb!ncompress! utility\footnote{The ncompress utility is NOT installed as a default package in the RedHat E.L. 2.1.}.
 \item Shutdown the database:
 \begin{verbatim}
 $ ccmdb shutdown /path/to/db
@@ -291,7 +292,7 @@ It is very common to use Perl scripts in lifecycle triggers, either pre-conditio
 
 \section{Scripts}
 
-The Perl API deserves several goals, from server administration to periodic reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} provide a template that you can safely use and adapt to your environment. POD (in-line) documentation is available, as well as usage through the \verb!-h!switch.
+The Perl API deserves several goals, from server administration to periodic reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} provide a template that you can safely use and adapt to your environment\footnote{These scripts need a slight tweaking to be used against a \cs{} 4.4 server. See the \href{homepage of the project}{http://csapi.berlios.de/cs\_admin/}.}. POD (in-line) documentation is available, as well as usage through the \verb!-h! switch.
 
 Maintenance scripts are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, periodic reporting and statistics, and more\footnote{The scripts are also available online: \href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}.}.
 
@@ -318,17 +319,17 @@ $ getreport.pl -f "[%s] %s|%s|%s" -q "(software match 'good*')"
 
 \subsection{Modify records}
 
-This script (see \S \ref{sec:modifyrecord.pl} on page \pageref{sec:modifyrecord.pl}) allows an user to modify a record on the \cs{} server, according to his rights. A list of problem\_number's can be furnished on command-line, for batch treatments. The synopsis of the script is:
+This script (see \S \ref{sec:modifyrecord.pl} on page \pageref{sec:modifyrecord.pl}) allows a user to modify a record on the \cs{} server, according to his rights. A list of problem\_number's can be provided on command-line, for batch treatments. The synopsis of the script is:
 
 \begin{verbatim}
 modifyrecord.pl [-h|help] [-i|identifier identifier] attribute value
 \end{verbatim}
 
-It uses an array to store problem\_number's. It either push id furnished on command line or read and push from standard input. For each element of the array, it retrieves an object (getCRData), read (getValue) and set (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem\_number.
+It uses an array to store problem\_number's. It either pushes the id specified on command line, or reads and pushes the id's from standard input. For each element of the array, it retrieves an object (getCRData), reads (getValue) and sets (setValue) the value of the attribute specified on command line. A line is shown with old and new values, along with corresponding problem\_number.
 
 \subsection{Power of CLI}
 
-Command-Line Interface comes handy for mass treatments. The getreport and modifyrecord scripts can be piped to achieve fine-tuned treatments. A classic example could be ``change all records with release 2.1 to release 3.0 in project website''. A way to achieve this request could be: 
+Command-Line Interface comes handy for mass treatments. The getreport and modifyrecord scripts can be piped to achieve fine-tuned treatments. A classic example could be ``change all records with release 2.1 to release 3.0 in project website'', which is achieved with: 
 
 \begin{verbatim}
 $ getreport.pl -q (release='2.1' and project='website') problem_number
@@ -342,7 +343,7 @@ $ getreport.pl -q (release='2.1' and project='website') problem_number
 
 Since \cs{} is built upon several layers, they all have to be started sequentially, with correct user privileges. When su-ing to \ccmroot{} or informix users, the dash option (\verb!su - ccm_root!) should always be used to set correct environment variables.
 
-You could get into troubles if the user starting the daemons is not correct. Right problems happen, and can e.g. forbid the engine to start the sessions. There should be no file with a root owner in the \cshome{} directory (and recursively); you can check it with a quick find:
+You could get into troubles if the user starting the daemons has not correct privileges. Right problems happen, and can e.g. forbid the engine to start the sessions. There should be no file with a root owner in the \cshome{} directory (and recursively); you can check it with a quick find:
 
 \begin{verbatim}
 $ find ${CS_HOME} -user root
@@ -351,9 +352,9 @@ $
 
 A script is probably the best option: it will spare the administrator some time while ensuring the commands are always the same\footnote{Even early in the morning, before the first cup of coffee\ldots}. A script for \cs{} 4.3 is provided in appendix \ref{sec:synergy4.3} on page \pageref{sec:synergy4.3} for your convenience. It should be put in the \verb!/etc/init.d/! directory, with links from /etc/rc*.d/ for startup.
 
-An alternative version for \cs{} 4.4 is also furnished on the homepage of the project\footnote{\href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}}.
+An alternative version for \cs{} 4.4 is also available on the homepage of the project\footnote{\href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}}.
 
-As user Informix, start the database (if there is only one database, you can omit the -s flag):
+As user Informix, start the database (if there is only one database, you can omit the -s part):
 \begin{verbatim}
 $ ccmsrv online -y -s /path/to/db
 \end{verbatim}
@@ -437,7 +438,7 @@ A few statistics can be gathered from \cs{}, for a pen-test measure or through a
 
 \item[ccm\_monitor:] \label{sec:backend_sessions} gives the number of sessions and the path to their database. This should be approximately the ratio of the number of users connected on the number of users per session as defined in the Server tab of the Admin web interface.
 
-\item[ccm\_lmgr\_status:] \label{plain:ccm_lmgr_status} gives licenses usage (who is connected, and what tool is used -- CM Synergy or Change Synergy). It also gives the total number of available licenses. It can be easily parsed with a little bit of awk or Perl magic.
+\item[ccm\_lmgr\_status:] \label{plain:ccm_lmgr_status} gives licenses usage (who is connected, and what tool is used -- \cm{} or \cs{}). It also gives the total number of available licenses. It can be easily parsed with a little bit of awk or Perl magic.
 
 \item[ccmsrv status:] provides information relative to databases.
 
@@ -450,7 +451,7 @@ Apart from an earthquake or alien intrusion in your server, backups will also be
 
 When the application faces performance issues, it is usually a good idea to plan a maintenance operation, backup the database, delete and unpack it. The full re-insertion of all elements will re-order file fragments and speed up transactions.
 
-Deletion of the current database is done with the {\texttt ccmdb delete} command. Basically, the path to the db is the one you specify when invoking the ccmdb commands; but simply (re)moving the directory is a bad idea. The {\texttt ccmdb delete} not only removes it, but also do other changes in the server internals. This step should be achieved once the backup file has been verified.
+Deletion of the current database is done with the {\texttt ccmdb delete} command. Basically, the path to the db is the one you specify when invoking the ccmdb commands; but simply (re)moving the directory is a bad idea. The {\texttt ccmdb delete} does not only remove it, but also makes other changes in the server internals. This step should be achieved once the backup file has been verified.
 
 Once backups have been made, stop the daemons, delete the database, start the daemons. As user \ccmroot{} commands are:
 \begin{verbatim}
@@ -474,15 +475,15 @@ Check that the database is recognized in the Admin web interface, section Server
 
 \section{Expand the DB space}
 
-The Informix database uses four dbspaces, specified on installation: rootdbs, temp, log, ccm. If the workload of the server is surprisingly increasing more than expected, these dbspaces may fulfill quickly. In this section, we will study how DB space can be increased.
+The Informix database uses four dbspaces, specified on installation: rootdbs, temp, log, ccm. If the workload of the server is surprisingly increasing more than expected, these dbspaces may be quickly full. In this section, we will study how DB space can be increased.
 
 You should have a look at some technical pages from the Telelogic support web site\footnote{https://support.telelogic.com/en/synergy/kb/}: TB206 -- Increasing the Logical Logs in Informix On-Line 7.x and 9.x (UNIX and NT) and TB217 -- Expanding An Informix On-Line 7.x or 9.x Database Server (UNIX). Also refer to the \ccm{} Synergy Administration Guide for \unix{}.
 
 A dbspace is divided into \emph{logical logs}, which are storage areas for transactions (i.e. actions made on the server) before they are processed. When processing (checkpoint) occurs\footnote{Checkpoints are defined by default to run every 5 minutes.}, all data are cleaned from the logical logs for future use, e.g. like in a fifo.
 
-So, the amount of memory used in dbspaces should remain approximately identical, excepted when the real-time workload increases significantly. You should monitor dbspace usage; when occupation exceeds 70\%, consider adding some more chunks of free space.
+So, the amount of memory used in dbspaces should remain approximately stable, except when the real-time workload increases significantly. You should monitor dbspace usage; when occupation exceeds 70\%, consider adding some more chunks of free space.
 
-\paragraph{The ccm logspace} holds all informations about objects created by users. Especially, if you use a lot of strings in the creation of, say a CR, this dbspace will fulfill quickly\footnote{When installing \cs{}, the ccm dbspace is approximately twice as big as others, making it the biggest dbspace available amongst the four created.} --- attributes are stored elsewhere, in the st\_root directory.
+\paragraph{The ccm logspace} holds all information about objects created by users. Especially, if you use a lot of strings in the creation of, say a CR, this dbspace will fulfill quickly\footnote{When installing \cs{}, the ccm dbspace is approximately twice as big as others, making it the biggest dbspace available amongst the four created.} --- attributes are stored elsewhere, in the st\_root directory.
 
 Some statistics about dbspace level of usage can be obtained by issuing the following command: 
 
@@ -538,27 +539,27 @@ chunk files:
 
 \chapter{Customizing \cs{}}
 
-\cs{} can be highly fine-tuned and customized to feet into the company's traditions. 
+\cs{} can be highly fine-tuned and customized to fit into the company's current practices. 
 
-First, the workflow for record management used in the company can be reproduced, with all states, transitions, attributes and rights. When implementation becomes tricky using the default features, triggers can provide a way to external resources or execute some complex operation, e.g. to grant rights.
+First, the workflow for record management used in the company can be reproduced, with all states, transitions, attributes and rights. When implementation becomes tricky using the default features, triggers can access external resources or execute some complex operation, e.g. to grant rights.
 
 
 \section{Triggers}
 \label{sec:triggers}
 
-Triggers can be written in Perl or shell. They are scripts executed on given events: transition, attribute modification, etc. and are specified in the lifecycle. Three types of triggers can be set in a workflow: 
+Triggers can be written in Perl or shell. Such scripts are executed on given events: transition, attribute modification, etc. and are specified in the lifecycle. Three types of triggers can be set in a workflow: 
 
 % XXX add ptcli.cfg pre-condition triggers 
 
 \begin{description}
-\item[pre-condition triggers] are executed {\em before} a transition, and can eventually forbid it by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
+\item[pre-condition triggers] are executed {\em before} a transition, and can eventually prevent the transition to be passed by returning 1 (one). A zero (0) return code indicates that the transition is allowed. Additionally, a {\tt die} command prints a message on the bottom of the generated page, which is useful to explain the reason of refusal.
 \item[post-condition triggers] are executed {\em after} a transition is passed, and thus cannot prevent it to happen. They can be used to compute the value of an attribute, send an email to e.g. the assigned engineer, or update some third-party tool.
 \item[attribute modification triggers] are fired when a specified attribute is modified, either while in a state or on transition. Modification attributes are set in the lifecycle editing facilities, Edit CRProcess, Attributes.
 \end{description}
 
-On attribute modification, only post-condition triggers can be defined. This is a bad thing, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at last, it allows operations on the new value.
+On attribute modification, only post-condition triggers can be defined. This is a bad thing, since we cannot check the content of the attribute and prevent the modification if something is wrong. But, at least, it allows operations to be performed on the new value.
 
-A trigger script is provided in appendix \ref{sec:reset_attribute.pl} as an example for attribute triggers. On \verb!project_name! modification, it check the new value of the attribute and eventually modify it (\emph{i.e.} according to some checks).
+A trigger script is provided in appendix \ref{sec:reset_attribute.pl} as an example for attribute triggers. On \verb!project_name! modification, it checks the new value of the attribute and eventually modifies it (\emph{i.e.} according to some checks).
 
 If a check on an attribute value is mandatory, e.g. for conformance to a given format, it may still be accomplished through a modification trigger. Although it is somewhat complex, the following method can be used:
 
@@ -574,7 +575,7 @@ Beware of loops: if you change the value of the attribute, the modification trig
 \section{Configuration files}
 \label{sec:conf_files}
 
-Configuration files are divided into sections, containing lines of the form given thereafter. One section can have several lines attached; one line can have several parameters. The whole \verb!CFG_SECTION! must be on one line; it can contain several \verb!CFG_PARAM!; it seems that the order of \verb!CFG_PARAM! does not matter.
+Configuration files are divided into sections, containing lines of the form given thereafter. One section can contain several lines; one line can have several parameters. The whole \verb!CFG_SECTION! must be on a single line; it can contain several \verb!CFG_PARAM!; it seems that the order of \verb!CFG_PARAM! does not matter.
 
 \begin{verbatim}
 [CFG_SECTION]
@@ -595,7 +596,7 @@ It is the main configuration file for \cs{}. As stated in the preamble of the fi
 ``This is the main Change Synergy configuration file. Changes to this file should be limited to the System Variables Section. Additional changes should be done in a custom configuration file and referenced here using the CFG\_MERGE setting.''
 \end{quote}
 
-This file defines among others session, databases and hosts parameters, LDAP settings, the behavior of stand-alone windows (e.g. when you ask for a report), HTTP parameters, date formats, entities encoding, tasks and objects options.
+This file also defines parameters for sessions, databases and hosts, as well as LDAP settings, the behavior of stand-alone windows (e.g. when you ask for a report), HTTP parameters, date formats, entities encoding, tasks and objects options.
 
 \label{plain:cfg_merge}
 The CFG\_MERGE section lists configuration files to be parsed in the current directory (wsconfig) after the pt.cfg file. When the administrator installs a package in the web administration interface, the name of the cfg file of the package is appended to the end of this section.
@@ -610,7 +611,7 @@ The CFG\_MERGE section lists configuration files to be parsed in the current dir
 
 The parsing order is the one specified in the pt.cfg file. Thus any declaration occurring more than once in the cfg files may be overwritten by a new occurrence, depending on the configuration of the package. As a result, \emph{the order of installation of packages does matter}.
 
-If \cs{} is used for purposes other than change requests, it may be interesting to change the name of items from ``Change Request'' to, say ``Document Request''. This can be achieved by changing elements of the \texttt{Textual Replacement Variables} section: \verb!Problem_Identifier!, \verb!Problem_Identifier_Plural!, \verb!Problem_Identifier_Abbr!.
+If \cs{} is used for other purposes than change requests, it may be interesting to change the name of items from ``Change Request'' to, say ``Document Request''. This can be achieved by changing elements of the \texttt{Textual Replacement Variables} section: \verb!Problem_Identifier!, \verb!Problem_Identifier_Plural!, \verb!Problem_Identifier_Abbr!.
 
 \begin{verbatim}
 [CCM_ATTRIBUTE]
@@ -624,18 +625,18 @@ If \cs{} is used for purposes other than change requests, it may be interesting 
 
 pt\_listbox.cfg contains the definition of all listboxes, as shown in the Listbox section of the Admin web interface.
 
-Since there may be dependent listboxes, this file can quickly become confusing and should as far as possible not be edited by hand. One exception is when \cs{} itself falls and messes items; in which case you will have to investigate yourself. But, in any case, remember to often backup your wsconfig directory.
+Since there may be dependent listboxes, this file can quickly become confusing and should as far as possible not be edited by hand. One exception is when \cs{} itself falls and messes items; in which case you will have to investigate yourself. But, in any case, remember to backup your wsconfig directory on a regular basis, e.g. daily.
 
 \section{Template}
 
-An important part of configuration files present in the \verb!wsconfig! directory address package-specific customizations. The items studied here can be needed e.g. to customize listboxes (e.g. hide the SimpleProcessQuery in the CustomQuery), or restrict access to specific parts of the web interface.
+An important part of configuration files located in the \verb!wsconfig! directory address package-specific customizations. The items studied here can be needed to customize listboxes (e.g. hide the SimpleProcessQuery in the CustomQuery), or restrict access to specific parts of the web interface.
 
-As stated in section \ref{sec:server_architecture}, the \jetty{} engine uses templates to build the HTML pages. These templates are located in the \webinf{}/wsconfig/templates/pt directory, and can be customized. The main difficulty is the understanding of the template itself: \cs{} defines \wslet{}, which are on-the-fly replacements by e.g. database data. 
+As stated in section \ref{sec:server_architecture}, the \jetty{} engine uses templates to build the HTML pages. These templates are located in the \webinf{}/wsconfig/templates/pt directory, and can be customized. The main difficulty is the understanding of the template itself: \cs{} defines \wslet{}, which are on-the-fly replacements by dynamic data. 
 
-It is quite straightforward to remove an item. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. Customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} has two steps:
+It is quite straightforward to remove an item. Templates can easily be modified to hide or show some parts of the interface, such as one of the top buttons as explained in \S \ref{sec:custUI}. Customization for a particular \csrole{}\footnote{Remember that different \csrole{} can (and usually) have different web interfaces.} is achieved in two steps:
 
 \begin{description}
-\item[Create a link to the new template] through a configuration file indicating the path of the template to be used. Report definitions use it to format the report display (see \S \ref{sec:ccm_problem} on page \pageref{sec:ccm_problem}), but it can also be used to completely redefine the main UI with the \verb!CCM_TEMPLATE! declaration -- see below.
+\item[Create a link to the new template] through a configuration file indicating the path of the template to be used. Report definitions use it for formatting the report display (see \S \ref{sec:ccm_problem} on page \pageref{sec:ccm_problem}), but it can also be used to completely redefine the main UI with the \verb!CCM_TEMPLATE! declaration -- see below.
 \item[Create the template] by modifying and saving as one of the files present in the \verb!wsconfig! directory. 
 \end{description}
 
@@ -654,7 +655,7 @@ To hide or show UI parts, the main configuration item is \verb!CCM_TEMPLATE!.
 
 \begin{itemize}
 \item \verb!NAME! is the name of the \verb!CCM_TEMPLATE! declaration.
-\item \verb!ATTRS! is a list of attributes, separated by pipes. Depending on the configuration file, pipe-separated items may be only the name of the attribute (e.g. in crprocess\_xx.xml) or a 3-uple: \{attribute name, $-1$, false\}:
+\item \verb!ATTRS! is a list of attributes, separated by pipes. Depending on the configuration file, pipe-separated items may be only the name of an attribute (e.g. in crprocess\_xx.xml) or a 3-uple: \{attribute name, $-1$, false\}:
 \item \verb!ONLOAD_ACTION! contains the name of the corresponding action.
 \item \verb!FILE! is the path of the file to be loaded (if no \csrole{} has been specified on the line). 
 \item \verb!ROLE NAME! specifies which file to load for this particular \csrole{}.
@@ -676,7 +677,7 @@ As often, an example is far better than 1000 words: we will study in section \re
 
 \subsection{CCM\_LIST}
 
-For reports, the \verb!CCM_LIST! section takes care of listboxes display. There are three listboxes available (Query, Format, Report), which can be declined\footnote{Users can have different lists of reports depending on the lifecycle they select in the top-left box of the Report section.} in as many versions as defined lifecycles, plus one for the 'All Lifecycles' item. \verb!CCM_LIST! lines have the following parameters:
+For reports, the \verb!CCM_LIST! section takes care of listboxes display. Three listboxes are available (Query, Format, Report), which can be derived\footnote{Users can have different lists of reports depending on the lifecycle they select in the top-left box of the Report section.} in as many versions as defined lifecycles, plus one for the 'All Lifecycles' item. \verb!CCM_LIST! lines have the following parameters:
 
 \begin{verbatim}
 [CCM_LIST]
@@ -688,7 +689,7 @@ For reports, the \verb!CCM_LIST! section takes care of listboxes display. There 
 \end{verbatim}
 
 \begin{description}
-\item \verb!NAME! can address a specific workflow by just adding its short name at the end of the selected listbox name; say we have defined two workflows, one for Document Requests (short: doc) and another for Typography Fixes (short: typo). The listboxes could have the following names (we just list items for the Document Requests and All workflows items):
+\item \verb!NAME! can address a specific workflow by just adding its short name at the end of the selected listbox name; say we have defined two workflows, one for Document Requests (short: doc) and another for Typography Fixes (short: typo). Listboxes could have the following names (we just list items for the Document Requests and All workflows items):
 
 \label{plain:crquerycustom}
 \begin{itemize}
@@ -729,17 +730,17 @@ For reports, the \verb!CCM_LIST! section takes care of listboxes display. There 
 \end{itemize}
 \end{itemize}
 
-\item \verb!SECTION! is the type of item to add; it can be one of \verb!CCM_REPORT! (for Reports and Formats) or \verb!CCM_QUERY! (for Queries only).
+\item \verb!SECTION! is the type of item to add; its value is either \verb!CCM_REPORT! (for Reports and Formats) or \verb!CCM_QUERY! (for Queries only).
 
-\item \verb!VALUES! is a pipe-separated list of either report names or query names to be displayed in the selected listbox, as specified in other lines. The names must be \emph{exactly the same} than those defined in the \verb!NAME! section of the declaration. Beware of spaces and case.
+\item \verb!VALUES! is a pipe-separated list of either report names or query names to be displayed in the selected listbox, as specified in other lines. Names must be \emph{exactly the same} than those defined in the \verb!NAME! section of the declaration. Beware of spaces and case sensitivity.
 
-\item \verb!APPEND! is a boolean value. If it is set to true (normal behavior) the declaration will be appended to the existing list of reports to show. It set to false, any preceding value will be replaced by the current one. If other reports are specified later on, with a true \verb!APPEND! option, they will be appended to the current list. This allows to easily erase a whole listbox and redefine its content.
+\item \verb!APPEND! is a boolean value. If it is set to true (normal behavior), the declaration will be appended to the existing list of reports to show. If set to false, previous value will be replaced by the current one. If other reports are specified later on, with a true \verb!APPEND! option, they will be appended to the current list. This allows to easily erase a whole listbox and redefine its content.
 \end{description}
 
 
 \subsection{CCM\_QUERY}
 
-The \verb!CCM_QUERY! lines define the query strings to be executed. One query string can be used by several \verb!CCM_LIST! (e.g. in our preceding example, the CRQueryPreDefined, the CRQueryPreDefined\_doc and CRQueryPreDefined\_typo listboxes could point to the same \verb!CCM_QUERY!). 
+The \verb!CCM_QUERY! lines define the query strings to be executed. One query string can be used by several \verb!CCM_LIST! (e.g. in our previous example, the CRQueryPreDefined, the CRQueryPreDefined\_doc and CRQueryPreDefined\_typo listboxes could point to the same \verb!CCM_QUERY!). 
 
 \begin{verbatim}
 [CCM_QUERY]
@@ -751,7 +752,7 @@ The \verb!CCM_QUERY! lines define the query strings to be executed. One query st
 \end{verbatim}
 
 \begin{description}
-\item \verb!QRY_STRING! is the full query string, as it would be written in the web interface, e.g. \verb!(cvtype='problem')! \verb!and! \verb!(problem_synopsis match '*todo*')!.
+\item \verb!QRY_STRING! is the full query string as it would be written in the web interface, e.g. \verb!(cvtype='problem')! \verb!and! \verb!(problem_synopsis match '*todo*')!.
 
 \item \verb!QRY_TEMPLATE! is most of the time empty. Only some auto-generated lines (e.g. in the cr\_process.xml workflow definition) have this option filled.
 
@@ -777,24 +778,24 @@ The \verb!CCM_QUERY! lines define the query strings to be executed. One query st
 [/CCM_REPORT]
 \end{verbatim}
 
-The \verb!CCM_REPORT! lines define the reports (CRQueryReport or CRReport).
+The \verb!CCM_REPORT! lines define the reports (CRQueryReport or CRReport) displayed in the web interface.
 
 \begin{description}
-\item \verb!NAME! must be identical (spaces, case) to the name specified in the \verb!CCM_LIST! element.
+\item \verb!NAME! must be identical (spaces, case sensitivity) to the name specified in the \verb!CCM_LIST! element.
 
-\item \verb!RPT_TEMPLATE! is the name of a \verb!CCM_TEMPLATE! definition. The name must be exactly the same. Beware of spaces and case.
+\item \verb!RPT_TEMPLATE! is the name of a \verb!CCM_TEMPLATE! definition. The name must be exactly the same. Beware of spaces and case sensitivity.
 
-\item \verb!QUERY! is the \verb!CCM_QUERY! item to be used with this report. If the \verb!CCM_REPORT! is to be applied to a CRQueryReport (which does not need a query string) the parameter is discarded. The name of the Query must be exactly the same. Beware of spaces and case.
+\item \verb!QUERY! is the \verb!CCM_QUERY! item to be used with this report. If the \verb!CCM_REPORT! is to be applied to a CRQueryReport (which does not need a query string) the parameter is discarded. The name of the Query must be exactly the same. Beware of spaces and case sensitivity.
 
-\item \verb!PROBLEM_DEF! is a reference to a \verb!CCM_PROBLEM! line to define the format of the reported records (attributes used, grouping, etc. see \S \ref{sec:ccm_problem} below). Beware of spaces and case.
+\item \verb!PROBLEM_DEF! is a reference to a \verb!CCM_PROBLEM! line to define the format of the reported records (attributes used, grouping, etc. see \S \ref{sec:ccm_problem} below). Beware of spaces and case sensitivity.
 
-\item \verb!EXPORT_FORMAT! describes the export format; it is one of \verb!HTML!, \verb!CSV!, \verb!XLS!, \verb!RTF!, \verb!XML!.
+\item \verb!EXPORT_FORMAT! describes the export format; it may be \verb!HTML!, \verb!CSV!, \verb!XLS!, \verb!RTF! or \verb!XML!.
 
-\item \verb!MAX_QUERY! is the maximum number of records to be included in the report. The reports fails if this limit is reached.
+\item \verb!MAX_QUERY! indicates the maximum number of records to be included in the report. The reports fails if this limit is reached.
 
 \item \verb!MAX_STRING! is the maximum string length of any attribute reported. If this limit is reached, the attribute value is truncated.
 
-\item \verb!INCREMENTAL! is a boolean value to indicate if the report is displayed incrementally (i.e. on several pages, with next and previous links) or nor (all records on one page).
+\item \verb!INCREMENTAL! is a boolean value to indicate if the report is displayed incrementally (i.e. on several pages, with next and previous links) or not (all records on one page).
 
 \item \verb!INCREMENT_SIZE! specifies the number of records per page when the incremental mode is selected.
 
@@ -804,9 +805,7 @@ The \verb!CCM_REPORT! lines define the reports (CRQueryReport or CRReport).
 \subsection{CCM\_PROBLEM}
 \label{sec:ccm_problem}
 
-The \verb!CCM_PROBLEM! line defines the way attributes will be displayed in the report. It is somewhat problematic for customization, since it make calls to templates created at report installatino time. 
-
-When customizing, the csreports packages won't install if this line because of this line. It must not be included in the customized file, but instead used directly with the original \verb!CCM_PROBLEM! installed with the original report.
+The \verb!CCM_PROBLEM! line defines how attributes will be displayed in the report. It is somewhat problematic for customization, since it makes calls to templates created at report installation time. When customizing, it must not be included in the customized file, but instead used directly with the original \verb!CCM_PROBLEM! installed with the original report.
 
 \begin{verbatim}
 [CCM_PROBLEM]
@@ -830,13 +829,13 @@ When customizing, the csreports packages won't install if this line because of t
 \end{verbatim}
 
 \begin{description}
-\item \verb!NAME! is the name of the current \verb!CCM_PROBLEM!. It must be exactly the same than the one used in the \verb!PROBLEM_DEF! reference in \verb!CCM_REPORT!.
+\item \verb!NAME! is the name of the current \verb!CCM_PROBLEM!. It must be exactly the same than the one used in the \verb!PROBLEM_DEF! line in \verb!CCM_REPORT! section.
 
-\item \verb!ATTRS! is the list of attributes to be displayed for each returned record, separated by pipes. Each item contains three fields separated by colons:
+\item \verb!ATTRS! is the list of attributes to be displayed for all records of the report, separated by pipes. Each item contains three fields separated by colons:
 \begin{itemize}
-\item the name of the attribute, 
+\item name of the attribute, 
 \item its position in the dialog ($-1$ means hidden) and 
-\item the \verb!SPAN! boolean (true if the attribute is spanned all along the line, or false if 2-cols paging is used).
+\item the boolean value for \verb!SPAN! (true if the attribute is spanned all along the line, or false if 2-cols paging is used).
 \end{itemize}
 
 In the following example, three attributes are displayed the way shown on Figure \ref{fig:ccm_problem_attrs}.
@@ -887,7 +886,7 @@ problem\_number & crstatus \\
 
 \item \verb!CUSTOM_WSLET! may be used to specify a class file (e.g. CSChartOpenVsClosedTrend, which is a class file located in WEB-INF/classes/com/continuus/webpt/servlet/CSChartOpenVsClosedTrend.class). Almost never used.
 
-\item \verb!XML_CONTENT! is never used in the basic reports furnished.
+\item \verb!XML_CONTENT! is never used by the basic reports provided.
 
 \end{description}
 
@@ -900,16 +899,16 @@ A package is a set of consistent configuration files, templates and customizatio
 Packages are located in \webinf{}/packages/*. The name of the directory is the same than the name of the package when it appears in the admin web interface. Every package contains two files that will help \cs{} to identify the package to install: 
 \begin{description}
 \item[README.txt] contains a description of the package, instructions for install/uninstall and eventually some recommendations for next developer.
-\item[VERSION.txt] contains three lines: the version of \cs{} and the degree of service pack (e.g. 4.3\_sp1), an indication of the application (i.e. \verb!CS!) and the type of package (one of \sc{csreport}, \sc{crprocess}, \sc{customization}, \sc{patch}).
+\item[VERSION.txt] contains three lines: the version of \cs{} extended with service pack (e.g. 4.3\_sp1), an indication of the application (i.e. \verb!CS!) and the type of package (one of \sc{csreport}, \sc{crprocess}, \sc{customization}, \sc{patch}).
 \end{description}
 
-Every file (or directory) from the package will be copied on install in the \webinf{}/ directory, excepted README.txt, VERSION.txt and auto-generated elements. As an example, configuration files must be copied into the \webinf{}/wsconfig directory to be taken into account. That's why most of the packages contain a wsconfig subdir.
+Every file (or directory) from the package will be copied during install in the \webinf{}/ directory, except README.txt, VERSION.txt and auto-generated elements. As an example, configuration files must be copied into the \webinf{}/wsconfig directory to be taken into account. That's why most of the packages contain a wsconfig subdir.
 
-\cs{}, upon install of package, also edits the pt.cfg file to add the name of the new configuration file to the CFG\_MERGE section (see in section \ref{plain:cfg_merge} on page \pageref{plain:cfg_merge} for more information about the CFG\_MERGE section).
+\cs{}, during package installation, also edits the pt.cfg file in order to add the name of the new configuration file to the CFG\_MERGE section (see in section \ref{plain:cfg_merge} on page \pageref{plain:cfg_merge} for more information about the CFG\_MERGE section).
 
-For the basic\_summary csreport package, one of the default report, we have the arborescence listed in figure \ref{list:basic_summary}. If it has already been installed, a backup directory may have been created automatically, with the date of install (e.g. backup\_16\_05\_2005\_10\_35\_39). The uninstall directory, as well, is automatically created upon install.
+For the basic\_summary csreport package, one of the default reports, we have the arborescence listed in figure \ref{list:basic_summary}. If it has already been installed, a backup directory may have been created automatically, with the installation date (e.g. backup\_16\_05\_2005\_10\_35\_39). The uninstall directory, as well, is automatically created during installation.
 
-In this example, install of the package will copy:
+In this example, installation of the package will copy:
 \begin{itemize}
 \item report definition file basic\_summary.xml in \webinf{}/cs\_reports,
 \item configuration file basic\_summary.cfg in \webinf{}/wsconfig,
@@ -934,14 +933,14 @@ basic_summary/
 \end{verbatim}
 \label{list:basic_summary}
 
-Order of install for packages does matter, as stated in section \ref{plain:cfg_merge}. 
+Order of installation for packages does matter, as stated in section \ref{plain:cfg_merge}. 
 
 \section{Real-Life examples}
 
 \subsection{The custUI package}
 \label{sec:custUI}
 
-In this section, we will apply some of the previously seen aspects of \cs{} customization. We will use a template and a configuration file put together in a package for convenient install/uninstall.
+In this section, we will apply some of the previously seen aspects of \cs{} customization. We will use a template and a configuration file put together in a package for convenient installation or uninstallation.
 
 \paragraph{Statement of work}
 
@@ -949,7 +948,7 @@ We want to disable the SimpleProcess query in the CustomQuery section of the web
 
 \paragraph{Build the package}
 
-To build a package, you first have to create the arborescence of files, and populate it with the templates, configuration files and any file that you wish to install with. In \webinf{}/packages, create a new directory with the name you want to give to your package. Populate it with the following files:
+To build a package, you first have to create the arborescence of files, and populate it with the templates, configuration files and any file that you wish to installation with. In \webinf{}/packages, create a new directory with the name you want to give to your package. Populate it with the following files:
 
 \begin{description}
 
@@ -994,7 +993,7 @@ CUSTOMIZATION
 
 We want to add ReportBuilder \ccmrole{} and \csrole{}. It would allow administrators to add reporting capabilities to specific users through the Web Interface easily. Selected users would then connect with the ReportBuilder role, without needs for any other right.
 
-To create the \ccmrole{}, we have to add it for at last one user in the \cm{} engine. Once created it will remain for future use and will only need to be activated in the User tab of the Admin web interface.
+To create the \ccmrole{}, we have to add it for at least one user in the \cm{} engine. Once created it will remain for future use and will only need to be activated in the User tab of the Admin web interface.
 \begin{verbatim}
 $ ccm start -d /path/to/db
 Starting CM Synergy...
@@ -1002,7 +1001,7 @@ $ ccm set role ccm_admin
 $ ccm users
 \end{verbatim}
 
-The list of users defined in the \ccm{} engine appears in a vi editor; each line has the current login, with a list of \ccmroles{} separated with spaces. Edit the list and affect to at last one user the reportbuilder \ccmrole{}. Save and Quit. As soon as the \ccmrole{} is declared, it shows in the User Admin tab from the web interface and can be easily affected to users.
+The list of users defined in the \ccm{} engine appears in a vi editor; each line has the current login, with a list of \ccmroles{} separated with spaces. Edit the list and affect to at least one user the reportbuilder \ccmrole{}. Save and Quit. As soon as the \ccmrole{} is declared, it shows in the User Admin tab from the web interface and can be easily affected to users.
 
 \begin{verbatim}
 user ccm_root = developer assigner build_mgr ccm_admin 
@@ -1014,7 +1013,7 @@ user dupont = developer;
 
 Stop the \ccm{} session (\verb!ccm stop!), login as Administrator to the web interface, go in the Lifecycle editor and add for the reportbuilder \ccmrole{} a new \csrole{} --- e.g. ReportBuilder. This will allow users without any other \csrole{} to connect only with ReportBuilder. Install the new process package and the ReportBuilder \csrole{} appears in the login page.
 
-Note that users with a ReportBuilder role can crash others sessions, if reports used in your defintion files (customization of listboxes) are removed\footnote{This warning only applies if you have modified the contents of query or reports listboxes, as e.g. described in section \ref{sec:custUI}.}.
+Note that users with a ReportBuilder role can crash others sessions, if reports used in your definition files (customization of listboxes) are removed\footnote{This warning only applies if you have modified the contents of query or reports listboxes, as e.g. described in section \ref{sec:custUI}.}.
 
 \appendix
 
@@ -1076,7 +1075,7 @@ my $options = GetOptions( 'q|query=s' => \$opt_query,
 
 die $usage if (defined($opt_help));
 
-# If no query is furnished, build a query to retrieve 
+# If no query is provide, build a query to retrieve 
 # needed attributes from problem_number given as std 
 # input.
 if (defined($opt_query)) { $querystring = $opt_query; }
@@ -1192,7 +1191,7 @@ my $usage = <<EOU;
 usage: $0 [-h|help] [-i|identifier identifier] attribute value
 
 $0 allows a Change Synergy administrator to set attributes 
-for problem_number furnished either on command line (with
+for problem_number provided either on command line (with
 the -i switch) or on stdin.
 
 \$ $0 -i 567 problem_synopsis "User should be able to change theme."
@@ -1223,7 +1222,7 @@ my $options = GetOptions( 'i|identifier=i' => \$opt_id,
 # Display usage if help is needed.
 die $usage if (defined($opt_help));
 
-# If no id is furnished on command line, get from 
+# If no id is provided on command line, get from 
 # stdin, one id per line.
 if (!defined($opt_id)) {
     while (<STDIN>) {
@@ -1283,7 +1282,7 @@ Usage: B<modifyrecord.pl> [-h|help] [-i|identifier identifier] attribute value
 =head1 Description
 
 The script uses an array to store problem_number's. It either push 
-id furnished on command line or read and push from standard input. 
+id provided on command line or read and push from standard input. 
 
 For each element of the array, it retrieves an object (getCRData), 
 read (getValue) and set (setValue) the value of the attribute specified 
