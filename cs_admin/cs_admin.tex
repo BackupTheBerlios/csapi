@@ -11,8 +11,9 @@
 \ifx\pdfoutput\undefined
     \pdffalse          % we are not running PDFLaTeX
 \else
-    \pdfoutput=1       % we are running PDFLaTeX
-    \pdftrue
+    \pdffalse          % we are not running PDFLaTeX
+%    \pdfoutput=1       % we are running PDFLaTeX
+%    \pdftrue
 \fi
 \ifpdf
     \usepackage[pdftex,
@@ -292,7 +293,7 @@ It is very common to use Perl scripts in lifecycle triggers, either pre-conditio
 
 \section{Scripts}
 
-The Perl API deserves several goals, from server administration to periodic reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} provide a template that you can safely use and adapt to your environment\footnote{These scripts need a slight tweaking to be used against a \cs{} 4.4 server. See the \href{homepage of the project}{http://csapi.berlios.de/cs\_admin/}.}. POD (in-line) documentation is available, as well as usage through the \verb!-h! switch.
+The Perl API deserves several goals, from server administration to periodic reporting. The scripts provided in the appendix page \pageref{sec:getreport.pl} provide a template that you can safely use and adapt to your environment\footnote{These scripts need a slight tweaking to be used against a \cs{} 4.4 server. See the \href{http://csapi.berlios.de/cs\_admin/}{homepage of the project}.}. POD (in-line) documentation is available, as well as usage through the \verb!-h! switch.
 
 Maintenance scripts are especially useful when used in cron tabs. They allow a delayed check of consistency in the database, update of computed values, batch treatment to export data toward other tools, periodic reporting and statistics, and more\footnote{The scripts are also available online: \href{http://csapi.berlios.de/cs\_admin/}{csapi.berlios.de/cs\_admin/}.}.
 
