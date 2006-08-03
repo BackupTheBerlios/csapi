@@ -17,32 +17,32 @@ import org.eclipse.jface.action.Action;
  */
 public class ChangeAttributesAction extends Action {
 
-	/**
-	 * The constructor for the Action.
-	 */
-	public ChangeAttributesAction() {
-		super();
-		
-		this.setDescription("Change attributes of this report.");
-		this.setText("Change Attributes...");
-	}
+/**
+ * The constructor for the Action.
+ */
+public ChangeAttributesAction() {
+super();
 
-	/**
-	 * The execution method for this action.
-	 */
-	public void run() {
-		ChangeAttributesJob job = new ChangeAttributesJob("Change Attributes");
-		
-		/* Prevent display of the progress bar. */
-		job.setUser(false);
-		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				event.getResult();
-//				 if (status.is)
-//					CsapiPlugin.getDefault().getLog().log(status);
-//				 else
-			}
-		});	
-	}
+this.setDescription("Change attributes of this report.");
+this.setText("Change Attributes...");
+}
+
+/**
+ * The execution method for this action.
+ */
+public void run() {
+ChangeAttributesJob job = new ChangeAttributesJob("Change Attributes");
+
+/* Prevent display of the progress bar. */
+job.setUser(false);
+job.schedule();
+job.addJobChangeListener(new JobChangeAdapter() {
+public void done(IJobChangeEvent event) {
+event.getResult();
+// if (status.is)
+//CsapiPlugin.getDefault().getLog().log(status);
+// else
+}
+});
+}
 }

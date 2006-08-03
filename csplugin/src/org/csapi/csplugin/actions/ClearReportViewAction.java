@@ -1,5 +1,5 @@
 /*
- * Created on 23 août 2005
+ * Created on 23 ao?t 2005
  */
 package org.csapi.csplugin.actions;
 
@@ -23,28 +23,28 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ClearReportViewAction extends Action {
 
-	/**
-	 * The constructor for the action.
-	 */
-	public ClearReportViewAction() {
-		super();
-		
-		this.setDescription("Clear the Report view.");
-		this.setText("Clear View");
-	}
+/**
+ * The constructor for the action.
+ */
+public ClearReportViewAction() {
+super();
 
-	/**
-	 * The execution method for the action.
-	 */
-	public void run() {
-		IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
-			.getWorkbenchWindows()[0];
-		IViewPart view = null;
-		view = wkbw.getActivePage()
-			.findView("org.csapi.csplugin.views.ShowReportView");
-		
-		if (view != null) {
-			((ShowReportView)view).clearViewer();
-		}
-	}
+this.setDescription("Clear the Report view.");
+this.setText("Clear View");
+}
+
+/**
+ * The execution method for the action.
+ */
+public void run() {
+IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
+.getWorkbenchWindows()[0];
+IViewPart view = null;
+view = wkbw.getActivePage()
+.findView("org.csapi.csplugin.views.ShowReportView");
+
+if (view != null) {
+((ShowReportView)view).clearViewer();
+}
+}
 }

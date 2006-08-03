@@ -24,27 +24,27 @@ import org.eclipse.ui.PlatformUI;
 public class ClearReportHistoryViewAction extends Action {
 
 	/**
-	 * The constructor for this action.
-	 */
-	public ClearReportHistoryViewAction() {
-		super();
-		
-		this.setDescription("Clear the My Report view.");
-		this.setText("Clear View");
-	}
+ * The constructor for this action.
+ */
+public ClearReportHistoryViewAction() {
+super();
 
-	/**
-	 * The execution method for the action.
-	 */
-	public void run() {
-		IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
-			.getWorkbenchWindows()[0];
-		IViewPart view = null;
-		view = wkbw.getActivePage()
-			.findView("org.csapi.csplugin.views.ReportHistoryView");
-		
-		if (view != null) {
-			((ReportHistoryView)view).clearViewer();
-		}
-	}
+this.setDescription("Clear the My Report view.");
+this.setText("Clear View");
+}
+
+/**
+ * The execution method for the action.
+ */
+public void run() {
+IWorkbenchWindow wkbw = PlatformUI.getWorkbench()
+.getWorkbenchWindows()[0];
+IViewPart view = null;
+view = wkbw.getActivePage()
+.findView("org.csapi.csplugin.views.ReportHistoryView");
+
+if (view != null) {
+((ReportHistoryView)view).clearViewer();
+}
+}
 }

@@ -14,39 +14,39 @@ package org.csapi.csplugin.exceptions;
  */
 public class CSPluginException extends Exception {
 
-	/**
-	 * Auto(Eclipse)-generated serialVersionUID number.
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String title = "";
-	private String message = "";
+/**
+ * Auto(Eclipse)-generated serialVersionUID number.
+ */
+private static final long serialVersionUID = 1L;
 
-	/**
-	 * The constructor for the action.
-	 */
-	public CSPluginException(String title, String message) {
-		this.title = title;
-		this.message = message;
-	}
+private String title = "";
+private String message = "";
 
-	public String getMessage() {
-		return message;
-	}
-	
-	
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
-	public String getTitle() {
-		return title;
-	}
-	
-	
-	public void setTitle(String title) {
-		this.title = title;
-	}
+/**
+ * The constructor for the action.
+ */
+public CSPluginException(String title, String message) {
+this.title = title;
+this.message = message;
+}
+
+public String getMessage() {
+return message;
+}
+
+
+public void setMessage(String message) {
+this.message = message;
+}
+
+
+public String getTitle() {
+return title;
+}
+
+
+public void setTitle(String title) {
+this.title = title;
+}
 
 }

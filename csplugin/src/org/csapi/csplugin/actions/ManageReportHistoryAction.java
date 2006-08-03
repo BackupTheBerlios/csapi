@@ -27,46 +27,46 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ManageReportHistoryAction implements IWorkbenchWindowActionDelegate {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-	 */
-	public void dispose() {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+ */
+public void dispose() {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-	 */
-	public void init(IWorkbenchWindow window) {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+ */
+public void init(IWorkbenchWindow window) {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
-	    try {
-			Favorites favorites = SessionMgr.getDefault().getDefaultReportHistory();
-			
-	        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
-	        IViewPart inst = null;
-	        
-	        // Get the instance of the view and focus it.
-	        inst = wkbch.getActivePage().showView(
-	        		"org.csapi.csplugin.views.ReportHistoryView");
-	        if (inst != null) {
-	            ((ReportHistoryView) inst).setInput(favorites);
-	            ((ReportHistoryView) inst).setFocus();
-	        }
-	    } catch (PartInitException e) {
-	        e.printStackTrace();
-	    }
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+ */
+public void run(IAction action) {
+    try {
+Favorites favorites = SessionMgr.getDefault().getDefaultReportHistory();
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
+        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
+        IViewPart inst = null;
+        
+        // Get the instance of the view and focus it.
+        inst = wkbch.getActivePage().showView(
+        "org.csapi.csplugin.views.ReportHistoryView");
+        if (inst != null) {
+            ((ReportHistoryView) inst).setInput(favorites);
+            ((ReportHistoryView) inst).setFocus();
+        }
+    } catch (PartInitException e) {
+        e.printStackTrace();
+    }
+}
 
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+ */
+public void selectionChanged(IAction action, ISelection selection) {
+
+}
 }

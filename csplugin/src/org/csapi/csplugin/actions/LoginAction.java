@@ -21,42 +21,42 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class LoginAction implements IWorkbenchWindowActionDelegate {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-	 */
-	public void dispose() {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+ */
+public void dispose() {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-	 */
-	public void init(IWorkbenchWindow window) {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+ */
+public void init(IWorkbenchWindow window) {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
-		LoginJob job = new LoginJob("Login");
-		job.setUser(true);
-		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter(){
-			public void done(IJobChangeEvent event) {
-        	event.getResult();
-//        	CsapiPlugin.getDefault().getLog().log(status);
-        	//if (status.isOK())  
-        	//;
-        	//  else
-        	//;
-		}});		
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+ */
+public void run(IAction action) {
+LoginJob job = new LoginJob("Login");
+job.setUser(true);
+job.schedule();
+job.addJobChangeListener(new JobChangeAdapter(){
+public void done(IJobChangeEvent event) {
+        event.getResult();
+//        CsapiPlugin.getDefault().getLog().log(status);
+        //if (status.isOK())  
+        //;
+        //  else
+        //;
+}});
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+ */
+public void selectionChanged(IAction action, ISelection selection) {
 
-	}
+}
 }

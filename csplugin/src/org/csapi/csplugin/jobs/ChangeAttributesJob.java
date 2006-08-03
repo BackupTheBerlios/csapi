@@ -29,76 +29,76 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class ChangeAttributesJob extends Job {
-	
-	public ChangeAttributesJob(String name) {
-		super(name);
-	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	protected IStatus run(IProgressMonitor monitor) {
+public ChangeAttributesJob(String name) {
+super(name);
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+ */
+protected IStatus run(IProgressMonitor monitor) {
         
         Display.getDefault().asyncExec(new Runnable() { public void run() {
-        	
-        	Report report = null;
-        	
-        	try {
-		        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
-		        IViewPart inst = null;
-		        
-		        // Get the instance of the view and focus it.
-		        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
-		        if (inst != null) {
-		            report = (Report)((ShowReportView) inst).getReport();
-		        }
-		    } catch (PartInitException e) {
-		        e.printStackTrace();
-		    }
-	        
-	        // Get the list of attributes.
-	        final String attributesList = (String) JOptionPane.showInputDialog(null,
-	                "Please provide attributes list, separated by pipes:", "Attributes needed",
-	                JOptionPane.OK_CANCEL_OPTION, null, null, 
-	                report.getAttributesString());
-	        // if cancel is hit
-	        if (attributesList == null) {
-	        	return;
-	        }
-        	
-        	SessionMgr sessionMgr = SessionMgr.getDefault();
-        	
-        	try {
-        		// Re-Run the report with new attributes.
-        		report = sessionMgr.getReport(report.getQuery(), attributesList);
-        	} catch (PluginException pe) {
-        		report = null;
-        		// Print an Error dialog.
-        		JOptionPane.showMessageDialog(null, pe.getMessage());
-        	}
-        	
-        	
-        	try {
-		        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
-		        IViewPart inst = null;
-		        
-		        /* Get the instance of the view and focus it.
-		         * Set the new columns (they have changed) and set the
-		         * new report as viewer. */
-		        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
-		        if (inst != null) {
-		            ((ShowReportView) inst).setColumns(report.getAttributes());
-		            ((ShowReportView) inst).setInput(report);
-		            ((ShowReportView) inst).setFocus();
-		        }
-		    } catch (PartInitException e) {
-		        e.printStackTrace();
-		    }
-		}
+        
+        Report report = null;
+        
+        try {
+        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
+        IViewPart inst = null;
+        
+        // Get the instance of the view and focus it.
+        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
+        if (inst != null) {
+            report = (Report)((ShowReportView) inst).getReport();
+        }
+    } catch (PartInitException e) {
+        e.printStackTrace();
+    }
+        
+        // Get the list of attributes.
+        final String attributesList = (String) JOptionPane.showInputDialog(null,
+                "Please provide attributes list, separated by pipes:", "Attributes needed",
+                JOptionPane.OK_CANCEL_OPTION, null, null, 
+                report.getAttributesString());
+        // if cancel is hit
+        if (attributesList == null) {
+        return;
+        }
+        
+        SessionMgr sessionMgr = SessionMgr.getDefault();
+        
+        try {
+        // Re-Run the report with new attributes.
+        report = sessionMgr.getReport(report.getQuery(), attributesList);
+        } catch (PluginException pe) {
+        report = null;
+        // Print an Error dialog.
+        JOptionPane.showMessageDialog(null, pe.getMessage());
+        }
+        
+        
+        try {
+        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
+        IViewPart inst = null;
+        
+        /* Get the instance of the view and focus it.
+         * Set the new columns (they have changed) and set the
+         * new report as viewer. */
+        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
+        if (inst != null) {
+            ((ShowReportView) inst).setColumns(report.getAttributes());
+            ((ShowReportView) inst).setInput(report);
+            ((ShowReportView) inst).setFocus();
+        }
+    } catch (PartInitException e) {
+        e.printStackTrace();
+    }
+}
         });
-		
-		return new Status(Status.OK, "CSPlugin", 0,
-				"Change of Attributes was successfull.", null);
-	}
+
+return new Status(Status.OK, "CSPlugin", 0,
+"Change of Attributes was successfull.", null);
+}
 
 }

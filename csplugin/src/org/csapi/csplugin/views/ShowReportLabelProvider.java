@@ -1,5 +1,5 @@
 /**
- * Created on 22 août 2005.
+ * Created on 22 ao?t 2005.
  */
 package org.csapi.csplugin.views;
 
@@ -18,22 +18,22 @@ import org.eclipse.swt.graphics.Image;
  * @author Boris Baldassari
  */
 public class ShowReportLabelProvider extends LabelProvider implements
-		ITableLabelProvider {
+ITableLabelProvider {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-	 */
-	public Image getColumnImage(Object element, int columnIndex) {
-		return null;
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+ */
+public Image getColumnImage(Object element, int columnIndex) {
+return null;
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-	 */
-	public String getColumnText(Object element, int columnIndex) {
-		Record record = (Record)element;
-		String header = ShowReportView.getDefault().getColumnName(columnIndex);
-		return record.getAttribute(header);
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+ */
+public String getColumnText(Object element, int columnIndex) {
+Record record = (Record)element;
+String header = ShowReportView.getDefault().getColumnName(columnIndex);
+return record.getAttribute(header);
+}
 
 }

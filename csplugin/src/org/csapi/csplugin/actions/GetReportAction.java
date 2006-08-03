@@ -22,51 +22,51 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class GetReportAction implements IWorkbenchWindowActionDelegate {
 
-	/**
-	 * Constructor for GetReportAction.
-	 */
-	public GetReportAction() {
-		super();
-	}
+/**
+ * Constructor for GetReportAction.
+ */
+public GetReportAction() {
+super();
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-	 */
-	public void dispose() {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+ */
+public void dispose() {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-	 */
-	public void init(IWorkbenchWindow window) {
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+ */
+public void init(IWorkbenchWindow window) {
 
-	}
+}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
-		GetReportJob job = new GetReportJob("Get A Change/Synergy Report");
-		
-		/* Prevent display of the progress bar. */
-		job.setUser(false);
-		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				event.getResult();
-//				 if (status.is)
-//					CsapiPlugin.getDefault().getLog().log(status);
-//				 else
-			}
-		});	
-	}
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+ */
+public void run(IAction action) {
+GetReportJob job = new GetReportJob("Get A Change/Synergy Report");
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		
-	}
+/* Prevent display of the progress bar. */
+job.setUser(false);
+job.schedule();
+job.addJobChangeListener(new JobChangeAdapter() {
+public void done(IJobChangeEvent event) {
+event.getResult();
+// if (status.is)
+//CsapiPlugin.getDefault().getLog().log(status);
+// else
+}
+});
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+ */
+public void selectionChanged(IAction action, ISelection selection) {
+
+}
 
 }

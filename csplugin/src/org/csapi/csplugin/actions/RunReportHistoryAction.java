@@ -17,29 +17,29 @@ import org.eclipse.jface.action.Action;
  */
 public class RunReportHistoryAction extends Action {
 
-	/**
-	 * 
-	 */
-	public RunReportHistoryAction() {
-		super();
-		
-		this.setDescription("Run selected report.");
-		this.setText("Run Report");
-	}
+/**
+ * 
+ */
+public RunReportHistoryAction() {
+super();
 
-	public void run() {
-		RunReportHistoryJob job = new RunReportHistoryJob("Get My Reports");
-		
-		/* Prevent display of the progress bar. */
-		job.setUser(false);
-		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				event.getResult();
-//				 if (status.is)
-//					CsapiPlugin.getDefault().getLog().log(status);
-//				 else
-			}
-		});	
-	}
+this.setDescription("Run selected report.");
+this.setText("Run Report");
+}
+
+public void run() {
+RunReportHistoryJob job = new RunReportHistoryJob("Get My Reports");
+
+/* Prevent display of the progress bar. */
+job.setUser(false);
+job.schedule();
+job.addJobChangeListener(new JobChangeAdapter() {
+public void done(IJobChangeEvent event) {
+event.getResult();
+// if (status.is)
+//CsapiPlugin.getDefault().getLog().log(status);
+// else
+}
+});
+}
 }

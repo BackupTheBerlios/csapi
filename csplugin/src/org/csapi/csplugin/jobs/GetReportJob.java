@@ -31,16 +31,16 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class GetReportJob extends Job {
-	
-	public GetReportJob(String name) {
-		super(name);
-	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	protected IStatus run(IProgressMonitor monitor) {
-		
+public GetReportJob(String name) {
+super(name);
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+ */
+protected IStatus run(IProgressMonitor monitor) {
+
         // Get the query to be executed.
         JFrame myJFrame = new JFrame();
         final String query = (String) JOptionPane.showInputDialog(myJFrame,
@@ -50,7 +50,7 @@ public class GetReportJob extends Job {
         // if cancel is hit
         if (query == null) { 
             return new Status(Status.CANCEL, "CSPlugin", 0, 
-            		"Query cancelled", null); 
+            "Query cancelled", null); 
             }
         
         // Get the list of attributes.
@@ -60,40 +60,40 @@ public class GetReportJob extends Job {
         // if cancel is hit
         if (attributesList == null) { 
             return new Status(Status.CANCEL, "CSPlugin", 0, 
-            		"Attributes cancelled", null); 
+            "Attributes cancelled", null); 
             }
-		
-		Display.getDefault().asyncExec(new Runnable() { public void run() {
-		    try {
-				SessionMgr sessionMgr = SessionMgr.getDefault();
-				
-				Report report;
-				
-				try {
-					report = sessionMgr.getReport(query, attributesList);
-				} catch (PluginException pe) {
-					report = null;
-					JOptionPane.showMessageDialog(null, pe.getMessage());
-				}
-					
-		        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
-		        IViewPart inst = null;
-		        
-		        // Get the instance of the view and focus it.
-		        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
-		        if (inst != null) {
-		            ((ShowReportView) inst).setColumns(report.getAttributes());
-		            ((ShowReportView) inst).setInput(report);
-		            ((ShowReportView) inst).setFocus();
-		        }
-		    } catch (PartInitException e) {
-		        e.printStackTrace();
-		    }
-		}
-		});
-		
-		return new Status(Status.OK, "CSPlugin", 0,
-				"Get Report successfull.", null);
-	}
+
+Display.getDefault().asyncExec(new Runnable() { public void run() {
+    try {
+SessionMgr sessionMgr = SessionMgr.getDefault();
+
+Report report;
+
+try {
+report = sessionMgr.getReport(query, attributesList);
+} catch (PluginException pe) {
+report = null;
+JOptionPane.showMessageDialog(null, pe.getMessage());
+}
+
+        IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
+        IViewPart inst = null;
+        
+        // Get the instance of the view and focus it.
+        inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
+        if (inst != null) {
+            ((ShowReportView) inst).setColumns(report.getAttributes());
+            ((ShowReportView) inst).setInput(report);
+            ((ShowReportView) inst).setFocus();
+        }
+    } catch (PartInitException e) {
+        e.printStackTrace();
+    }
+}
+});
+
+return new Status(Status.OK, "CSPlugin", 0,
+"Get Report successfull.", null);
+}
 
 }

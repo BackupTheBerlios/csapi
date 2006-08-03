@@ -34,31 +34,31 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class QuerySelectJob extends Job {
-	
-	public QuerySelectJob(String name) {
-		super(name);
-	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	protected IStatus run(IProgressMonitor monitor) {
-		
-		Display.getDefault().asyncExec(new Runnable() { public void run() {
-		    try {
-		    	
-		    	IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
-		    	IViewPart inst = null;
-	            
-	            /* The query string to be build. */
-	            String query = "";
-		    	
-		    	// Get the instance of the view and focus it.
-		    	inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
-		    	if (inst != null) {
-		    		
-		    		/* Get the selection from the viewer of ShowReportView,
-		    		 * and build a query according to selection contents. */
+public QuerySelectJob(String name) {
+super(name);
+}
+
+/* (non-Javadoc)
+ * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+ */
+protected IStatus run(IProgressMonitor monitor) {
+
+Display.getDefault().asyncExec(new Runnable() { public void run() {
+    try {
+    
+    IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
+    IViewPart inst = null;
+            
+            /* The query string to be build. */
+            String query = "";
+    
+    // Get the instance of the view and focus it.
+    inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
+    if (inst != null) {
+    
+    /* Get the selection from the viewer of ShowReportView,
+     * and build a query according to selection contents. */
                     StructuredSelection mySel = 
                         (StructuredSelection)((ShowReportView)inst)
                         .getViewer().getSelection();
@@ -67,7 +67,7 @@ public class QuerySelectJob extends Job {
                         if (debut == false) { 
                             query += "or";
                         } else {
-                        	debut = false;
+                        debut = false;
                         }
                         Record record = (Record)mySel.toArray()[i];
                       query += "(problem_number='" 
@@ -82,19 +82,19 @@ public class QuerySelectJob extends Job {
                     
                     // Get the list of attributes.
                     final String attributes = (String) JOptionPane.showInputDialog(null,
-                    		"Please provide attributes list, separated by pipes:", "Attributes needed",
-                    		JOptionPane.OK_CANCEL_OPTION, null, null, "problem_number|problem_synopsis");
+                    "Please provide attributes list, separated by pipes:", "Attributes needed",
+                    JOptionPane.OK_CANCEL_OPTION, null, null, "problem_number|problem_synopsis");
                     // if cancel is hit
                     if (attributes == null) { 
-                    	return; 
+                    return; 
                     }
                     
                     // Actually get the report from sessionMgr.
                     try {
-                    	report = sessionMgr.getReport(query, attributes);
+                    report = sessionMgr.getReport(query, attributes);
                     } catch (PluginException pe) {
-                    	report = null;
-                    	JOptionPane.showMessageDialog(null, pe.getMessage());
+                    report = null;
+                    JOptionPane.showMessageDialog(null, pe.getMessage());
                     }
                     
                     /* If the report has been successfully retrieved, then
@@ -102,16 +102,16 @@ public class QuerySelectJob extends Job {
                     ((ShowReportView) inst).setColumns(report.getAttributes());
                     ((ShowReportView) inst).setInput(report);
                     ((ShowReportView) inst).setFocus();
-		    	}
-		    	else return;
-		    } catch (PartInitException e) {
-		    	e.printStackTrace();
-		    }
-		}
-		});
-		
-		return new Status(Status.OK, "CSPlugin", 0,
-				"Get Report successfull.", null);
-	}
+    }
+    else return;
+    } catch (PartInitException e) {
+    e.printStackTrace();
+    }
+}
+});
+
+return new Status(Status.OK, "CSPlugin", 0,
+"Get Report successfull.", null);
+}
 
 }
