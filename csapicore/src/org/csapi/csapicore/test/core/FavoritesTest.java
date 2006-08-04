@@ -23,8 +23,9 @@ public class FavoritesTest extends TestCase {
      */
     protected final void setUp() {
         simpleFavorites = new Favorites();
-
-        simpleFavorites.addFavoriteReport(new Report());
+        String[] attributes = new String[1];
+        attributes[0] = "attributes";
+        simpleFavorites.addFavoriteReport(new Report("query", attributes));
     }
 
 
