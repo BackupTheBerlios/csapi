@@ -10,7 +10,7 @@ import org.csapi.csapicore.core.Record;
 
 /**
  * @author grandpas
- *
+ * 
  */
 public class RecordTest extends TestCase {
 
@@ -38,6 +38,36 @@ public class RecordTest extends TestCase {
         simpleRecord.addAttribute(attribute1);
 
         assertEquals("entered", simpleRecord.getAttribute("crstatus"));
+        assertEquals("1234", simpleRecord.getAttribute("problem_number"));
+    }
+
+    /**
+     * Test method for 'org.csapi.csapicore.core.Record.getAttributes()'.
+     */
+    public final void testGetAttributes() {
+        Attribute attribute1 = new Attribute();
+        attribute1.setName("crstatus");
+        attribute1.setValue("entered");
+        attribute1.setType("CCM_STRING");
+        simpleRecord.addAttribute(attribute1);
+
+        String[] strings = simpleRecord.getAttributes();
+        assertEquals("crstatus = entered", strings[0]);
+        assertEquals("problem_number = 1234", strings[1]);
+    }
+
+    /**
+     * Test method for 'org.csapi.csapicore.core.Record.getAttributes()'.
+     */
+    public final void testGetAttributesString() {
+        Attribute attribute1 = new Attribute();
+        attribute1.setName("crstatus");
+        attribute1.setValue("entered");
+        attribute1.setType("CCM_STRING");
+        simpleRecord.addAttribute(attribute1);
+
+        String myString = simpleRecord.getAttributesString();
+        assertEquals("crstatus|problem_number", myString);
     }
 
     /**
@@ -57,8 +87,8 @@ public class RecordTest extends TestCase {
         attribute1.setType("CCM_STRING");
         simpleRecord.addAttribute(attribute1);
 
-        assertEquals("crstatus = entered|problem_number = 1234",
-                simpleRecord.toCSVString("|"));
+        assertEquals("crstatus = entered|problem_number = 1234", simpleRecord
+                .toCSVString("|"));
 
     }
 
@@ -72,8 +102,8 @@ public class RecordTest extends TestCase {
         attribute1.setType("CCM_STRING");
         simpleRecord.addAttribute(attribute1);
 
-        assertEquals("crstatus = entered, problem_number = 1234",
-                simpleRecord.toString());
+        assertEquals("crstatus = entered, problem_number = 1234", simpleRecord
+                .toString());
     }
 
 }

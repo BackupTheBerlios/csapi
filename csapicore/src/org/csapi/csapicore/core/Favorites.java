@@ -11,11 +11,11 @@ import java.util.Hashtable;
  * A class which holds informations about a set of reports, such as a report
  * history. Reports are entirely stored, which allow to save them.
  * </p>
- *
+ * 
  * <p>
  * This class provides facilities to add and get reports.
  * </p>
- *
+ * 
  * @author Boris Baldassari
  */
 public class Favorites {
@@ -44,7 +44,7 @@ public class Favorites {
      * Add a given report in the favorites container. The name of the report is
      * used for identification, and the whole object is stored.
      * </p>
-     *
+     * 
      * @param report
      *            The Report object to be added to the set.
      */
@@ -56,7 +56,7 @@ public class Favorites {
      * <p>
      * Get the content of the container, presented as an Array of Reports.
      * </p>
-     *
+     * 
      * @return An array of Reports.
      */
     public final Report[] getArrayFavorites() {
@@ -74,7 +74,7 @@ public class Favorites {
      * <p>
      * Get a report among the set, identified by its name.
      * </p>
-     *
+     * 
      * @param name
      *            The name of the report to be retrieved.
      * @return A Report object.
@@ -85,7 +85,7 @@ public class Favorites {
 
     /**
      * Get the number of reports stored.
-     *
+     * 
      * @return The number of reports contained.
      */
     public final int getSize() {
@@ -93,7 +93,9 @@ public class Favorites {
     }
 
     /**
-     * <p>Empty the set, by deleting all records.</p>
+     * <p>
+     * Empty the set, by deleting all records.
+     * </p>
      */
     public final void clearFavorites() {
         favorites.clear();

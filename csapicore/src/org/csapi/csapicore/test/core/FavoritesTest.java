@@ -28,19 +28,17 @@ public class FavoritesTest extends TestCase {
         simpleFavorites.addFavoriteReport(new Report("query", attributes));
     }
 
-
     /**
      * Test method for 'org.csapi.csapicore.core.Favorites.
      * addFavoriteReport(Report)'.
-     **/
+     */
     public final void testFavoritesReport() {
         Report[] array = simpleFavorites.getArrayFavorites();
         assertEquals(1, array.length);
     }
 
     /**
-     * Test method for 'org.csapi.csapicore.core.Favorites.
-     * getSize().
+     * Test method for 'org.csapi.csapicore.core.Favorites. getSize().
      */
     public final void testFavoritesSize() {
         assertEquals(1, simpleFavorites.getSize());
@@ -50,7 +48,7 @@ public class FavoritesTest extends TestCase {
      * Test method for 'org.csapi.csapicore.core.Favorites.clearFavorites()'.
      */
     public void testClearFavorites() {
-
+        // todo implement me
     }
 
 }
