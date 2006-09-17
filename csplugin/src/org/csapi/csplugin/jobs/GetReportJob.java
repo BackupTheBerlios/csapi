@@ -81,7 +81,7 @@ JOptionPane.showMessageDialog(null, pe.getMessage());
         
         // Get the instance of the view and focus it.
         inst = wkbch.getActivePage().showView("org.csapi.csplugin.views.ShowReportView");
-        if (inst != null) {
+        if (inst != null && report != null) {
             ((ShowReportView) inst).setColumns(report.getAttributes());
             ((ShowReportView) inst).setInput(report);
             ((ShowReportView) inst).setFocus();

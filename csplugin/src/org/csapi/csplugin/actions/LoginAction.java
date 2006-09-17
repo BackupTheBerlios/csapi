@@ -25,14 +25,14 @@ public class LoginAction implements IWorkbenchWindowActionDelegate {
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
  */
 public void dispose() {
-
+    // not used but kept for standards
 }
 
 /* (non-Javadoc)
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
  */
 public void init(IWorkbenchWindow window) {
-
+    // not used but kept for standards
 }
 
 /* (non-Javadoc)
@@ -57,6 +57,6 @@ public void done(IJobChangeEvent event) {
  * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
  */
 public void selectionChanged(IAction action, ISelection selection) {
-
+    // not used but kept for standards
 }
 }

@@ -31,14 +31,14 @@ public class ManageReportHistoryAction implements IWorkbenchWindowActionDelegate
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
  */
 public void dispose() {
-
+    // not used but kept for standards
 }
 
 /* (non-Javadoc)
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
  */
 public void init(IWorkbenchWindow window) {
-
+    // not used but kept for standards
 }
 
 /* (non-Javadoc)
@@ -46,7 +46,7 @@ public void init(IWorkbenchWindow window) {
  */
 public void run(IAction action) {
     try {
-Favorites favorites = SessionMgr.getDefault().getDefaultReportHistory();
+Favorites favorites = SessionMgr.getDefault().getReportHistory();
 
         IWorkbenchWindow wkbch = PlatformUI.getWorkbench().getWorkbenchWindows()[0];
         IViewPart inst = null;
@@ -67,6 +67,6 @@ Favorites favorites = SessionMgr.getDefault().getDefaultReportHistory();
  * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
  */
 public void selectionChanged(IAction action, ISelection selection) {
-
+    // not used but kept for standards
 }
 }

@@ -29,21 +29,21 @@ public GetReportAction() {
 super();
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
  */
 public void dispose() {
-
+    // not used but kept for standards 
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
  */
 public void init(IWorkbenchWindow window) {
-
+    // not used but kept for standards
 }
 
-/* (non-Javadoc)
+/**
  * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
  */
 public void run(IAction action) {
@@ -66,7 +66,7 @@ event.getResult();
  * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
  */
 public void selectionChanged(IAction action, ISelection selection) {
-
+    // no action here
 }
 
 }

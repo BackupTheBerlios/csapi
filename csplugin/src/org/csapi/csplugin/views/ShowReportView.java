@@ -170,8 +170,8 @@ return path;
  * 
  */
 public void clearViewer() {
-Report report = new Report();
-    viewer.setInput(report);
+//Report report = new Report("", );
+//    viewer.setInput(report);
 viewer.refresh();
 }
 

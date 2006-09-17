@@ -81,7 +81,7 @@ viewer.setLabelProvider(new ReportHistoryLabelProvider());
     /* The double click is used to remove an item from the model. */
     viewer.addDoubleClickListener(this);
 
-setInput(SessionMgr.getDefault().getDefaultReportHistory());
+setInput(SessionMgr.getDefault().getReportHistory());
 
 RunReportHistoryAction runRapportAction = new RunReportHistoryAction();
 ClearReportHistoryViewAction clearReport = new ClearReportHistoryViewAction();
