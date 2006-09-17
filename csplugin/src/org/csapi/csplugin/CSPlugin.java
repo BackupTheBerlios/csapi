@@ -124,6 +124,7 @@ public class CSPlugin extends AbstractUIPlugin {
     }
 
     public void sendMessage(CSPluginException cse) {
-        //MessageDialog.openInformation(view.getSite().getShell(),"Readme Editor","View Action executed");
+        // MessageDialog.openInformation(view.getSite().getShell(),"Readme
+        // Editor","View Action executed");
     }
 }

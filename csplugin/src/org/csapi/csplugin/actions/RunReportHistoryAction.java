@@ -9,37 +9,39 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
- * <p>This class is the action attached to the Run Report View command
- * in the ReportHistoryView view's menu. It basically just fires the
- * RunReportHistoryJob run method.</p>
+ * <p>
+ * This class is the action attached to the Run Report View command in the
+ * ReportHistoryView view's menu. It basically just fires the
+ * RunReportHistoryJob run method.
+ * </p>
  * 
  * @author Boris Baldassari
  */
 public class RunReportHistoryAction extends Action {
 
-/**
- * 
- */
-public RunReportHistoryAction() {
-super();
+    /**
+     * 
+     */
+    public RunReportHistoryAction() {
+        super();
 
-this.setDescription("Run selected report.");
-this.setText("Run Report");
-}
+        this.setDescription("Run selected report.");
+        this.setText("Run Report");
+    }
 
-public void run() {
-RunReportHistoryJob job = new RunReportHistoryJob("Get My Reports");
+    public void run() {
+        RunReportHistoryJob job = new RunReportHistoryJob("Get My Reports");
 
-/* Prevent display of the progress bar. */
-job.setUser(false);
-job.schedule();
-job.addJobChangeListener(new JobChangeAdapter() {
-public void done(IJobChangeEvent event) {
-event.getResult();
-// if (status.is)
-//CsapiPlugin.getDefault().getLog().log(status);
-// else
-}
-});
-}
+        /* Prevent display of the progress bar. */
+        job.setUser(false);
+        job.schedule();
+        job.addJobChangeListener(new JobChangeAdapter() {
+            public void done(IJobChangeEvent event) {
+                event.getResult();
+                // if (status.is)
+                // CsapiPlugin.getDefault().getLog().log(status);
+                // else
+            }
+        });
+    }
 }

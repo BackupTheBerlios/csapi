@@ -343,9 +343,6 @@ public class SimpleContentHandler implements ContentHandler {
             currentNode = CSAPI_NULL;
         } else if (localName.equalsIgnoreCase("csapi_cobject_data_type")) {
             currentNode = CSAPI_NULL;
-            // } else if (localName.equalsIgnoreCase("csapi_cobject_data_date"))
-            // {
-            // currentNode = CSAPI_NULL;
         }
     }
 

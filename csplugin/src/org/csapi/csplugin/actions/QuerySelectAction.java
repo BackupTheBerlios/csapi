@@ -9,40 +9,42 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.Action;
 
 /**
- * <p>This class is the action attached to the Query Select command
- * in the ReportHistoryView view's menu. It basically just fires the
- * QuerySelectJob run method.</p>
+ * <p>
+ * This class is the action attached to the Query Select command in the
+ * ReportHistoryView view's menu. It basically just fires the QuerySelectJob run
+ * method.
+ * </p>
  * 
  * @author Boris Baldassari
  */
 public class QuerySelectAction extends Action {
 
-/**
- * The constructor for the action.
- */
-public QuerySelectAction() {
-super();
+    /**
+     * The constructor for the action.
+     */
+    public QuerySelectAction() {
+        super();
 
-this.setDescription("Query selected records only.");
-this.setText("Query Selection");
-}
+        this.setDescription("Query selected records only.");
+        this.setText("Query Selection");
+    }
 
-/**
- * The execution method for the action.
- */
-public void run() {
-QuerySelectJob job = new QuerySelectJob("Query selected records");
+    /**
+     * The execution method for the action.
+     */
+    public void run() {
+        QuerySelectJob job = new QuerySelectJob("Query selected records");
 
-/* Prevent display of the progress bar. */
-job.setUser(false);
-job.schedule();
-job.addJobChangeListener(new JobChangeAdapter() {
-public void done(IJobChangeEvent event) {
-event.getResult();
-// if (status.is)
-//CsapiPlugin.getDefault().getLog().log(status);
-// else
-}
-});
-}
+        /* Prevent display of the progress bar. */
+        job.setUser(false);
+        job.schedule();
+        job.addJobChangeListener(new JobChangeAdapter() {
+            public void done(IJobChangeEvent event) {
+                event.getResult();
+                // if (status.is)
+                // CsapiPlugin.getDefault().getLog().log(status);
+                // else
+            }
+        });
+    }
 }

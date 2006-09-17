@@ -51,10 +51,11 @@ public class Record {
         this.addAttribute(problemNumberAttribute);
     }
 
+    
     /**
      * <p>
      * Adds an Attribute object to the current set. Also checks that the
-     * attribute does not already exists.
+     * attribute does not already exists. 
      * </p>
      * 
      * @param newAttribute
@@ -63,8 +64,11 @@ public class Record {
     public final void addAttribute(final Attribute newAttribute) {
         if (!attributes.containsKey(newAttribute.getName())) {
             attributes.put(newAttribute.getName(), newAttribute);
+        } else {
+            ((Attribute)attributes.get(newAttribute.getName())).setValue(newAttribute.getValue());
         }
     }
+    
 
     /**
      * <p>
@@ -78,6 +82,7 @@ public class Record {
     public final String getProblemNumber() {
         return ((Attribute) attributes.get("problem_number")).getValue();
     }
+    
 
     /**
      * <p>
@@ -99,6 +104,7 @@ public class Record {
         return null;
     }
 
+    
     /**
      * <p>
      * Get the list of attributes as an array of Strings.
@@ -116,6 +122,7 @@ public class Record {
         return strings;
     }
 
+    
     /**
      * <p>
      * Get the list of attributes as a String, separated by pipes.
@@ -141,6 +148,7 @@ public class Record {
         return myString;
     }
 
+    
     /**
      * <p>
      * A facility to get a CSV (comma separated values) version of the current
@@ -169,6 +177,7 @@ public class Record {
         return record;
     }
 
+    
     /**
      * <p>
      * A facility to get a String representation of the Record. Actually returns
@@ -192,5 +201,26 @@ public class Record {
             record += attributes.get((String) iterator.next()).toString();
         }
         return record;
+    }
+    
+
+    /**
+     * <p>
+     * Returns the type of the attribute provided as parameter. The parameter
+     * must be an existing attribute name. If the name does not exist, null is
+     * returned.
+     * </p>
+     * 
+     * @param attributeName
+     *            The name of the attribute as defined in the ChangeSynergy
+     *            workflow.
+     * @return Returns the type of attribute, or null if attributeName does not
+     *         exist.
+     */
+    public final String getAttributeType(final String attributeName) {
+        if (attributes.containsKey(attributeName)) {
+            return ((Attribute) attributes.get(attributeName)).getType();
+        }
+        return null;
     }
 }
