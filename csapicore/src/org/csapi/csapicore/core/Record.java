@@ -65,7 +65,8 @@ public class Record {
         if (!attributes.containsKey(newAttribute.getName())) {
             attributes.put(newAttribute.getName(), newAttribute);
         } else {
-            ((Attribute)attributes.get(newAttribute.getName())).setValue(newAttribute.getValue());
+            ((Attribute) attributes.get(newAttribute.getName()))
+                .setValue(newAttribute.getValue());
         }
     }
     
