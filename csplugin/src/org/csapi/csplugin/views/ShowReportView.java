@@ -11,14 +11,13 @@ import org.csapi.csplugin.actions.RefreshAction;
 import org.csapi.csplugin.actions.TextReportAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -32,11 +31,11 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class ShowReportView extends ViewPart {
 
-    // The shared instance.
+    /** The shared instance. **/
     private static ShowReportView instance;
 
-    /* The (Table)viewer used for the view. */
-    private TableViewer viewer;
+    /** The (Table)viewer used for the view. **/
+    private TreeViewer viewer;
 
     /**
      * Constructor.
@@ -68,13 +67,12 @@ public class ShowReportView extends ViewPart {
     public void createPartControl(Composite parent) {
 
         /* The viewer to be displayed. */
-        viewer = new TableViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
-                | SWT.H_SCROLL | SWT.V_SCROLL);
+        viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
         /* The Table used for data display; also set options. */
-        Table table = viewer.getTable();
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+        Tree tree = viewer.getTree();
+        tree.setHeaderVisible(true);
+        tree.setLinesVisible(true);
 
         setColumns("problem_number|problem_synopsis".split("\\|"));
 
@@ -112,25 +110,25 @@ public class ShowReportView extends ViewPart {
          * number of attributes displayed can vary between functions, and the
          * whole layer may have to be redrawn.
          */
-        int delCol = viewer.getTable().getColumns().length;
+        int delCol = viewer.getTree().getColumns().length;
         for (int j = delCol - 1; j >= 0; j--)
-            viewer.getTable().getColumns()[j].dispose();
+            viewer.getTree().getColumns()[j].dispose();
 
         /*
          * Then create columns according to the attributes needed for the
          * function.
          */
         for (int i = columnTitles.length - 1; i >= 0; i--) {
-            TableColumn column = new TableColumn(viewer.getTable(), SWT.NONE, 0);
-            column.setText(columnTitles[i]);
-            column.setAlignment(SWT.LEFT);
-            if (columnTitles[i].equalsIgnoreCase("problem_number")) {
-                column.setWidth(40);
-            } else if (columnTitles[i].equalsIgnoreCase("problem_synopsis")) {
-                column.setWidth(400);
-            } else {
-                column.pack();
-            }
+//            TableColumn column = new TableColumn(viewer.getTree(), SWT.NONE, 0);
+//            column.setText(columnTitles[i]);
+//            column.setAlignment(SWT.LEFT);
+//            if (columnTitles[i].equalsIgnoreCase("problem_number")) {
+//                column.setWidth(40);
+//            } else if (columnTitles[i].equalsIgnoreCase("problem_synopsis")) {
+//                column.setWidth(400);
+//            } else {
+//                column.pack();
+//            }
         }
     }
 
@@ -187,7 +185,7 @@ public class ShowReportView extends ViewPart {
      * 
      * @return The report attached to the viewer.
      */
-    public TableViewer getViewer() {
+    public TreeViewer getViewer() {
         return viewer;
     }
 

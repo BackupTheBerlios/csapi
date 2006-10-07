@@ -16,6 +16,10 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
+/**
+ * @author grandpas
+ *
+ */
 public class CSPlugin extends AbstractUIPlugin {
 
     /** The shared instance. */
@@ -38,7 +42,9 @@ public class CSPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * This method is called upon plug-in activation
+     * This method is called upon plug-in activation.
+     * 
+     * @param context The Bundle Context.
      */
     public void start(BundleContext context) throws Exception {
 
@@ -53,6 +59,7 @@ public class CSPlugin extends AbstractUIPlugin {
         }
 
         /* Initializes the shared instance of SessionMgr. */
+        @SuppressWarnings("unused")
         SessionMgr sessionMgr = new SessionMgr(store
                 .getString("CSAPI_USER_LOGIN"), store
                 .getString("CSAPI_USER_PASSWORD"), store
@@ -79,8 +86,11 @@ public class CSPlugin extends AbstractUIPlugin {
     /**
      * Returns the string from the plugin's resource bundle, or 'key' if not
      * found.
+     *
+     * @param key The key for object to get.
+     * @return The ResourceString.
      */
-    public static String getResourceString(String key) {
+    public static String getResourceString(final String key) {
         ResourceBundle bundle = CSPlugin.getDefault().getResourceBundle();
         try {
             return (bundle != null) ? bundle.getString(key) : key;
@@ -90,7 +100,9 @@ public class CSPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * Returns the plugin's resource bundle,
+     * Returns the plugin's resource bundle.
+     * 
+     * @return The ResourceBundle.
      */
     public ResourceBundle getResourceBundle() {
         return resourceBundle;

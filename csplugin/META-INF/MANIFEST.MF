@@ -17,5 +17,5 @@ Export-Package: .,
  org.csapi.csplugin.jobs,
  org.csapi.csplugin.preferences,
  org.csapi.csplugin.views
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Bundle-Vendor: grandpas
