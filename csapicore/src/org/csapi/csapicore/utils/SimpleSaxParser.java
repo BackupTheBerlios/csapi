@@ -59,6 +59,7 @@ public class SimpleSaxParser {
      * @throws SAXException
      * @throws IOException
      */
+    @SuppressWarnings("null")
     protected SimpleSaxParser(InputStream inputStream) throws SAXException,
             IOException, PluginException {
 

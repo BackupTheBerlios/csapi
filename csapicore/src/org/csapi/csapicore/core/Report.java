@@ -98,15 +98,16 @@ public class Report {
      * @param record
      *            The record to be added to the report set.
      */
+    @SuppressWarnings("unchecked")
     public final void addRecord(final Record record) {
         // TODO check if attributes present in report are also
         // present in record.
         // record.;
-        for (int i = 0; i < attributes.length; i++) {
-            if (!record.getAttributesString().contains(attributes[i])) {
+//        for (int i = 0; i < attributes.length; i++) {
+//            if (!record.getAttributesString().contains(attributes[i])) {
                 // launch new query to update list of attributes.
-            }
-        }
+//            }
+//        }
         records.add(record);
     }
 

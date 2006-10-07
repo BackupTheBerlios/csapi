@@ -37,6 +37,7 @@ public class SessionMgrTest extends TestCase {
      * @throws PluginException
      *             if login fails.
      */
+    @SuppressWarnings("unused")
     public final void testLogin() throws PluginException {
         // simpleSessionMgr.login();
         // TODO implement test.

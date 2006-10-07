@@ -14,7 +14,10 @@ public class ServerException extends Exception {
      */
     private static final long serialVersionUID = 5566798586151869983L;
 
-    public ServerException(String msg) {
+    /**
+     * @param msg message to display to user about the server exception.
+     */
+    public ServerException(final String msg) {
         super(msg);
     }
 }

@@ -50,19 +50,19 @@ public class SessionMgr {
      * The favorite object loaded for this instance of SessionMgr. This one is
      * especially for report history.
      */
-    private Favorites reportHistory;
+     private Favorites reportHistory;
 
     /** The token to be used when communicating with the server. */
-    private String csapiToken = "";
+     private String csapiToken = "";
 
     /** The login of the current user. */
-    private String csapiUser = "";
+     private String csapiUser = "";
 
     /** The password of the current user. */
-    private String csapiPassword = "";
+     private String csapiPassword = "";
 
     /** Always false, needed by the protocol. */
-    private boolean csapiEncodedPassword = false;
+     private boolean csapiEncodedPassword = false;
 
     /** The CS role of the current user. */
     private String csapiRole = "";
@@ -147,7 +147,8 @@ public class SessionMgr {
      * 
      * @return The full xml string.
      */
-    private String getXMLFindRecord(final String query, final String attributes) {
+    private String getXMLFindRecord(final String query, 
+            final String attributes) {
 
         /* Report additional information used in request. */
         String reportName = "Basic%20Summary";
@@ -250,7 +251,7 @@ public class SessionMgr {
             wout.flush();
             wout.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
             throw new PluginException("Error " + e.getMessage() + ": \n"
                     + e.getMessage() + ".");
         }
@@ -339,10 +340,10 @@ public class SessionMgr {
         myReport.setAttributes(attributesList.split("\\|"));
 
         // DEBUG ------------------------------------
-        String[] myStrings = myReport.toStrings();
-        for (int i = 0; i < myStrings.length; i++) {
-            System.out.println(myStrings[i]);
-        }
+//        String[] myStrings = myReport.toStrings();
+//        for (int i = 0; i < myStrings.length; i++) {
+//            System.out.println(myStrings[i]);
+//        }
         // DEBUG ------------------------------------
 
         reportHistory.addFavoriteReport(myReport);
@@ -483,5 +484,19 @@ public class SessionMgr {
      */
     public final String getCsapiServerIP() {
         return this.csapiServerIP;
+    }
+
+    /**
+     * @return the csapiToken
+     */
+    protected final String getCsapiToken() {
+        return csapiToken;
+    }
+
+    /**
+     * @param newCsapiToken the csapiToken to set
+     */
+    protected final void setCsapiToken(final String newCsapiToken) {
+        this.csapiToken = newCsapiToken;
     }
 }

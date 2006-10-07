@@ -48,6 +48,7 @@ public class Favorites {
      * @param report
      *            The Report object to be added to the set.
      */
+    @SuppressWarnings("unchecked")
     public final void addFavoriteReport(final Report report) {
         favorites.put(report.getName(), report);
     }

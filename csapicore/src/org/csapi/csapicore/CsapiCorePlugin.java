@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
  */
 public class CsapiCorePlugin extends AbstractUIPlugin {
 
-    // The shared instance.
+    /**  The shared instance. */
     private static CsapiCorePlugin plugin;
 
     /**
@@ -24,19 +24,20 @@ public class CsapiCorePlugin extends AbstractUIPlugin {
     }
 
     /**
-     * This method is called upon plug-in activation
-     * 
-     * @param context
-     *            The BundleContext of the plugin.
+     * This method is called upon plug-in activation.
+     * @param context  The BundleContext of the plugin.
+     * @throws Exception  to throw.
      */
-    public void start(BundleContext context) throws Exception {
+    public final void start(final BundleContext context) throws Exception {
         super.start(context);
     }
 
     /**
-     * This method is called when the plug-in is stopped
+     * This method is called when the plug-in is stopped.
+     * @param context  The context.
+     * @throws Exception  Send exception.
      */
-    public void stop(BundleContext context) throws Exception {
+    public final void stop(final BundleContext context) throws Exception {
         super.stop(context);
         plugin = null;
     }

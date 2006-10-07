@@ -27,8 +27,8 @@ import org.xml.sax.helpers.LocatorImpl;
  * </p>
  * <ul>
  * <li>When an opening tag is found, we set the currentNode private integer to
- * one of the type defined in the <a href="#listoftypes">list of types below</a>.
- * Some actions are taken from there, such as object creations.</li>
+ * one of the type defined in the <a href="#listoftypes">list of types below
+ * </a>. Some actions are taken from there, such as object creations.</li>
  * <li>When non-null values are encountered, they are considered as values for
  * the object currently treated, either an attribute name, value, type, or any
  * data found in the XML steam.</li>
@@ -91,53 +91,120 @@ public class SimpleContentHandler implements ContentHandler {
     /** Identification of the Node we are currently visiting. */
     private int currentNode;
 
+    /**
+     * faultCode is used for error handling.
+     */
     private Integer faultCode;
 
+    /**
+     * faultString 
+     */
     private String faultString;
 
+    /**
+     * 
+     */
     private Locator locator;
 
     /*
      * Definition of the different XML tags we will meet when parsing the
      * document.
      */
-    private final static int CSAPI_NULL = 0;
+    
+    /**
+     * Empty value to reset attributes value.
+     */
+    private static final int CSAPI_NULL = 0;
 
-    private final static int CSAPI_FAULT = 5;
+    /**
+     * CSAPI_FAULT.
+     */
+    private static final int CSAPI_FAULT = 5;
 
-    private final static int CSAPI_FAULTCODE = 2;
+    /**
+     * CSAPI_FAULTCODE is fault code (number).
+     */
+    private static final int CSAPI_FAULTCODE = 2;
 
-    private final static int CSAPI_FAULTSTRING = 3;
+    /**
+     * CSAPI_FAULTSTRING is the fault message.
+     */
+    private static final int CSAPI_FAULTSTRING = 3;
 
-    private final static int CSAPI_RESPONSE = 1;
+    /**
+     * CSAPI_RESPONSE.
+     */
+    private static final int CSAPI_RESPONSE = 1;
 
-    private final static int CSAPI_CQUERY_DATA = 4;
+    /**
+     * CSAPI_CQUERY_DATA.
+     */
+    private static final int CSAPI_CQUERY_DATA = 4;
 
-    private final static int CSAPI_COBJECT_DATA = 10;
+    /**
+     * CSAPI_COBJECT_DATA.
+     */
+    private static final int CSAPI_COBJECT_DATA = 10;
 
-    private final static int CSAPI_COBJECT_VECTOR_SIZE = 11;
+    /**
+     * CSAPI_COBJECT_VECTOR_SIZE. 
+     */
+    private static final int CSAPI_COBJECT_VECTOR_SIZE = 11;
 
-    private final static int CSAPI_COBJECT_VECTOR_TYPE = 12;
+    /** 
+     * CSAPI_COBJECT_VECTOR_TYPE.
+      */
+    private static final int CSAPI_COBJECT_VECTOR_TYPE = 12;
 
-    private final static int CSAPI_COBJECT_VECTOR_POSITION = 13;
+    /**
+     * CSAPI_COBJECT_VECTOR_POSITION.
+     */
+    private static final int CSAPI_COBJECT_VECTOR_POSITION = 13;
 
-    private final static int CSAPI_COBJECT_VECTOR_0 = 14;
+    /**
+     * CSAPI_COBJECT_VECTOR_0.
+     */
+    private static final int CSAPI_COBJECT_VECTOR_0 = 14;
 
-    private final static int CSAPI_COBJECT_DATA_SIZE = 141;
+    /**
+     * CSAPI_COBJECT_DATA_SIZE.
+     */
+    private static final int CSAPI_COBJECT_DATA_SIZE = 141;
 
-    private final static int CSAPI_COBJECT_VECTOR_TRANSITIONS = 142;
+    /**
+     *  CSAPI_COBJECT_VECTOR_TRANSITIONS.
+     */
+    private static final int CSAPI_COBJECT_VECTOR_TRANSITIONS = 142;
 
-    private final static int CSAPI_COBJECT_DATA_NAME = 101;
+    /**
+     * 
+     */
+    private static final int CSAPI_COBJECT_DATA_NAME = 101;
 
-    private final static int CSAPI_COBJECT_DATA_VALUE = 102;
+    /**
+     * The attribute value.
+     */
+    private static final int CSAPI_COBJECT_DATA_VALUE = 102;
 
-    private final static int CSAPI_COBJECT_DATA_DATE = 106;
+    /**
+     * CSAPI_COBJECT_DATA_DATE.
+     */
+    private static final int CSAPI_COBJECT_DATA_DATE = 106;
 
-    private final static int CSAPI_COBJECT_DATA_TYPE = 103;
+    /**
+     * The type of data sent (CCM_TYPE).
+     */
+    private static final int CSAPI_COBJECT_DATA_TYPE = 103;
 
-    private final static int CSAPI_COBJECT_DATA_READONLY = 104;
+    /**
+     * Is the date readonly?
+     */
+    private static final int CSAPI_COBJECT_DATA_READONLY = 104;
 
-    private final static int CSAPI_COBJECT_DATA_REQUIRED = 105;
+    /**
+     * CSAPI_COBJECT_DATA_REQUIRED.
+     */
+    private static final int CSAPI_COBJECT_DATA_REQUIRED = 105;
 
     /**
      * Constructor.

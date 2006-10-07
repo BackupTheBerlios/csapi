@@ -28,6 +28,9 @@ public class AllTests {
         // constructor
     }
 
+    /**
+     * @return The test suit.
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite("Tests from org.csapi.csapicore.test");
         // $JUnit-BEGIN$

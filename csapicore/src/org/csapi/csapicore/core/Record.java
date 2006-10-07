@@ -61,6 +61,7 @@ public class Record {
      * @param newAttribute
      *            The Attribute object to add to the set.
      */
+    @SuppressWarnings("unchecked")
     public final void addAttribute(final Attribute newAttribute) {
         if (!attributes.containsKey(newAttribute.getName())) {
             attributes.put(newAttribute.getName(), newAttribute);

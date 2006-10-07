@@ -14,7 +14,10 @@ public class PluginException extends Exception {
      */
     private static final long serialVersionUID = 3060844557073465309L;
 
-    public PluginException(String msg) {
+    /**
+     * @param msg the message to display to user.
+     */
+    public PluginException(final String msg) {
         super(msg);
     }
 }
