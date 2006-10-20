@@ -42,8 +42,8 @@ super(GRID);
 
 /* Set some fields for the current preference page. */
 setTitle("CSAPI Preference page");
-setDescription("CSAPI Preference page");
-setMessage("Fill in the variables used to connect to the server.");
+setDescription("Fill in the variables used to connect to the server.");
+setMessage("CSAPI Preference page");
 
 /* Set the preference store for this preference page. */
         IPreferenceStore store = CSPlugin.getDefault()
