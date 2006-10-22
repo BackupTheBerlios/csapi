@@ -73,7 +73,7 @@ public class ReportHistoryView extends ViewPart implements IDoubleClickListener 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        setColumns("Name|Query|Attributes".split("\\|"));
+        setColumns("Date|Query|Attributes".split("\\|"));
 
         /*
          * Defines the LabelProvider and ContentProvider for the current Viewer,
@@ -116,7 +116,7 @@ public class ReportHistoryView extends ViewPart implements IDoubleClickListener 
             TableColumn column = new TableColumn(viewer.getTable(), SWT.NONE, 0);
             column.setText(columnTitles[i]);
             column.setAlignment(SWT.LEFT);
-            if (columnTitles[i].equalsIgnoreCase("Name")) {
+            if (columnTitles[i].equalsIgnoreCase("Date")) {
                 column.setWidth(130);
             } else if (columnTitles[i].equalsIgnoreCase("Query")) {
                 column.setWidth(300);
