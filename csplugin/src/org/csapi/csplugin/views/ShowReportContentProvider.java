@@ -4,7 +4,7 @@
 package org.csapi.csplugin.views;
 
 import org.csapi.csapicore.core.Report;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
@@ -24,13 +24,13 @@ import org.eclipse.jface.viewers.Viewer;
  * 
  * @author Boris Baldassari
  */
-public class ShowReportContentProvider implements IStructuredContentProvider {
+public class ShowReportContentProvider implements ITreeContentProvider {
 
     /**
      * Constructor for ShowReportContentProvider.
      */
     public ShowReportContentProvider() {
-        super();
+//        super();
     }
 
     /**
@@ -64,5 +64,20 @@ public class ShowReportContentProvider implements IStructuredContentProvider {
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         // not used but kept for standards
     }
+
+	public Object[] getChildren(Object parentElement) {
+        Report report = (Report) parentElement;
+        return report.getRecords();
+	}
+
+	public Object getParent(Object element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean hasChildren(Object element) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

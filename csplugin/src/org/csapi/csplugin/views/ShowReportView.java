@@ -11,13 +11,14 @@ import org.csapi.csplugin.actions.RefreshAction;
 import org.csapi.csplugin.actions.TextReportAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -31,164 +32,164 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class ShowReportView extends ViewPart {
 
-    /** The shared instance. **/
-    private static ShowReportView instance;
+	// The shared instance.
+	private static ShowReportView instance;
 
-    /** The (Table)viewer used for the view. **/
-    private TreeViewer viewer;
+	/* The (Table)viewer used for the view. */
+	private TableViewer viewer;
 
-    /**
-     * Constructor.
-     */
-    public ShowReportView() {
-        super();
-        instance = this;
-    }
+	/**
+	 * Constructor.
+	 */
+	public ShowReportView() {
+		super();
+		instance = this;
+	}
 
-    /**
-     * Singleton accessor. Only one instance of the view may be running.
-     * 
-     * @return The shared instance.
-     */
-    public static ShowReportView getDefault() {
-        return instance;
-    }
+	/**
+	 * Singleton accessor. Only one instance of the view may be running.
+	 * 
+	 * @return The shared instance.
+	 */
+	public static ShowReportView getDefault() {
+		return instance;
+	}
 
-    /**
-     * Creates the UI. For our purpose, just creates a TableViewer, and link 
-     * it to a LabelProvider and a ContentProvider. A dropdown menu is added also,
-     * for operations on the list.
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-     * 
-     * @param parent The parent composite.
-     */
-    public final void createPartControl(final Composite parent) {
+	/**
+	 * Creates the UI. For our purpose, just creates a TableViewer, and link it
+	 * to a LabelProvider and a ContentProvider.
+	 * 
+	 * A dropdown menu is added also, for operations on the list.
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createPartControl(Composite parent) {
 
-        /* The viewer to be displayed. */
-        viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		/* The viewer to be displayed. */
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
+				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-        /* The Table used for data display; also set options. */
-        Tree tree = viewer.getTree();
-        tree.setHeaderVisible(true);
-        tree.setLinesVisible(true);
-        setColumns("problem_number|problem_synopsis".split("\\|"));
+		/* The Table used for data display; also set options. */
+		Table table = viewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
 
-        /*
-         * Defines the LabelProvider and ContentProvider for the current Viewer,
-         * and set the input (model) for it.
-         */
-        viewer.setContentProvider(new ShowReportContentProvider());
-        viewer.setLabelProvider(new ShowReportLabelProvider());
-//        viewer.setInput(new Report("product_name='Product A'", new String[2]));
-        TextReportAction textReportAction = new TextReportAction();
-        ClearReportViewAction clearReport = new ClearReportViewAction();
-        ChangeAttributesAction changeAttributesAction = new ChangeAttributesAction();
-        QuerySelectAction querySelectAction = new QuerySelectAction();
-        RefreshAction refreshAction = new RefreshAction();
-        MenuManager menuManager = (MenuManager) 
-            getViewSite().getActionBars().getMenuManager();
-        menuManager.add(refreshAction);
-        menuManager.add(querySelectAction);
-        menuManager.add(changeAttributesAction);
-        menuManager.add(new Separator());
-        menuManager.add(textReportAction);
-        menuManager.add(clearReport);
-    }
+		setColumns("problem_number|problem_synopsis".split("\\|"));
 
-    /**
-     * Get the name of a column from its index.
-     * 
-     * @param columnIndex The index of the column to get text.
-     * @return Get the column name of the columnIndex'th column.
-     */
-    public final String getColumnName(final int columnIndex) {
-        return getReport().getAttributes()[columnIndex];
-    }
+		/*
+		 * Defines the LabelProvider and ContentProvider for the current Viewer,
+		 * and set the input (model) for it.
+		 */
+		viewer.setContentProvider(new ShowReportContentProvider());
+		viewer.setLabelProvider(new ShowReportLabelProvider());
 
-    /**
-     * @param columnTitles An array of String with all column titles.
-     */
-    public final void setColumns(final String[] columnTitles) {
-        /*
-         * We first need to delete all columns before adding new ones. The
-         * number of attributes displayed can vary between functions, and the
-         * whole layer may have to be redrawn.
-         */
-        int delCol = viewer.getTree().getColumns().length;
-        for (int j = delCol - 1; j >= 0; j--) {
-            viewer.getTree().getColumns()[j].dispose();
-        }
+		TextReportAction textReportAction = new TextReportAction();
+		ClearReportViewAction clearReport = new ClearReportViewAction();
+		ChangeAttributesAction changeAttributesAction = new ChangeAttributesAction();
+		QuerySelectAction querySelectAction = new QuerySelectAction();
+		RefreshAction refreshAction = new RefreshAction();
 
-        /*
-         * Then create columns according to the attributes needed for the
-         * function.
-         */
-//        for (int i = columnTitles.length - 1; i >= 0; i--) {
-//            TableColumn column = new TableColumn(viewer.getTree(), SWT.NONE, 0);
-//            column.setText(columnTitles[i]);
-//            column.setAlignment(SWT.LEFT);
-//            if (columnTitles[i].equalsIgnoreCase("problem_number")) {
-//                column.setWidth(40);
-//            } else if (columnTitles[i].equalsIgnoreCase("problem_synopsis")) {
-//                column.setWidth(400);
-//            } else {
-//                column.pack();
-//            }
-//        }
-    }
+		MenuManager menuManager = (MenuManager) getViewSite().getActionBars()
+				.getMenuManager();
 
-    /**
-     * 
-     */
-    public final void setFocus() {
-        viewer.refresh();
-        viewer.getControl().setFocus();
-    }
+		menuManager.add(refreshAction);
+		menuManager.add(querySelectAction);
+		menuManager.add(changeAttributesAction);
+		menuManager.add(new Separator());
+		menuManager.add(textReportAction);
+		menuManager.add(clearReport);
+	}
 
-    /**
-     * @param report The report to set as input.
-     */
-    public final void setInput(final Report report) {
-        viewer.setInput(report);
-        viewer.refresh();
-    }
+	public String getColumnName(int columnIndex) {
+		return getReport().getAttributes()[columnIndex];
+	}
 
-    /**
-     * Get the report attached to the viewer.
-     * @return  The report attached to the viewer.
-     */
-    public final Report getReport() {
-        Report myReport = (Report) viewer.getInput();
-        return myReport;
-    }
+	public void setColumns(String[] columnTitles) {
+		/*
+		 * We first need to delete all columns before adding new ones. The
+		 * number of attributes displayed can vary between functions, and the
+		 * whole layer may have to be redrawn.
+		 */
+		int delCol = viewer.getTable().getColumns().length;
+		for (int j = delCol - 1; j >= 0; j--)
+			viewer.getTable().getColumns()[j].dispose();
 
-    /**
-     * @return A string for the text report.
-     */
-    public final String getTextReport() {
+		/*
+		 * Then create columns according to the attributes needed for the
+		 * function.
+		 */
+		for (int i = columnTitles.length - 1; i >= 0; i--) {
+			TableColumn column = new TableColumn(viewer.getTable(), SWT.NONE, 0);
+			column.setText(columnTitles[i]);
+			column.setAlignment(SWT.LEFT);
+			if (columnTitles[i].equalsIgnoreCase("problem_number")) {
+				column.setWidth(40);
+			} else if (columnTitles[i].equalsIgnoreCase("problem_synopsis")) {
+				column.setWidth(400);
+			} else {
+				column.pack();
+			}
+		}
+	}
 
-        FileDialog fileDialog = new FileDialog(new Shell(Display.getDefault(),
-                SWT.CANCEL | SWT.OK), SWT.SAVE);
-        fileDialog.setFileName("report.txt");
-        String path = fileDialog.open();
-        System.out.println(path);
-        return path;
-    }
+	/**
+	 * 
+	 */
+	public void setFocus() {
+		viewer.refresh();
+		viewer.getControl().setFocus();
+	}
 
-    /**
-     * Clear the viewer.
-     */
-    public final void clearViewer() {
-        viewer.refresh();
-    }
+	/**
+	 * @param report
+	 */
+	public void setInput(Report report) {
+		viewer.setInput(report);
+		viewer.refresh();
+	}
 
-    /**
-     * Get the report attached to the viewer.
-     * 
-     * @return The report attached to the viewer.
-     */
-    public final TreeViewer getViewer() {
-        return viewer;
-    }
+	/**
+	 * Get the report attached to the viewer.
+	 * 
+	 * @return The report attached to the viewer.
+	 */
+	public Report getReport() {
+		Report myReport = (Report) viewer.getInput();
+		return myReport;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getTextReport() {
+
+		FileDialog fileDialog = new FileDialog(new Shell(Display.getDefault(),
+				SWT.CANCEL | SWT.OK), SWT.SAVE);
+		fileDialog.setFileName("report.txt");
+		String path = fileDialog.open();
+		System.out.println(path);
+		return path;
+	}
+
+	/**
+	 * 
+	 */
+	public void clearViewer() {
+		Report report = new Report("(cvtype='problem')", 
+				"problem_number|problem_synopsis".split("\\|"));
+		viewer.setInput(report);
+		viewer.refresh();
+	}
+
+	/**
+	 * Get the report attached to the viewer.
+	 * 
+	 * @return The report attached to the viewer.
+	 */
+	public TableViewer getViewer() {
+		return viewer;
+	}
 
 }
