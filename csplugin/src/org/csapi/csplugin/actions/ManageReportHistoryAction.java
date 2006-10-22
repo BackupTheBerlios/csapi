@@ -3,16 +3,13 @@
  */
 package org.csapi.csplugin.actions;
 
-import org.csapi.csapicore.core.Favorites;
-import org.csapi.csapicore.core.SessionMgr;
-import org.csapi.csplugin.views.ReportHistoryView;
+import org.csapi.csplugin.jobs.ManageReportHistoryJob;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -55,23 +52,20 @@ public class ManageReportHistoryAction implements
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run(IAction action) {
-        try {
-            Favorites favorites = SessionMgr.getDefault().getReportHistory();
 
-            IWorkbenchWindow wkbch = PlatformUI.getWorkbench()
-                    .getWorkbenchWindows()[0];
-            IViewPart inst = null;
+        ManageReportHistoryJob job = new ManageReportHistoryJob("Show Report History.");
 
-            // Get the instance of the view and focus it.
-            inst = wkbch.getActivePage().showView(
-                    "org.csapi.csplugin.views.ReportHistoryView");
-            if (inst != null) {
-                ((ReportHistoryView) inst).setInput(favorites);
-                ((ReportHistoryView) inst).setFocus();
+        /* Prevent display of the progress bar. */
+        job.setUser(false);
+        job.schedule();
+        job.addJobChangeListener(new JobChangeAdapter() {
+            public void done(IJobChangeEvent event) {
+                event.getResult();
+                // if (status.is)
+                // CsapiPlugin.getDefault().getLog().log(status);
+                // else
             }
-        } catch (PartInitException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /*
