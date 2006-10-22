@@ -3,6 +3,7 @@
  */
 package org.csapi.csplugin.views;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.csapi.csapicore.core.Record;
@@ -49,11 +50,26 @@ public class ShowReportLabelProvider extends LabelProvider implements
         String attributeValue = record.getAttribute(header);
         if (attributeType.equalsIgnoreCase("CCM_DATE")) {
             Date myDate = new Date(Long.parseLong(attributeValue));
-            return myDate.toString();
+            return easyDateFormat("dd.MM.yy-HH:mm:ss", myDate);
         }
         
         // fall-back for security
         return attributeValue;
+    }
+    
+
+    /**
+     * A private utility for the name of the report, which is the date and hour
+     * of the report execution.
+     * 
+     * @param format
+     *            The time format (C-like) for date.
+     * @return A string representing the date with the given format.
+     */
+    private String easyDateFormat(final String format, final Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        String datenewformat = formatter.format(date);
+        return datenewformat;
     }
 
 }
