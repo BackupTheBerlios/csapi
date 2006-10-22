@@ -36,13 +36,14 @@
          id="org.csapi.csplugin.preferences"
          point="org.eclipse.ui.preferencePages">
       <page
+            category="Team"
             class="org.csapi.csplugin.preferences.UserDataPreferences"
             id="org.csapi.csplugin.preferences.UserDataPreferences"
             name="Synergy/Change"/>
    </extension>
    <extension
          id="org.csapi.csplugin.views"
-         name="CSplugin views"
+         name="Synergy/Change views"
          point="org.eclipse.ui.views">
       <view
             category="csplugin.category"
@@ -52,11 +53,12 @@
       <view
             category="csplugin.category"
             class="org.csapi.csplugin.views.ReportHistoryView"
-            id="org.csapi.csplugin.views.MyReportsView"
+            id="org.csapi.csplugin.views.ReportHistoryView"
             name="Report History"/>
       <category
             id="csplugin.category"
-            name="Csapi Plugin"/>
+            name="Synergy/Change"
+            parentCategory="Team"/>
    </extension>
    <extension
          point="org.eclipse.help.toc">
