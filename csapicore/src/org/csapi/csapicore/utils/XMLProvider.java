@@ -177,7 +177,7 @@ public class XMLProvider {
      *            The name of the report to be used.
      * @return Returns the report name enrobed with XML.
      */
-    public static String getXMLChosenReport(String reportName) {
+    public static String getXMLChosenReport(final String reportName) {
         String myXML = "";
         myXML += "%3Ccsapi_chosen_report%3E" + reportName
                 + "%3C%2Fcsapi_chosen_report%3E";
@@ -209,7 +209,7 @@ public class XMLProvider {
      *            The report title to be used for report.
      * @return Returns the csapiRole enrobed with XML.
      */
-    public static String getXMLReportTitle(String reportTitle) {
+    public static String getXMLReportTitle(final String reportTitle) {
         String myXML = "";
         myXML += "%3Ccsapi_report_title%3E" + reportTitle
                 + "%3C%2Fcsapi_report_title%3E";
