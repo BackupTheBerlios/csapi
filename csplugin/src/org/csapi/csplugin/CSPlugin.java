@@ -127,7 +127,7 @@ public class CSPlugin extends AbstractUIPlugin {
      * @see org.eclipse.ui.plugin.AbstractUIPlugin
      * @see csapi.preferences.UserDataPreferences
      */
-    protected void initializeDefaultPreferences(IPreferenceStore store) {
+    protected void initializeDefaultPreferences(final IPreferenceStore store) {
         store.setDefault("CSAPI_USER_LOGIN", "");
         store.setDefault("CSAPI_USER_PASSWORD", "");
         store.setDefault("CSAPI_USER_ROLE", "");
