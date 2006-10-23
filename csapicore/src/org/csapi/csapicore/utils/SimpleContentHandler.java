@@ -97,7 +97,7 @@ public class SimpleContentHandler implements ContentHandler {
     private Integer faultCode;
 
     /**
-     * faultString 
+     * faultString: the message string for fault.
      */
     private String faultString;
 
@@ -215,15 +215,12 @@ public class SimpleContentHandler implements ContentHandler {
     }
 
     /**
-     * Set the locator for this document. Locator handles processing progression
-     * in the file, with e.g. number of line and number of character on the
-     * line.
-     * 
-     * @param value
-     *            The locator.
+     * Set the locator for this document. Locator handles processing progression 
+     * in the file, with e.g. number of line and number of character on the line.
+     * @param value The locator.
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
      */
-    public void setDocumentLocator(Locator value) {
+    public final void setDocumentLocator(final Locator value) {
         locator = value;
     }
 
@@ -259,7 +256,7 @@ public class SimpleContentHandler implements ContentHandler {
      * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String,
      *      java.lang.String)
      */
-    public void startPrefixMapping(String prefix, String URI)
+    public void startPrefixMapping(final String prefix, final String URI)
             throws SAXException {
         /* Not needed. */
     }
@@ -312,16 +309,16 @@ public class SimpleContentHandler implements ContentHandler {
          * to switch/case on String, we have to affect the currentNode attribute
          * by hand (i.e. with else/if's).
          */
-        if (localName.equalsIgnoreCase("csapi_response")) {
+        if (rawName.equalsIgnoreCase("csapi_response")) {
             /* This tag sometimes contains the csapi_token. */
             currentNode = CSAPI_RESPONSE;
-        } else if (localName.equalsIgnoreCase("faultcode")) {
+        } else if (rawName.equalsIgnoreCase("faultcode")) {
             /* The identifier of the fault been reported. */
             currentNode = CSAPI_FAULTCODE;
-        } else if (localName.equalsIgnoreCase("faultstring")) {
+        } else if (rawName.equalsIgnoreCase("faultstring")) {
             /* The identifier of the fault been reported. */
             currentNode = CSAPI_FAULTSTRING;
-        } else if (localName.equalsIgnoreCase("csapi_cquery_data")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cquery_data")) {
             /*
              * Beginning of a new set of records: Create a Report object.
              */
@@ -331,31 +328,31 @@ public class SimpleContentHandler implements ContentHandler {
             attributes[0] = "attributes";
             currentReport = new Report("query", attributes);
 
-        } else if (localName.equalsIgnoreCase("csapi_cobject_vector_size")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_vector_size")) {
             /* The number of records in the report. */
             currentNode = CSAPI_COBJECT_VECTOR_SIZE;
-        } else if (localName.equalsIgnoreCase("csapi_cobject_vector_type")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_vector_type")) {
             currentNode = CSAPI_COBJECT_VECTOR_TYPE;
-        } else if (localName.equalsIgnoreCase("csapi_cobject_vector_0")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_vector_0")) {
             /* Beginning of a new record: Create a Record object. */
             currentNode = CSAPI_COBJECT_VECTOR_0;
 
             currentRecord = new Record("xxxx");
-        } else if (localName.equalsIgnoreCase("csapi_cobject_data")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_data")) {
             /* Beginning of a new attribute: Create an Attribute object. */
             currentNode = CSAPI_COBJECT_DATA;
 
             currentAttribute = new Attribute();
-        } else if (localName.equalsIgnoreCase("csapi_cobject_data_name")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_data_name")) {
             /* The name of the current attribute. */
             currentNode = CSAPI_COBJECT_DATA_NAME;
-        } else if (localName.equalsIgnoreCase("csapi_cobject_data_value")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_data_value")) {
             /* The value of the current attribute. */
             currentNode = CSAPI_COBJECT_DATA_VALUE;
-        } else if (localName.equalsIgnoreCase("csapi_cobject_data_type")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_data_type")) {
             /* The CCM_TYPE of the current attribute. */
             currentNode = CSAPI_COBJECT_DATA_TYPE;
-        } else if (localName.equalsIgnoreCase("csapi_cobject_data_size")) {
+        } else if (rawName.equalsIgnoreCase("csapi_cobject_data_size")) {
             /* The number of attributes for this record. */
             currentNode = CSAPI_COBJECT_DATA_SIZE;
         }
@@ -368,11 +365,11 @@ public class SimpleContentHandler implements ContentHandler {
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
-    public void endElement(String nameSpaceURI, String localName, String rawName)
+    public void endElement(final String nameSpaceURI, final String localName, final String rawName)
             throws SAXException {
 
         /* localName is always empty if we do not treat namespace. */
-        localName = rawName;
+//        localName = rawName;
 
         if (localName.equalsIgnoreCase("csapi_response")) {
             // no action here
@@ -434,7 +431,7 @@ public class SimpleContentHandler implements ContentHandler {
      *            Rank of the last character read.
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
-    public void characters(char[] ch, int start, int end) throws SAXException {
+    public void characters(final char[] ch, final int start, final int end) throws SAXException {
         /* Create a String from the set of characters read. */
         String myChars = new String(ch, start, end);
 
@@ -489,7 +486,7 @@ public class SimpleContentHandler implements ContentHandler {
      *            Rank of the last character to be read.
      * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
      */
-    public void ignorableWhitespace(char[] ch, int start, int end)
+    public void ignorableWhitespace(final char[] ch, final int start, final int end)
             throws SAXException {
         /* Not needed. */
     }
@@ -504,7 +501,7 @@ public class SimpleContentHandler implements ContentHandler {
      * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String,
      *      java.lang.String)
      */
-    public void processingInstruction(String target, String data)
+    public void processingInstruction(final String target, final String data)
             throws SAXException {
         /* Not needed. */
     }
@@ -545,7 +542,10 @@ public class SimpleContentHandler implements ContentHandler {
         return this.faultCode.intValue();
     }
 
-    public String getFaultString() {
+    /**
+     * @return
+     */
+    public final String getFaultString() {
         return this.faultString;
     }
 }
