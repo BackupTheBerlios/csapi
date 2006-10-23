@@ -25,7 +25,7 @@ private String message = "";
 /**
  * The constructor for the action.
  */
-public CSPluginException(String title, String message) {
+public CSPluginException(final String title, final String message) {
 this.title = title;
 this.message = message;
 }
@@ -45,7 +45,7 @@ return title;
 }
 
 
-public void setTitle(String title) {
+public void setTitle(final String title) {
 this.title = title;
 }
 

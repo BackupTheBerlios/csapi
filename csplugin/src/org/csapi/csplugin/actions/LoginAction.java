@@ -35,7 +35,7 @@ public class LoginAction implements IWorkbenchWindowActionDelegate {
      * 
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
      */
-    public void init(IWorkbenchWindow window) {
+    public void init(final IWorkbenchWindow window) {
         // not used but kept for standards
     }
 
@@ -66,7 +66,7 @@ public class LoginAction implements IWorkbenchWindowActionDelegate {
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
      *      org.eclipse.jface.viewers.ISelection)
      */
-    public void selectionChanged(IAction action, ISelection selection) {
+    public void selectionChanged(final IAction action, final ISelection selection) {
         // not used but kept for standards
     }
 }

@@ -37,27 +37,29 @@ public class ReportHistoryContentProvider implements IStructuredContentProvider 
      *            The report to extract objects from.
      * @return An array of Records.
      */
-    public Object[] getElements(Object inputElement) {
+    public final Object[] getElements(final Object inputElement) {
         Favorites favorites = (Favorites) inputElement;
         return favorites.getArrayFavorites();
     }
 
-    /*
+    /**
      * (non-Javadoc)
      * 
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
-    public void dispose() {
+    public final void dispose() {
         // not used but kept for standards
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
+    /**
+     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer.
      *      java.lang.Object, java.lang.Object)
+     *      @param viewer The viewer.
+     *      @param oldInput The oldinput.
+     *      @param newInput The newInput.
      */
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+    public final void inputChanged(final Viewer viewer, final Object oldInput, 
+            final Object newInput) {
         // not used but kept for standards
     }
 
